@@ -1,0 +1,11 @@
+
+# Python
+__pycash__/
+*.pyc
+.venv/
+.env
+
+# Data
+data/*.csv
+data/*.parquet
+
