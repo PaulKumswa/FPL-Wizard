@@ -4,6 +4,7 @@ __pycash__/
 *.pyc
 .venv/
 .env
+configs/.env
 
 # Data
 data/*.csv
