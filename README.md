@@ -1,4 +1,5 @@
 ﻿# FPL ML (weekly team picker)
+Built with ChatGPT Codex and Google Antigravity
 
 This repository now pulls its raw data from two stable sources:
 

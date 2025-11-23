@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPL Underdog Predictor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #37003c;
+            /* FPL Purple */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #00ff85;
+            /* FPL Green */
+            color: #37003c;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>FPL Underdog Predictor</h1>
+        <p>Top 20 predicted high scorers with < 10% ownership.</p>
+                <div id="predictions">
+                    <p class="loading">Loading predictions...</p>
+                </div>
+    </div>
+
+    <script>
+        fetch('/api/predictions')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('predictions');
+                if (data.error) {
+                    container.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                    return;
+                }
+
+                let html = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Player</th>
+                                <th>Team</th>
+                                <th>Cost (£)</th>
+                                <th>Ownership (%)</th>
+                                <th>Predicted Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                data.forEach(player => {
+                    html += `
+                        <tr>
+                            <td>${player.web_name}</td>
+                            <td>${player.name}</td>
+                            <td>${(player.now_cost / 10).toFixed(1)}</td>
+                            <td>${player.selected_by_percent}%</td>
+                            <td>${player.predicted_points.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+
+                html += `</tbody></table>`;
+                container.innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById('predictions').innerHTML = `<p style="color: red;">Error fetching data.</p>`;
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+
+</html>

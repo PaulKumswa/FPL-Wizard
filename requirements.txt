@@ -2,4 +2,6 @@ pandas
 requests
 beautifulsoup4
 python-dotenv
-pyarrow 
+pyarrow
+scikit-learn
+flask 
