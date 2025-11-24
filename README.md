@@ -12,20 +12,21 @@ This repository now pulls its raw data from two stable sources:
    ```powershell
    py -3.12 -m venv .venv
    .\.venv\Scripts\Activate.ps1
-   python -m pip install -r requirements.txt  # generate this when ready
+   python -m pip install -r requirements.txt
    ```
-2. Update `configs/.env` if you want to override sleep or user-agent values (optional).
-3. Use `python -m src.data_fetch` to retrieve datasets:
-   ```powershell
-   # FPL bootstrap-static payload (JSON)
-   python -m src.data_fetch --resource fpl_bootstrap --out data/raw/fpl_bootstrap.json
-
-   # First 25 player gameweeks (Parquet)
-   python -m src.data_fetch --resource fpl_histories --limit 25 --out data/raw/fpl_histories_SAMPLE.parquet
-
-   # Understat Premier League players for 2023 season (CSV)
-   python -m src.data_fetch --resource understat_players --season 2023 --out data/raw/understat_players_2023.csv
+2. **Run the Automation Pipeline**:
+   To fetch the latest data, train the model, and launch the app:
+   ```bash
+   python update_pipeline.py
    ```
+
+   **Quick Launch (App Only)**:
+   If you already have data and just want to launch the website:
+   ```bash
+   python update_pipeline.py --quick
+   ```
+
+   *Note: The full pipeline fetches data from the FPL API and Understat. The first run may take a few minutes.*
 
 `src/test_api.py` contains a lightweight smoke test that hits each data source and prints samples (disable or trim network calls if running in a restricted environment).
 
