@@ -8,24 +8,24 @@ Open your terminal in the project root (`c:\fpl-ml`) and run:
 pip install -r requirements.txt
 ```
 
-## 2. Process Data
-Prepare the data for training and inference:
+## 2. Run Automation Pipeline
+To fetch the latest data, process it, train the model, and launch the website, simply run:
 ```bash
-python src/preprocess.py
+python update_pipeline.py
 ```
+This command will:
+1. Fetch the latest FPL data (Bootstrap, Fixtures, Player Histories).
+2. Preprocess the data.
+3. Train the model.
+4. Launch the web application and open it in your browser.
 
-## 3. Train Model
-Train the machine learning model:
+### Quick Launch
+If you already have data and just want to launch the website without fetching new data or retraining, use the `--quick` flag:
 ```bash
-python src/train_model.py
+python update_pipeline.py --quick
 ```
+This skips all data fetching and training steps and immediately launches the app.
 
-## 4. Run Application
-Start the web server:
-```bash
-python src/app.py
-```
-
-## 5. Access the Website
-Open your web browser and go to:
+## 3. Access the Website
+The script should automatically open the website. If not, go to:
 [http://127.0.0.1:5000](http://127.0.0.1:5000)
