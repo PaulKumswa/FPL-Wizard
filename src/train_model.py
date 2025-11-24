@@ -8,22 +8,14 @@ import os
 def train_model():
     # Load processed data
     try:
-        df = pd.read_csv('data/processed/fpl_data.csv')
+        df = pd.read_csv('data/processed/train_data.csv')
     except FileNotFoundError:
-        print("Error: Processed data not found. Run src/preprocess.py first.")
+        print("Error: Training data not found. Run src/preprocess.py first.")
         return
 
     # Define features and target
-    # We want to predict 'total_points' (or next gameweek points if we had that structure)
-    # For this MVP, let's assume we are predicting 'total_points' based on 'now_cost', 'selected_by_percent', 'recent_form_points'
-    # In a real scenario, we'd shift the target to be *future* points.
-    # Since we only have 'total_points' (accumulated) and 'recent_form' (derived from history), 
-    # this is a bit circular for "prediction" but serves as a placeholder for the pipeline.
-    # Ideally, we'd predict "next gameweek points".
-    
-    # Let's pretend 'total_points' is the target for now to prove the pipeline works.
     # Features:
-    features = ['now_cost', 'selected_by_percent', 'recent_form_points']
+    features = ['now_cost', 'selected_by_percent', 'recent_form', 'opponent_strength', 'is_home']
     target = 'total_points'
     
     # Drop rows with missing values

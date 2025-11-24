@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify
 import pandas as pd
 import pickle
+import json
 import os
 
 app = Flask(__name__)
@@ -13,12 +14,15 @@ def load_model_and_data():
         with open('models/model_features.pkl', 'rb') as f:
             features = pickle.load(f)
             
-        df = pd.read_csv('data/processed/fpl_data.csv')
+        df = pd.read_csv('data/processed/inference_data.csv')
         
-        return model, features, df
+        with open('data/processed/metadata.json', 'r') as f:
+            metadata = json.load(f)
+        
+        return model, features, df, metadata
     except Exception as e:
         print(f"Error loading model or data: {e}")
-        return None, None, None
+        return None, None, None, None
 
 @app.route('/')
 def index():
@@ -26,35 +30,66 @@ def index():
 
 @app.route('/api/predictions')
 def get_predictions():
-    model, features, df = load_model_and_data()
+    model, features, df, metadata = load_model_and_data()
     
     if model is None:
         return jsonify({'error': 'Model or data not found'}), 500
     
-    # Filter for underdogs (ownership < 10%)
-    # We already filtered in preprocess, but let's be safe or if we want to adjust
-    underdogs = df[df['selected_by_percent'] < 10.0].copy()
-    
     # Make predictions
     # Ensure features exist
     for feature in features:
-        if feature not in underdogs.columns:
+        if feature not in df.columns:
             return jsonify({'error': f'Missing feature: {feature}'}), 500
             
     # Drop rows with missing values in features
-    underdogs = underdogs.dropna(subset=features)
+    df = df.dropna(subset=features)
+
+    # Advanced Underdog Logic
+    # 1. Ownership < 10% (Deep Differential)
+    # 2. Price < £8.0m (Budget Gem)
+    # 3. Form > 2.0 OR ICT Index > 3.0 (Active/Good Underlying Stats)
     
-    predictions = model.predict(underdogs[features])
-    underdogs['predicted_points'] = predictions
+    # Ensure columns are numeric
+    df['selected_by_percent'] = pd.to_numeric(df['selected_by_percent'])
+    df['now_cost'] = pd.to_numeric(df['now_cost'])
+    df['recent_form'] = pd.to_numeric(df['recent_form'])
+    df['ict_index'] = pd.to_numeric(df['ict_index'])
+
+    df = df[
+        (df['selected_by_percent'] < 10) & 
+        (df['now_cost'] < 80) & 
+        ((df['recent_form'] > 2.0) | (df['ict_index'] > 3.0))
+    ]
     
-    # Sort by predicted points descending
-    top_underdogs = underdogs.sort_values('predicted_points', ascending=False).head(20)
+    if df.empty:
+        # Fallback if too strict: just < 10% ownership
+        df = pd.read_csv('data/processed/inference_data.csv')
+        df['selected_by_percent'] = pd.to_numeric(df['selected_by_percent'])
+        df = df[df['selected_by_percent'] < 10]
+
+    predictions = model.predict(df[features])
+    df['predicted_points'] = predictions
+    
+    # Sort by predicted points descending and take Top 5
+    top_players = df.sort_values('predicted_points', ascending=False).head(5)
     
     # Select columns to display
-    display_cols = ['web_name', 'name', 'now_cost', 'selected_by_percent', 'predicted_points']
-    result = top_underdogs[display_cols].to_dict(orient='records')
+    # Select columns to display
+    display_cols = ['web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'code', 'team_code', 'opponent_team_code']
+    result = top_players[display_cols].to_dict(orient='records')
     
-    return jsonify(result)
+    # Add image URLs
+    for player in result:
+        player['photo_url'] = f"https://resources.premierleague.com/premierleague/photos/players/110x140/p{int(player['code'])}.png"
+        player['team_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['team_code'])}.png"
+        player['opponent_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['opponent_team_code'])}.png"
+
+    response = {
+        'gameweek_info': metadata,
+        'predictions': result
+    }
+    
+    return jsonify(response)
 
 if __name__ == '__main__':
     app.run(debug=True)

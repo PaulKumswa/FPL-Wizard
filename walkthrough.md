@@ -1,31 +1,34 @@
-# FPL Underdog Predictor Walkthrough
+# FPL Next Gameweek Predictor Walkthrough
 
 ## Overview
-We have built a machine learning system to predict "underdog" high scorers in the Fantasy Premier League.
-"Underdogs" are defined as players with < 10% ownership.
+We have updated the system to predict the **Top 5 Point Scorers** for the **Next Gameweek**.
+It uses historical match data to learn the relationship between player form, opponent difficulty, and points.
 
 ## Components
 
 ### 1. Data Collection & Processing
 - **Source**: FPL Official API.
-- **Script**: `src/data_fetch.py` (existing) and `src/preprocess.py` (new).
+- **Scripts**: `src/data_fetch.py`, `src/preprocess.py`.
+- **New Data**: `fpl_fixtures.json` (for opponent difficulty and schedule).
 - **Process**:
-    - Fetched player metadata and historical performance.
-    - Calculated "recent form" (average points in last 5 games).
-    - Merged with team data.
-    - Filtered for players with < 10% ownership.
+    - **Training Data**: Historical matches with `recent_form` (avg points last 5 games) and `opponent_strength`.
+    - **Inference Data**: All players for the *Next Gameweek* with their upcoming opponent and current form.
+    - **Metadata**: Tracks Current and Next Gameweek IDs.
 
 ### 2. Machine Learning Model
 - **Script**: `src/train_model.py`.
 - **Model**: Random Forest Regressor (`scikit-learn`).
-- **Features**: `now_cost`, `selected_by_percent`, `recent_form_points`.
-- **Target**: `total_points` (proxy for future performance in this MVP).
-- **Performance**: MAE of ~3.91 points.
+- **Features**: `now_cost`, `selected_by_percent`, `recent_form`, `opponent_strength`, `is_home`.
+- **Target**: `total_points` (in a specific match).
+- **Performance**: MAE of ~1.71 points.
 
 ### 3. Web Application
 - **Script**: `src/app.py`.
 - **Framework**: Flask.
-- **Interface**: Simple HTML table displaying top 20 predicted underdogs.
+- **Interface**:
+    - Displays **Current Gameweek** and **Next Gameweek**.
+    - Shows a table of **Top 5 Predicted Scorers**.
+    - Includes **Next Opponent** information.
 - **URL**: http://127.0.0.1:5000
 
 ## How to Run
@@ -39,6 +42,7 @@ We have built a machine learning system to predict "underdog" high scorers in th
    ```powershell
    python -m src.data_fetch --resource fpl_bootstrap --out data/raw/fpl_bootstrap.json
    python -m src.data_fetch --resource fpl_histories --limit 50 --out data/raw/fpl_histories.parquet
+   python -m src.data_fetch --resource fpl_fixtures --out data/raw/fpl_fixtures.json
    ```
 
 3. **Process Data**:
@@ -58,6 +62,6 @@ We have built a machine learning system to predict "underdog" high scorers in th
    Open http://127.0.0.1:5000 in your browser.
 
 ## Verification Results
-- **Model Training**: Successfully trained and saved to `models/fpl_model.pkl`.
-- **API**: `/api/predictions` returns JSON data with predicted points.
-- **UI**: Displays the table of predictions correctly.
+- **Model Training**: Successfully trained (MAE: ~1.71).
+- **API**: `/api/predictions` returns Top 5 players with next opponent info.
+- **UI**: Displays Gameweek info and the predictions table correctly.
