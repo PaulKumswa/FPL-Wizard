@@ -4,4 +4,5 @@ beautifulsoup4
 python-dotenv
 pyarrow
 scikit-learn
-flask 
+flask
+gunicorn 
