@@ -6,20 +6,20 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 103,Cox,5,Brentford,3,Burnley,1,3,0.0,40,0.1,1,503300,94,90,0.0
 104,Eyestone,5,Brentford,3,Burnley,1,3,0.0,39,0.1,1,535017,94,90,0.0
 105,Valdimarsson,5,Brentford,3,Burnley,1,3,0.0,39,0.7,1,507433,94,90,0.0
-106,Collins,5,Brentford,3,Burnley,1,3,3.0,49,1.3,2,432830,94,90,40.4
+106,Collins,5,Brentford,3,Burnley,1,3,3.0,49,1.4,2,432830,94,90,40.4
 107,Lewis-Potter,5,Brentford,3,Burnley,1,3,1.0,48,0.3,2,249231,94,90,18.1
 108,Ajer,5,Brentford,3,Burnley,1,3,3.0,44,0.2,2,191866,94,90,20.8
 109,Henry,5,Brentford,3,Burnley,1,3,0.4,43,0.1,2,194010,94,90,4.6
 110,Kayode,5,Brentford,3,Burnley,1,3,3.2,45,0.6,2,607464,94,90,47.0
 111,Pinnock,5,Brentford,3,Burnley,1,3,0.0,43,0.1,2,231065,94,90,4.3
 112,Roerslev,5,Brentford,3,Burnley,1,3,0.0,45,0.0,2,226956,94,90,0.0
-113,Van den Berg,5,Brentford,3,Burnley,1,3,3.4,45,0.9,2,444765,94,90,41.9
+113,Van den Berg,5,Brentford,3,Burnley,1,3,3.4,45,1.0,2,444765,94,90,41.9
 114,Arthur,5,Brentford,3,Burnley,1,3,0.0,39,0.2,2,622536,94,90,0.0
 115,Fredrick,5,Brentford,3,Burnley,1,3,0.0,40,0.1,2,612534,94,90,0.0
 116,Hickey,5,Brentford,3,Burnley,1,3,0.6,40,0.3,2,472713,94,90,6.4
 117,Ji-soo,5,Brentford,3,Burnley,1,3,0.0,39,0.1,2,570241,94,90,0.0
 118,Meghoma,5,Brentford,3,Burnley,1,3,0.0,40,0.0,2,499717,94,90,0.0
-120,Schade,5,Brentford,3,Burnley,1,3,4.8,70,1.8,3,513418,94,90,62.8
+120,Schade,5,Brentford,3,Burnley,1,3,4.8,70,1.9,3,513418,94,90,62.8
 121,Damsgaard,5,Brentford,3,Burnley,1,3,3.2,58,0.6,3,440089,94,90,52.1
 122,Milambo,5,Brentford,3,Burnley,1,3,0.0,52,0.0,3,543295,94,90,0.6
 123,Carvalho,5,Brentford,3,Burnley,1,3,0.2,48,0.2,3,244858,94,90,8.1
@@ -34,7 +34,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 132,Maghoma,5,Brentford,3,Burnley,1,3,0.0,45,0.0,3,220695,94,90,0.0
 133,Peart-Harris,5,Brentford,3,Burnley,1,3,0.0,44,0.0,3,450539,94,90,0.0
 134,Trevitt,5,Brentford,3,Burnley,1,3,0.0,45,0.0,3,591357,94,90,0.0
-136,Thiago,5,Brentford,3,Burnley,1,3,6.4,65,18.4,4,502500,94,90,90.4
+136,Thiago,5,Brentford,3,Burnley,1,3,6.4,65,19.0,4,502500,94,90,90.4
 137,Morgan,5,Brentford,3,Burnley,1,3,0.0,44,0.4,4,533710,94,90,0.0
 748,Dasilva,5,Brentford,3,Burnley,1,3,0.0,50,0.0,3,183656,94,90,0.0
 183,Weiss,3,Burnley,5,Brentford,0,3,0.0,43,0.1,1,518030,90,94,0.0
@@ -74,7 +74,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 217,Foster,3,Burnley,5,Brentford,0,3,1.6,50,1.5,4,435973,90,94,28.0
 218,Barnes,3,Burnley,5,Brentford,0,3,0.2,43,1.3,4,44699,90,94,0.1
 219,Obafemi,3,Burnley,5,Brentford,0,3,0.0,44,0.1,4,220598,90,94,0.0
-470,Dúbravka,3,Burnley,5,Brentford,0,3,3.4,40,33.9,1,67089,90,94,37.1
+470,Dúbravka,3,Burnley,5,Brentford,0,3,3.4,40,33.8,1,67089,90,94,37.1
 676,Ugochukwu,3,Burnley,5,Brentford,0,3,4.2,50,0.1,3,503714,90,94,26.0
 680,Broja,3,Burnley,5,Brentford,0,3,0.6,52,0.1,4,440323,90,94,5.0
 722,Florentino,3,Burnley,5,Brentford,0,3,3.6,50,0.1,3,216055,90,94,28.2
@@ -83,33 +83,33 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 400,Ortega Moreno,13,Man City,11,Leeds,1,3,0.0,48,0.2,1,88248,43,2,0.0
 401,Bettinelli,13,Man City,11,Leeds,1,3,0.0,40,0.1,1,122074,43,2,0.0
 402,Aït-Nouri,13,Man City,11,Leeds,1,3,0.2,57,4.6,2,448514,43,2,7.8
-403,Gvardiol,13,Man City,11,Leeds,1,3,2.2,58,5.5,2,477424,43,2,24.0
+403,Gvardiol,13,Man City,11,Leeds,1,3,2.2,58,5.6,2,477424,43,2,24.0
 404,Akanji,13,Man City,11,Leeds,1,3,0.0,54,0.3,2,211975,43,2,0.0
 405,Aké,13,Man City,11,Leeds,1,3,1.2,53,0.6,2,126184,43,2,7.6
 406,Khusanov,13,Man City,11,Leeds,1,3,0.0,54,0.3,2,578153,43,2,4.8
 407,Matheus N.,13,Man City,11,Leeds,1,3,5.0,53,1.2,2,465351,43,2,33.3
-408,Rúben,13,Man City,11,Leeds,1,3,5.0,55,5.1,2,171314,43,2,35.1
+408,Rúben,13,Man City,11,Leeds,1,3,5.0,55,5.2,2,171314,43,2,35.1
 409,Stones,13,Man City,11,Leeds,1,3,0.4,54,0.7,2,97299,43,2,9.1
 410,Lewis,13,Man City,11,Leeds,1,3,0.2,48,1.5,2,477064,43,2,9.4
-411,O’Reilly,13,Man City,11,Leeds,1,3,6.4,51,5.4,2,472769,43,2,44.8
+411,O’Reilly,13,Man City,11,Leeds,1,3,6.4,51,5.8,2,472769,43,2,44.8
 412,Vitor Reis,13,Man City,11,Leeds,1,3,0.0,50,0.0,2,616222,43,2,0.0
 413,Marmoush,13,Man City,11,Leeds,1,3,0.8,83,2.6,3,438234,43,2,14.9
-414,Foden,13,Man City,11,Leeds,1,3,2.6,80,5.4,3,209244,43,2,62.6
+414,Foden,13,Man City,11,Leeds,1,3,2.6,80,5.6,3,209244,43,2,62.6
 415,Savinho,13,Man City,11,Leeds,1,3,2.0,69,0.5,3,510281,43,2,29.0
 416,Bernardo,13,Man City,11,Leeds,1,3,2.2,63,0.5,3,165809,43,2,34.2
-417,Cherki,13,Man City,11,Leeds,1,3,4.0,64,3.6,3,466052,43,2,33.1
-418,Doku,13,Man City,11,Leeds,1,3,3.4,65,8.7,3,248875,43,2,81.3
+417,Cherki,13,Man City,11,Leeds,1,3,4.0,64,3.7,3,466052,43,2,33.1
+418,Doku,13,Man City,11,Leeds,1,3,3.4,65,8.9,3,248875,43,2,81.3
 420,Gündoğan,13,Man City,11,Leeds,1,3,0.0,63,0.1,3,59859,43,2,0.0
 421,Rodrigo,13,Man City,11,Leeds,1,3,0.2,63,0.4,3,220566,43,2,12.0
 422,Kovačić,13,Man City,11,Leeds,1,3,0.2,59,0.0,3,91651,43,2,0.3
 423,N.Gonzalez,13,Man City,11,Leeds,1,3,3.8,59,0.1,3,465694,43,2,31.7
 424,Bobb,13,Man City,11,Leeds,1,3,0.6,53,0.2,3,477555,43,2,31.2
 425,Echeverri,13,Man City,11,Leeds,1,3,0.0,54,0.0,3,575204,43,2,0.0
-427,Reijnders,13,Man City,11,Leeds,1,3,0.8,54,16.6,3,433036,43,2,47.4
+427,Reijnders,13,Man City,11,Leeds,1,3,0.8,54,16.5,3,433036,43,2,47.4
 428,Nypan,13,Man City,11,Leeds,1,3,0.0,50,0.0,3,566164,43,2,0.0
 429,Phillips,13,Man City,11,Leeds,1,3,0.0,48,0.1,3,155405,43,2,0.0
-430,Haaland,13,Man City,11,Leeds,1,3,6.8,149,71.8,4,223094,43,2,130.1
-736,Donnarumma,13,Man City,11,Leeds,1,3,3.4,57,10.7,1,204936,43,2,12.1
+430,Haaland,13,Man City,11,Leeds,1,3,6.8,149,71.9,4,223094,43,2,130.1
+736,Donnarumma,13,Man City,11,Leeds,1,3,3.4,57,10.8,1,204936,43,2,12.1
 739,Mukasa,13,Man City,11,Leeds,1,3,0.0,45,0.0,3,590039,43,2,0.0
 740,Mfuni,13,Man City,11,Leeds,1,3,0.0,40,0.0,2,566213,43,2,0.0
 742,McAidoo,13,Man City,11,Leeds,1,3,0.0,45,0.0,3,616288,43,2,0.0
@@ -140,7 +140,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 363,Bamford,11,Leeds,13,Man City,0,4,0.0,49,0.4,4,106617,2,43,0.0
 364,Mateo Joseph,11,Leeds,13,Man City,0,4,0.0,50,0.0,4,565297,2,43,0.0
 365,Nmecha,11,Leeds,13,Man City,0,4,3.8,50,0.7,4,174594,2,43,28.7
-493,Longstaff,11,Leeds,13,Man City,0,4,2.4,49,0.9,3,180135,2,43,60.9
+493,Longstaff,11,Leeds,13,Man City,0,4,2.4,49,0.8,3,180135,2,43,60.9
 660,Stach,11,Leeds,13,Man City,0,4,2.2,48,1.7,3,466525,2,43,50.6
 665,Perri,11,Leeds,13,Man City,0,4,1.2,45,0.2,1,201595,2,43,12.4
 691,Calvert-Lewin,11,Leeds,13,Man City,0,4,1.6,55,0.8,4,177815,2,43,37.1
@@ -198,7 +198,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 69,McKenna,4,Bournemouth,17,Sunderland,0,3,0.0,40,0.2,1,568791,91,56,0.0
 70,Paulsen,4,Bournemouth,17,Sunderland,0,3,0.0,40,0.1,1,495145,91,56,0.0
 71,Zabarnyi,4,Bournemouth,17,Sunderland,0,3,0.0,50,0.0,2,477580,91,56,0.0
-72,Senesi,4,Bournemouth,17,Sunderland,0,3,3.0,50,26.2,2,221466,91,56,56.3
+72,Senesi,4,Bournemouth,17,Sunderland,0,3,3.0,50,26.1,2,221466,91,56,56.3
 73,Smith,4,Bournemouth,17,Sunderland,0,3,0.4,44,0.2,2,54469,91,56,3.8
 74,Truffert,4,Bournemouth,17,Sunderland,0,3,2.6,45,2.4,2,494521,91,56,50.2
 75,Akinmboni,4,Bournemouth,17,Sunderland,0,3,0.0,39,0.2,2,541462,91,56,0.0
@@ -208,8 +208,8 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 79,Mepham,4,Bournemouth,17,Sunderland,0,3,0.0,40,0.1,2,223911,91,56,0.0
 80,Soler,4,Bournemouth,17,Sunderland,0,3,0.0,40,0.2,2,575901,91,56,0.0
 81,Kluivert,4,Bournemouth,17,Sunderland,0,3,1.2,70,0.8,3,222683,91,56,23.2
-82,Semenyo,4,Bournemouth,17,Sunderland,0,3,1.8,79,55.0,3,437730,91,56,79.7
-84,Tavernier,4,Bournemouth,17,Sunderland,0,3,5.4,55,2.0,3,201658,91,56,66.7
+82,Semenyo,4,Bournemouth,17,Sunderland,0,3,1.8,79,54.4,3,437730,91,56,79.7
+84,Tavernier,4,Bournemouth,17,Sunderland,0,3,5.4,55,2.1,3,201658,91,56,66.7
 85,Adams,4,Bournemouth,17,Sunderland,0,3,4.2,50,0.5,3,200785,91,56,37.8
 86,Brooks,4,Bournemouth,17,Sunderland,0,3,0.8,50,0.2,3,111317,91,56,38.9
 87,Christie,4,Bournemouth,17,Sunderland,0,3,1.8,50,0.1,3,158499,91,56,22.1
@@ -245,7 +245,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 296,Patterson,9,Everton,15,Newcastle,1,3,0.0,44,0.0,2,243571,11,4,0.0
 297,Dixon,9,Everton,15,Newcastle,1,3,0.0,39,0.2,2,496178,11,4,0.0
 298,Welch,9,Everton,15,Newcastle,1,3,0.0,39,0.1,2,474907,11,4,0.0
-299,Ndiaye,9,Everton,15,Newcastle,1,3,4.2,66,11.4,3,440993,11,4,68.4
+299,Ndiaye,9,Everton,15,Newcastle,1,3,4.2,66,11.3,3,440993,11,4,68.4
 300,McNeil,9,Everton,15,Newcastle,1,3,0.6,55,0.1,3,433154,11,4,2.7
 301,Alcaraz,9,Everton,15,Newcastle,1,3,0.8,52,0.1,3,502697,11,4,9.8
 302,Gana,9,Everton,15,Newcastle,1,3,3.2,54,0.1,3,80801,11,4,39.2
@@ -260,7 +260,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 311,Beto,9,Everton,15,Newcastle,1,3,1.4,51,2.9,4,486385,11,4,33.6
 312,Y.Chermiti,9,Everton,15,Newcastle,1,3,0.0,49,0.1,4,491012,11,4,0.0
 313,Sherif,9,Everton,15,Newcastle,1,3,0.0,44,0.1,4,536241,11,4,0.0
-419,Grealish,9,Everton,15,Newcastle,1,3,1.8,67,14.4,3,114283,11,4,81.4
+419,Grealish,9,Everton,15,Newcastle,1,3,1.8,67,14.3,3,114283,11,4,81.4
 630,King,9,Everton,15,Newcastle,1,3,0.0,39,1.4,1,138001,11,4,0.0
 667,Aznou,9,Everton,15,Newcastle,1,3,0.0,43,0.1,2,499300,11,4,0.0
 704,Onyango,9,Everton,15,Newcastle,1,3,0.0,45,0.1,3,461446,11,4,0.0
@@ -284,10 +284,10 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 482,Ashby,15,Newcastle,9,Everton,0,3,0.0,39,0.1,2,441024,4,11,0.0
 483,Pivas,15,Newcastle,9,Everton,0,3,0.0,38,0.3,2,578512,4,11,0.0
 484,Targett,15,Newcastle,9,Everton,0,3,0.0,40,0.2,2,169359,4,11,0.0
-485,Gordon,15,Newcastle,9,Everton,0,3,1.0,73,1.5,3,232826,4,11,26.4
+485,Gordon,15,Newcastle,9,Everton,0,3,1.0,73,1.4,3,232826,4,11,26.4
 486,Elanga,15,Newcastle,9,Everton,0,3,1.0,66,3.2,3,449434,4,11,23.3
-487,Barnes,15,Newcastle,9,Everton,0,3,5.4,63,1.1,3,201666,4,11,46.3
-488,Bruno G.,15,Newcastle,9,Everton,0,3,6.0,66,4.0,3,208706,4,11,60.9
+487,Barnes,15,Newcastle,9,Everton,0,3,5.4,63,1.2,3,201666,4,11,46.3
+488,Bruno G.,15,Newcastle,9,Everton,0,3,6.0,66,4.1,3,208706,4,11,60.9
 489,J.Murphy,15,Newcastle,9,Everton,0,3,4.2,61,1.1,3,114243,4,11,53.9
 490,Joelinton,15,Newcastle,9,Everton,0,3,2.2,59,0.3,3,180974,4,11,27.5
 491,Tonali,15,Newcastle,9,Everton,0,3,2.6,54,1.2,3,432422,4,11,49.8
@@ -307,12 +307,12 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 565,Vicario,18,Spurs,10,Fulham,1,3,2.6,50,9.1,1,184254,6,54,31.5
 566,Austin,18,Spurs,10,Fulham,1,3,0.0,39,0.3,1,214572,6,54,0.0
 567,Kinsky,18,Spurs,10,Fulham,1,3,0.0,39,1.9,1,485055,6,54,0.0
-568,Pedro Porro,18,Spurs,10,Fulham,1,3,3.2,54,16.6,2,441164,6,54,41.4
+568,Pedro Porro,18,Spurs,10,Fulham,1,3,3.2,54,16.5,2,441164,6,54,41.4
 569,Romero,18,Spurs,10,Fulham,1,3,0.6,50,3.7,2,221632,6,54,31.1
 570,Danso,18,Spurs,10,Fulham,1,3,1.8,43,0.1,2,135720,6,54,8.1
 571,Davies,18,Spurs,10,Fulham,1,3,0.0,43,0.1,2,115556,6,54,0.0
 572,Dragusin,18,Spurs,10,Fulham,1,3,0.0,45,0.0,2,493125,6,54,0.0
-573,Spence,18,Spurs,10,Fulham,1,3,2.0,45,1.5,2,232859,6,54,18.8
+573,Spence,18,Spurs,10,Fulham,1,3,2.0,45,1.4,2,232859,6,54,18.8
 574,Udogie,18,Spurs,10,Fulham,1,3,1.0,44,0.4,2,487053,6,54,21.1
 575,Van de Ven,18,Spurs,10,Fulham,1,3,5.2,48,33.6,2,491279,6,54,41.6
 576,Phillips,18,Spurs,10,Fulham,1,3,0.0,40,0.0,2,548308,6,54,0.0
@@ -321,7 +321,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 579,Son,18,Spurs,10,Fulham,1,3,0.0,85,0.1,3,85971,6,54,0.0
 580,Johnson,18,Spurs,10,Fulham,1,3,1.4,66,2.8,3,242898,6,54,25.5
 581,Maddison,18,Spurs,10,Fulham,1,3,0.0,68,0.1,3,172780,6,54,0.0
-582,Kudus,18,Spurs,10,Fulham,1,3,1.6,65,17.0,3,460842,6,54,67.2
+582,Kudus,18,Spurs,10,Fulham,1,3,1.6,65,16.9,3,460842,6,54,67.2
 583,Kulusevski,18,Spurs,10,Fulham,1,3,0.0,64,0.0,3,445044,6,54,0.0
 584,Tel,18,Spurs,10,Fulham,1,3,1.6,63,0.1,3,511499,6,54,14.5
 585,Bentancur,18,Spurs,10,Fulham,1,3,4.4,53,0.3,3,202993,6,54,28.5
@@ -366,7 +366,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 332,Lukić,10,Fulham,18,Spurs,0,3,1.8,50,0.1,3,212314,54,6,41.5
 333,Godo,10,Fulham,18,Spurs,0,3,0.0,45,0.0,3,573062,54,6,0.0
 334,Harris,10,Fulham,18,Spurs,0,3,0.0,45,0.0,3,515024,54,6,0.0
-335,King,10,Fulham,18,Spurs,0,3,2.0,45,3.8,3,577725,54,6,29.9
+335,King,10,Fulham,18,Spurs,0,3,2.0,45,3.7,3,577725,54,6,29.9
 336,Reed,10,Fulham,18,Spurs,0,3,0.2,43,0.3,3,153366,54,6,0.0
 337,Raúl,10,Fulham,18,Spurs,0,3,3.8,62,0.9,4,102057,54,6,39.7
 338,Muniz,10,Fulham,18,Spurs,0,3,0.4,54,0.9,4,244042,54,6,22.2
@@ -377,17 +377,17 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 253,Henderson,8,Crystal Palace,14,Man Utd,1,3,4.8,50,8.0,1,172649,31,1,22.9
 254,Benitez,8,Crystal Palace,14,Man Utd,1,3,0.0,40,0.3,1,121709,31,1,0.0
 255,Matthews,8,Crystal Palace,14,Man Utd,1,3,0.0,39,0.1,1,169593,31,1,0.0
-256,Muñoz,8,Crystal Palace,14,Man Utd,1,3,7.6,59,20.9,2,247348,31,1,59.1
+256,Muñoz,8,Crystal Palace,14,Man Utd,1,3,7.6,59,21.1,2,247348,31,1,59.1
 257,Lacroix,8,Crystal Palace,14,Man Utd,1,3,6.0,50,4.8,2,437499,31,1,37.5
 258,Mitchell,8,Crystal Palace,14,Man Utd,1,3,5.2,50,2.6,2,244723,31,1,50.1
 259,Sosa,8,Crystal Palace,14,Man Utd,1,3,0.2,48,0.1,2,218364,31,1,0.0
-260,Guéhi,8,Crystal Palace,14,Man Utd,1,3,4.6,51,34.7,2,209036,31,1,45.5
+260,Guéhi,8,Crystal Palace,14,Man Utd,1,3,4.6,51,34.6,2,209036,31,1,45.5
 261,Richards,8,Crystal Palace,14,Man Utd,1,3,5.0,46,3.7,2,427623,31,1,37.1
 262,Chadi Riad,8,Crystal Palace,14,Man Utd,1,3,0.0,40,0.0,2,515621,31,1,0.0
 263,Clyne,8,Crystal Palace,14,Man Utd,1,3,0.0,38,0.5,2,57328,31,1,0.4
 264,Holding,8,Crystal Palace,14,Man Utd,1,3,0.0,40,0.0,2,156074,31,1,0.0
 265,Kporha,8,Crystal Palace,14,Man Utd,1,3,0.0,40,0.0,2,590012,31,1,0.0
-267,Sarr,8,Crystal Palace,14,Man Utd,1,3,2.6,67,13.0,3,232185,31,1,50.1
+267,Sarr,8,Crystal Palace,14,Man Utd,1,3,2.6,67,12.9,3,232185,31,1,50.1
 268,Doucouré,8,Crystal Palace,14,Man Utd,1,3,0.0,49,0.0,3,438464,31,1,0.0
 269,Esse,8,Crystal Palace,14,Man Utd,1,3,0.0,47,0.1,3,606921,31,1,0.7
 270,Hughes,8,Crystal Palace,14,Man Utd,1,3,0.8,48,0.1,3,108413,31,1,18.3
@@ -403,7 +403,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 280,Ozoh,8,Crystal Palace,14,Man Utd,1,3,0.0,45,0.0,3,531989,31,1,0.0
 281,Rodney,8,Crystal Palace,14,Man Utd,1,3,0.0,45,0.0,3,530318,31,1,0.0
 282,Umeh,8,Crystal Palace,14,Man Utd,1,3,0.0,45,0.0,3,574398,31,1,0.0
-283,Mateta,8,Crystal Palace,14,Man Utd,1,3,6.2,81,29.8,4,231747,31,1,75.6
+283,Mateta,8,Crystal Palace,14,Man Utd,1,3,6.2,81,29.7,4,231747,31,1,75.6
 284,Nketiah,8,Crystal Palace,14,Man Utd,1,3,0.6,54,0.3,4,205533,31,1,17.4
 285,Édouard,8,Crystal Palace,14,Man Utd,1,3,0.0,50,0.2,4,199670,31,1,0.2
 286,Marsh,8,Crystal Palace,14,Man Utd,1,3,0.0,45,0.3,4,576980,31,1,0.0
@@ -411,7 +411,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 712,Yeremy,8,Crystal Palace,14,Man Utd,1,3,2.8,58,0.2,3,488024,31,1,41.1
 723,Canvot,8,Crystal Palace,14,Man Utd,1,3,2.4,45,0.0,2,651426,31,1,4.4
 732,Uche,8,Crystal Palace,14,Man Utd,1,3,0.2,55,0.0,4,660392,31,1,2.3
-119,Mbeumo,14,Man Utd,8,Crystal Palace,0,3,6.8,86,35.9,3,446008,1,31,101.8
+119,Mbeumo,14,Man Utd,8,Crystal Palace,0,3,6.8,86,35.8,3,446008,1,31,101.8
 431,Bayindir,14,Man Utd,8,Crystal Palace,0,3,0.0,48,0.3,1,451302,1,31,12.8
 432,Onana,14,Man Utd,8,Crystal Palace,0,3,0.0,49,0.2,1,202641,1,31,0.0
 433,Harrison,14,Man Utd,8,Crystal Palace,0,3,0.0,40,0.0,1,588555,1,31,0.0
@@ -431,7 +431,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 447,Heaven,14,Man Utd,8,Crystal Palace,0,3,0.6,38,1.3,2,606745,1,31,3.9
 448,Malacia,14,Man Utd,8,Crystal Palace,0,3,0.0,38,0.5,2,222690,1,31,0.0
 449,B.Fernandes,14,Man Utd,8,Crystal Palace,0,3,4.8,89,16.4,3,141746,1,31,100.0
-450,Cunha,14,Man Utd,8,Crystal Palace,0,3,3.4,79,4.4,3,430871,1,31,45.7
+450,Cunha,14,Man Utd,8,Crystal Palace,0,3,3.4,79,4.3,3,430871,1,31,45.7
 451,Rashford,14,Man Utd,8,Crystal Palace,0,3,0.0,70,0.0,3,176297,1,31,0.0
 452,Amad,14,Man Utd,8,Crystal Palace,0,3,5.0,63,1.9,3,493250,1,31,66.0
 454,Antony,14,Man Utd,8,Crystal Palace,0,3,0.0,59,0.1,3,467169,1,31,0.0
@@ -448,14 +448,14 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 466,Zirkzee,14,Man Utd,8,Crystal Palace,0,3,0.6,58,0.4,4,458249,1,31,17.4
 467,Obi,14,Man Utd,8,Crystal Palace,0,3,0.0,43,1.4,4,596047,1,31,0.0
 468,Wheatley,14,Man Utd,8,Crystal Palace,0,3,0.0,45,0.1,4,575034,1,31,0.0
-681,Šeško,14,Man Utd,8,Crystal Palace,0,3,1.6,72,3.6,4,485711,1,31,43.5
+681,Šeško,14,Man Utd,8,Crystal Palace,0,3,1.6,72,3.5,4,485711,1,31,43.5
 733,Lammens,14,Man Utd,8,Crystal Palace,0,3,1.8,50,1.5,1,465247,1,31,11.8
 755,Lacey,14,Man Utd,8,Crystal Palace,0,3,0.0,45,0.0,3,576628,1,31,0.0
-32,Martinez,2,Aston Villa,20,Wolves,1,3,5.6,50,3.8,1,98980,7,39,21.0
+32,Martinez,2,Aston Villa,20,Wolves,1,3,5.6,50,4.0,1,98980,7,39,21.0
 33,M.Bizot,2,Aston Villa,20,Wolves,1,3,0.0,43,0.5,1,72147,7,39,2.6
 34,Gauci,2,Aston Villa,20,Wolves,1,3,0.0,40,0.1,1,462492,7,39,0.0
 35,Marschall,2,Aston Villa,20,Wolves,1,3,0.0,40,0.0,1,462381,7,39,0.0
-36,Cash,2,Aston Villa,20,Wolves,1,3,5.0,46,6.7,2,199796,7,39,47.9
+36,Cash,2,Aston Villa,20,Wolves,1,3,5.0,46,7.0,2,199796,7,39,47.9
 37,Digne,2,Aston Villa,20,Wolves,1,3,4.4,45,2.1,2,101188,7,39,40.7
 38,Konsa,2,Aston Villa,20,Wolves,1,3,3.8,44,7.9,2,199798,7,39,26.5
 39,Maatsen,2,Aston Villa,20,Wolves,1,3,0.8,42,0.4,2,441302,7,39,16.7
@@ -466,7 +466,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 44,Bogarde,2,Aston Villa,20,Wolves,1,3,0.4,40,0.6,2,515597,7,39,6.9
 45,Sousa,2,Aston Villa,20,Wolves,1,3,0.0,39,0.3,2,514315,7,39,0.0
 46,Yasin,2,Aston Villa,20,Wolves,1,3,0.0,40,0.1,2,587178,7,39,0.0
-47,Rogers,2,Aston Villa,20,Wolves,1,3,5.6,69,8.4,3,244850,7,39,59.6
+47,Rogers,2,Aston Villa,20,Wolves,1,3,5.6,69,8.9,3,244850,7,39,59.6
 48,Tielemans,2,Aston Villa,20,Wolves,1,3,1.2,59,0.6,3,166989,7,39,21.6
 49,Bailey,2,Aston Villa,20,Wolves,1,3,0.0,55,0.1,3,215711,7,39,0.0
 50,Buendía,2,Aston Villa,20,Wolves,1,3,4.6,53,0.7,3,195546,7,39,41.2
@@ -482,7 +482,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 61,Dendoncker,2,Aston Villa,20,Wolves,1,3,0.0,45,0.1,3,151589,7,39,0.0
 62,Jimoh-Aloba,2,Aston Villa,20,Wolves,1,3,0.0,45,0.1,3,559962,7,39,0.0
 63,Young,2,Aston Villa,20,Wolves,1,3,0.0,44,0.6,3,537403,7,39,0.0
-64,Watkins,2,Aston Villa,20,Wolves,1,3,1.8,85,6.7,4,178301,7,39,42.4
+64,Watkins,2,Aston Villa,20,Wolves,1,3,1.8,85,6.8,4,178301,7,39,42.4
 65,Redmond,2,Aston Villa,20,Wolves,1,3,0.0,45,0.3,4,576756,7,39,0.0
 389,Elliott,2,Aston Villa,20,Wolves,1,3,0.0,54,0.2,3,444884,7,39,4.4
 456,Sancho,2,Aston Villa,20,Wolves,1,3,0.8,58,0.2,3,209243,7,39,11.7
@@ -546,9 +546,9 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 512,O.Richards,16,Nott'm Forest,6,Brighton,1,3,0.0,45,0.0,2,204822,17,36,0.0
 513,Abbott,16,Nott'm Forest,6,Brighton,1,3,0.0,39,0.2,2,549067,17,36,0.0
 514,Boly,16,Nott'm Forest,6,Brighton,1,3,0.0,39,0.4,2,90585,17,36,0.0
-515,Gibbs-White,16,Nott'm Forest,6,Brighton,1,3,6.0,73,3.9,3,222531,17,36,64.8
+515,Gibbs-White,16,Nott'm Forest,6,Brighton,1,3,6.0,73,4.0,3,222531,17,36,64.8
 516,Hudson-Odoi,16,Nott'm Forest,6,Brighton,1,3,1.0,57,0.6,3,209046,17,36,43.8
-517,Anderson,16,Nott'm Forest,6,Brighton,1,3,5.6,53,3.2,3,215379,17,36,70.2
+517,Anderson,16,Nott'm Forest,6,Brighton,1,3,5.6,53,3.3,3,215379,17,36,70.2
 518,Jota,16,Nott'm Forest,6,Brighton,1,3,0.0,54,0.0,3,510500,17,36,1.0
 519,Dominguez,16,Nott'm Forest,6,Brighton,1,3,1.0,50,0.0,3,250199,17,36,6.8
 520,O'Brien,16,Nott'm Forest,6,Brighton,1,3,0.0,50,0.0,3,243345,17,36,0.0
@@ -556,7 +556,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 522,Yates,16,Nott'm Forest,6,Brighton,1,3,1.6,47,0.1,3,204968,17,36,9.9
 523,Da Silva Moreira,16,Nott'm Forest,6,Brighton,1,3,0.0,45,0.1,3,569014,17,36,0.0
 524,Stamenic,16,Nott'm Forest,6,Brighton,1,3,0.0,45,0.0,3,495161,17,36,0.0
-525,Wood,16,Nott'm Forest,6,Brighton,1,3,0.2,72,5.6,4,60689,17,36,29.8
+525,Wood,16,Nott'm Forest,6,Brighton,1,3,0.2,72,5.5,4,60689,17,36,29.8
 526,Igor Jesus,16,Nott'm Forest,6,Brighton,1,3,2.0,58,0.7,4,482973,17,36,19.8
 527,Awoniyi,16,Nott'm Forest,6,Brighton,1,3,0.8,52,0.3,4,210156,17,36,7.7
 669,Ndoye,16,Nott'm Forest,6,Brighton,1,3,2.2,56,1.1,3,456512,17,36,36.2
@@ -589,7 +589,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 157,Mitoma,6,Brighton,16,Nott'm Forest,0,3,0.0,61,1.9,3,451340,36,17,26.9
 158,Georginio,6,Brighton,16,Nott'm Forest,0,3,3.2,57,0.4,3,463067,36,17,36.2
 159,March,6,Brighton,16,Nott'm Forest,0,3,0.0,58,0.0,3,109345,36,17,0.0
-160,Minteh,6,Brighton,16,Nott'm Forest,0,3,6.0,62,7.0,3,592031,36,17,81.0
+160,Minteh,6,Brighton,16,Nott'm Forest,0,3,6.0,62,7.1,3,592031,36,17,81.0
 161,Enciso,6,Brighton,16,Nott'm Forest,0,3,0.0,54,0.0,3,474120,36,17,0.0
 162,Gruda,6,Brighton,16,Nott'm Forest,0,3,0.0,54,0.0,3,513433,36,17,22.7
 163,Hinshelwood,6,Brighton,16,Nott'm Forest,0,3,1.4,51,0.0,3,532529,36,17,6.9
@@ -606,7 +606,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 175,Knight,6,Brighton,16,Nott'm Forest,0,3,0.2,45,0.1,3,567121,36,17,0.0
 176,Mazilu,6,Brighton,16,Nott'm Forest,0,3,0.0,45,0.0,3,550141,36,17,0.0
 177,Moran,6,Brighton,16,Nott'm Forest,0,3,0.0,45,0.0,3,513834,36,17,0.0
-178,Welbeck,6,Brighton,16,Nott'm Forest,0,3,7.0,66,10.4,4,50175,36,17,59.8
+178,Welbeck,6,Brighton,16,Nott'm Forest,0,3,7.0,66,10.5,4,50175,36,17,59.8
 179,Ferguson,6,Brighton,16,Nott'm Forest,0,3,0.0,55,0.0,4,487117,36,17,0.0
 180,Tzimas,6,Brighton,16,Nott'm Forest,0,3,0.8,53,0.1,4,608181,36,17,11.5
 181,Kostoulas,6,Brighton,16,Nott'm Forest,0,3,1.6,48,0.3,4,647850,36,17,8.2
@@ -615,7 +615,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 600,Areola,19,West Ham,12,Liverpool,1,4,3.6,43,2.1,1,84182,21,14,28.9
 601,Foderingham,19,West Ham,12,Liverpool,1,4,0.0,40,0.3,1,82143,21,14,0.0
 602,Hegyi,19,West Ham,12,Liverpool,1,4,0.0,39,0.2,1,483364,21,14,0.0
-603,Diouf,19,West Ham,12,Liverpool,1,4,1.6,43,2.8,2,613804,21,14,40.3
+603,Diouf,19,West Ham,12,Liverpool,1,4,1.6,43,2.7,2,613804,21,14,40.3
 604,Emerson,19,West Ham,12,Liverpool,1,4,0.0,44,0.1,2,109533,21,14,0.0
 605,Kilman,19,West Ham,12,Liverpool,1,4,2.0,43,0.2,2,214048,21,14,35.6
 606,Mavropanos,19,West Ham,12,Liverpool,1,4,0.2,44,0.0,2,233963,21,14,18.6
@@ -654,7 +654,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 370,Frimpong,12,Liverpool,19,West Ham,0,3,0.2,57,4.8,2,216094,14,21,6.6
 371,Kerkez,12,Liverpool,19,West Ham,0,3,1.8,57,3.2,2,544877,14,21,34.9
 372,Robertson,12,Liverpool,19,West Ham,0,3,2.0,58,1.0,2,122798,14,21,24.7
-373,Virgil,12,Liverpool,19,West Ham,0,3,3.0,60,26.4,2,97032,14,21,48.8
+373,Virgil,12,Liverpool,19,West Ham,0,3,3.0,60,26.3,2,97032,14,21,48.8
 374,Konaté,12,Liverpool,19,West Ham,0,3,3.0,54,3.0,2,204716,14,21,34.6
 375,Bradley,12,Liverpool,19,West Ham,0,3,2.4,50,0.2,2,492777,14,21,17.0
 376,Gomez,12,Liverpool,19,West Ham,0,3,0.4,49,0.1,2,171287,14,21,2.0
@@ -665,7 +665,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 381,M.Salah,12,Liverpool,19,West Ham,0,3,4.4,142,23.3,3,118748,14,21,94.2
 382,Wirtz,12,Liverpool,19,West Ham,0,3,1.2,80,6.6,3,494595,14,21,44.3
 383,Luis Díaz,12,Liverpool,19,West Ham,0,3,0.0,80,0.0,3,244731,14,21,0.0
-384,Gakpo,12,Liverpool,19,West Ham,0,3,3.0,75,13.1,3,243298,14,21,81.2
+384,Gakpo,12,Liverpool,19,West Ham,0,3,3.0,75,13.0,3,243298,14,21,81.2
 385,Chiesa,12,Liverpool,19,West Ham,0,3,1.2,64,0.3,3,223541,14,21,19.9
 386,Mac Allister,12,Liverpool,19,West Ham,0,3,2.4,63,1.2,3,243016,14,21,36.0
 387,Szoboszlai,12,Liverpool,19,West Ham,0,3,3.8,66,5.8,3,424876,14,21,79.9
@@ -679,7 +679,7 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 397,Darwin,12,Liverpool,19,West Ham,0,3,0.0,65,0.1,4,447203,14,21,0.0
 398,Danns,12,Liverpool,19,West Ham,0,3,0.0,43,0.1,4,500058,14,21,0.0
 499,Isak,12,Liverpool,19,West Ham,0,3,0.8,104,4.6,4,219168,14,21,10.4
-661,Ekitiké,12,Liverpool,19,West Ham,0,3,1.4,85,14.7,4,510663,14,21,39.1
+661,Ekitiké,12,Liverpool,19,West Ham,0,3,1.4,85,14.5,4,510663,14,21,39.1
 686,Ngumoha,12,Liverpool,19,West Ham,0,3,0.4,44,0.5,3,611922,14,21,10.4
 692,Leoni,12,Liverpool,19,West Ham,0,3,0.0,49,0.0,2,647681,14,21,0.0
 746,Morrison,12,Liverpool,19,West Ham,0,3,0.0,45,0.0,3,596042,14,21,0.0
@@ -690,9 +690,9 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 223,Slonina,7,Chelsea,1,Arsenal,1,5,0.0,39,0.1,1,471798,8,3,0.0
 224,Cucurella,7,Chelsea,1,Arsenal,1,5,5.6,61,22.8,2,179268,8,3,52.5
 225,James,7,Chelsea,1,Arsenal,1,5,5.6,56,8.0,2,225796,8,3,48.1
-226,Chalobah,7,Chelsea,1,Arsenal,1,5,5.2,51,8.4,2,180736,8,3,42.0
+226,Chalobah,7,Chelsea,1,Arsenal,1,5,5.2,51,8.3,2,180736,8,3,42.0
 227,Colwill,7,Chelsea,1,Arsenal,1,5,0.0,48,0.1,2,460028,8,3,0.0
-228,Gusto,7,Chelsea,1,Arsenal,1,5,5.0,49,1.6,2,482609,8,3,30.6
+228,Gusto,7,Chelsea,1,Arsenal,1,5,5.0,49,1.5,2,482609,8,3,30.6
 229,B.Badiashile,7,Chelsea,1,Arsenal,1,5,0.0,44,0.0,2,242880,8,3,2.1
 230,Fofana,7,Chelsea,1,Arsenal,1,5,2.4,44,0.2,2,444463,8,3,7.3
 231,M.Sarr,7,Chelsea,1,Arsenal,1,5,0.0,45,0.0,2,574458,8,3,0.0
@@ -700,30 +700,30 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 233,Acheampong,7,Chelsea,1,Arsenal,1,5,3.2,39,1.9,2,577016,8,3,15.8
 234,Anselmino,7,Chelsea,1,Arsenal,1,5,0.0,40,0.1,2,622758,8,3,0.0
 235,Palmer,7,Chelsea,1,Arsenal,1,5,0.0,103,8.8,3,244851,8,3,12.9
-236,Neto,7,Chelsea,1,Arsenal,1,5,8.0,71,6.9,3,247632,8,3,78.7
-237,Enzo,7,Chelsea,1,Arsenal,1,5,3.6,67,13.3,3,448047,8,3,87.7
-238,Estêvão,7,Chelsea,1,Arsenal,1,5,1.8,65,2.8,3,624773,8,3,38.1
+236,Neto,7,Chelsea,1,Arsenal,1,5,8.0,71,7.0,3,247632,8,3,78.7
+237,Enzo,7,Chelsea,1,Arsenal,1,5,3.6,67,13.2,3,448047,8,3,87.7
+238,Estêvão,7,Chelsea,1,Arsenal,1,5,1.8,65,2.9,3,624773,8,3,38.1
 239,Gittens,7,Chelsea,1,Arsenal,1,5,2.0,61,0.1,3,463936,8,3,22.8
 240,Nkunku,7,Chelsea,1,Arsenal,1,5,0.0,59,0.1,3,213198,8,3,0.0
-241,Caicedo,7,Chelsea,1,Arsenal,1,5,3.0,61,22.4,3,486672,8,3,49.7
+241,Caicedo,7,Chelsea,1,Arsenal,1,5,3.0,61,22.2,3,486672,8,3,49.7
 243,George,7,Chelsea,1,Arsenal,1,5,0.2,49,0.1,3,550615,8,3,7.1
 244,Lavia,7,Chelsea,1,Arsenal,1,5,0.4,49,0.0,3,514356,8,3,1.8
 245,Mudryk,7,Chelsea,1,Arsenal,1,5,0.0,49,0.0,3,465920,8,3,0.0
 246,Andrey Santos,7,Chelsea,1,Arsenal,1,5,1.4,45,0.3,3,532605,8,3,15.1
 247,D.Essugo,7,Chelsea,1,Arsenal,1,5,0.0,43,0.1,3,491007,8,3,0.0
 248,Paez,7,Chelsea,1,Arsenal,1,5,0.0,45,0.0,3,611134,8,3,0.0
-249,João Pedro,7,Chelsea,1,Arsenal,1,5,4.2,75,45.6,4,475168,8,3,79.9
+249,João Pedro,7,Chelsea,1,Arsenal,1,5,4.2,75,45.2,4,475168,8,3,79.9
 250,Delap,7,Chelsea,1,Arsenal,1,5,0.8,62,1.0,4,463034,8,3,8.3
 251,N.Jackson,7,Chelsea,1,Arsenal,1,5,0.0,65,0.1,4,517052,8,3,0.0
-252,Marc Guiu,7,Chelsea,1,Arsenal,1,5,1.6,42,7.1,4,499309,8,3,8.1
+252,Marc Guiu,7,Chelsea,1,Arsenal,1,5,1.6,42,7.2,4,499309,8,3,8.1
 453,Garnacho,7,Chelsea,1,Arsenal,1,5,4.2,64,1.0,3,493105,8,3,33.3
 672,Hato,7,Chelsea,1,Arsenal,1,5,0.0,47,0.2,2,551210,8,3,3.2
 743,Emenalo,7,Chelsea,1,Arsenal,1,5,0.0,45,0.0,3,611912,8,3,0.0
-1,Raya,1,Arsenal,7,Chelsea,0,3,4.2,59,31.8,1,154561,3,8,17.7
+1,Raya,1,Arsenal,7,Chelsea,0,3,4.2,59,31.7,1,154561,3,8,17.7
 2,Arrizabalaga,1,Arsenal,7,Chelsea,0,3,0.0,42,0.4,1,109745,3,8,0.0
 3,Hein,1,Arsenal,7,Chelsea,0,3,0.0,40,0.3,1,463748,3,8,0.0
 4,Setford,1,Arsenal,7,Chelsea,0,3,0.0,40,0.2,1,551221,3,8,0.0
-5,Gabriel,1,Arsenal,7,Chelsea,0,3,6.8,64,24.9,2,226597,3,8,46.9
+5,Gabriel,1,Arsenal,7,Chelsea,0,3,6.8,64,24.4,2,226597,3,8,46.9
 6,Saliba,1,Arsenal,7,Chelsea,0,3,3.2,60,12.8,2,462424,3,8,23.7
 7,Calafiori,1,Arsenal,7,Chelsea,0,3,4.2,58,14.5,2,466075,3,8,43.7
 8,J.Timber,1,Arsenal,7,Chelsea,0,3,4.8,63,30.6,2,445122,3,8,68.5
@@ -733,24 +733,24 @@ element,web_name,team,team_name,next_opponent_id,next_opponent_name,is_home,oppo
 13,Clarke,1,Arsenal,7,Chelsea,0,3,0.0,38,0.5,2,563324,3,8,0.0
 14,Kacurri,1,Arsenal,7,Chelsea,0,3,0.0,39,0.1,2,588793,3,8,0.0
 15,Nichols,1,Arsenal,7,Chelsea,0,3,0.0,39,0.2,2,499167,3,8,0.0
-16,Saka,1,Arsenal,7,Chelsea,0,3,5.8,101,17.5,3,223340,3,8,74.6
+16,Saka,1,Arsenal,7,Chelsea,0,3,5.8,101,17.4,3,223340,3,8,74.6
 17,Ødegaard,1,Arsenal,7,Chelsea,0,3,0.0,78,1.3,3,184029,3,8,13.0
 18,Madueke,1,Arsenal,7,Chelsea,0,3,0.2,68,0.6,3,248857,3,8,25.1
 19,Martinelli,1,Arsenal,7,Chelsea,0,3,0.4,68,0.8,3,444145,3,8,17.5
 20,Trossard,1,Arsenal,7,Chelsea,0,3,8.0,69,1.1,3,116216,3,8,59.1
-21,Rice,1,Arsenal,7,Chelsea,0,3,6.2,69,22.3,3,204480,3,8,78.6
+21,Rice,1,Arsenal,7,Chelsea,0,3,6.2,69,22.4,3,204480,3,8,78.6
 22,Merino,1,Arsenal,7,Chelsea,0,3,2.6,59,1.0,3,195384,3,8,29.8
 23,Fábio Vieira,1,Arsenal,7,Chelsea,0,3,0.0,54,0.0,3,438098,3,8,0.0
 24,Nørgaard,1,Arsenal,7,Chelsea,0,3,0.4,52,0.1,3,128295,3,8,1.4
 25,Nwaneri,1,Arsenal,7,Chelsea,0,3,0.4,51,0.1,3,499175,3,8,5.4
-26,Zubimendi,1,Arsenal,7,Chelsea,0,3,3.6,54,2.8,3,481655,3,8,48.5
+26,Zubimendi,1,Arsenal,7,Chelsea,0,3,3.6,54,2.7,3,481655,3,8,48.5
 28,Kabia,1,Arsenal,7,Chelsea,0,3,0.0,45,0.1,3,588796,3,8,0.0
 29,Sambi,1,Arsenal,7,Chelsea,0,3,0.0,45,0.1,3,437742,3,8,0.0
 30,Havertz,1,Arsenal,7,Chelsea,0,3,0.0,73,0.3,4,219847,3,8,0.6
 31,G.Jesus,1,Arsenal,7,Chelsea,0,3,0.0,64,0.0,4,205651,3,8,0.0
-266,Eze,1,Arsenal,7,Chelsea,0,3,7.8,77,16.4,3,232413,3,8,63.9
+266,Eze,1,Arsenal,7,Chelsea,0,3,7.8,77,16.7,3,232413,3,8,63.9
 662,Mosquera,1,Arsenal,7,Chelsea,0,3,0.6,54,0.2,2,500040,3,8,9.0
-666,Gyökeres,1,Arsenal,7,Chelsea,0,3,2.2,88,11.3,4,224117,3,8,57.7
+666,Gyökeres,1,Arsenal,7,Chelsea,0,3,2.2,88,11.2,4,224117,3,8,57.7
 700,Dowman,1,Arsenal,7,Chelsea,0,3,0.0,43,0.5,3,616077,3,8,2.8
 711,Harriman-Annous,1,Arsenal,7,Chelsea,0,3,0.0,45,0.0,3,646243,3,8,0.0
 725,Hincapie,1,Arsenal,7,Chelsea,0,3,0.8,54,0.1,2,448104,3,8,1.5

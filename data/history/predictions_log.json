@@ -1,0 +1,38 @@
+[
+  {
+    "gameweek": 13,
+    "timestamp": "2025-11-28T13:04:46.707807",
+    "picks": [
+      {
+        "player_id": 694,
+        "web_name": "Mukiele",
+        "predicted_points": 10.42,
+        "actual_points": null
+      },
+      {
+        "player_id": 505,
+        "web_name": "Milenkovi\u0107",
+        "predicted_points": 8.294,
+        "actual_points": null
+      },
+      {
+        "player_id": 50,
+        "web_name": "Buend\u00eda",
+        "predicted_points": 7.5,
+        "actual_points": null
+      },
+      {
+        "player_id": 668,
+        "web_name": "Xhaka",
+        "predicted_points": 6.786666666666666,
+        "actual_points": null
+      },
+      {
+        "player_id": 593,
+        "web_name": "P.M.Sarr",
+        "predicted_points": 6.45,
+        "actual_points": null
+      }
+    ]
+  }
+]

@@ -70,36 +70,47 @@
             margin-top: 40px;
         }
 
-        .gameweek-info {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
             margin-bottom: 40px;
         }
 
-        .gw-card {
-            background: linear-gradient(135deg, var(--accent-purple), #5a0060);
-            padding: 20px;
+        .dashboard-card {
+            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+            padding: 25px;
             border-radius: 12px;
             text-align: center;
-            min-width: 150px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--accent-green);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        .gw-card h3 {
-            margin: 0;
-            font-size: 1em;
+        .dashboard-card h3 {
             color: var(--accent-green);
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .gw-number {
-            font-size: 2.5em;
+        .card-value {
+            font-size: 3.5em;
             font-weight: bold;
             color: white;
-            margin-top: 5px;
+            margin: 10px 0;
+        }
+
+        .card-desc {
+            color: #888;
+            font-size: 0.9em;
+            margin: 0;
+            max-width: 80%;
         }
 
         .table-responsive {
@@ -251,6 +262,55 @@
             font-size: 0.9em;
         }
 
+        /* Dropdown Styles */
+        details {
+            background-color: #222;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        summary {
+            padding: 15px;
+            cursor: pointer;
+            background-color: var(--secondary-bg);
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+            transition: background-color 0.2s;
+        }
+
+        summary:hover {
+            background-color: #383838;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: '+';
+            font-size: 1.2em;
+            color: var(--accent-green);
+        }
+
+        details[open] summary::after {
+            content: '-';
+        }
+
+        details[open] summary {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .gw-summary-stats {
+            color: #ccc;
+            font-size: 0.9em;
+            font-weight: normal;
+        }
+
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
             .container {
@@ -265,15 +325,8 @@
                 font-size: 1em;
             }
 
-            .gameweek-info {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .gw-card {
-                min-width: unset;
-                width: 80%;
-                margin-bottom: 15px;
+            .dashboard-grid {
+                grid-template-columns: 1fr;
             }
 
             th,
@@ -313,14 +366,34 @@
             </p>
         </header>
 
-        <div id="gw-info" class="gameweek-info">
-            <p class="loading">Loading gameweek info...</p>
+        <!-- Dashboard Cards -->
+        <div class="dashboard-grid">
+            <!-- Next GW Card -->
+            <div id="next-gw-card" class="dashboard-card">
+                <h3>Next Gameweek</h3>
+                <div class="card-value" id="next-gw-display">-</div>
+            </div>
+
+            <!-- Hit % Card -->
+            <div class="dashboard-card">
+                <h3>All-Time Hit Rate</h3>
+                <div class="card-value" id="hit-rate-display">-</div>
+                <p class="card-desc">
+                    Percentage of picks where <strong>Actual Points ≥ Predicted Points</strong>.
+                </p>
+            </div>
         </div>
 
         <!-- Upcoming Gameweek Predictions -->
         <h2>Upcoming Gameweek Predictions</h2>
         <div id="predictions">
             <p class="loading">Loading predictions...</p>
+        </div>
+
+        <!-- Performance History Section -->
+        <h2>Performance History</h2>
+        <div id="history-section">
+            <p class="loading">Loading history...</p>
         </div>
 
         <!-- System Architecture Section -->
@@ -355,27 +428,16 @@
         fetch('/api/predictions')
             .then(response => response.json())
             .then(data => {
-                const gwContainer = document.getElementById('gw-info');
                 const predContainer = document.getElementById('predictions');
 
                 if (data.error) {
                     predContainer.innerHTML = `<p style="color: #ff4d4d;">Error: ${data.error}</p>`;
-                    gwContainer.innerHTML = '';
                     return;
                 }
 
-                // Update Gameweek Info
+                // Update Gameweek Info (Next GW only)
                 const gw = data.gameweek_info;
-                gwContainer.innerHTML = `
-                    <div class="gw-card">
-                        <h3>Current GW</h3>
-                        <div class="gw-number">${gw.current_gameweek || '-'}</div>
-                    </div>
-                    <div class="gw-card">
-                        <h3>Next GW</h3>
-                        <div class="gw-number">${gw.next_gameweek || '-'}</div>
-                    </div>
-                `;
+                document.getElementById('next-gw-display').textContent = gw.next_gameweek || '-';
 
                 // Update Predictions Table
                 let html = `
@@ -430,6 +492,117 @@
             .catch(error => {
                 document.getElementById('predictions').innerHTML = `<p style="color: #ff4d4d;">Error fetching data.</p>`;
                 console.error('Error:', error);
+            });
+
+        // Fetch History
+        fetch('/api/history')
+            .then(response => response.json())
+            .then(data => {
+                const historyContainer = document.getElementById('history-section');
+
+                if (data.length === 0) {
+                    historyContainer.innerHTML = '<p style="text-align:center; color:#888;">No history available yet.</p>';
+                    document.getElementById('hit-rate-display').textContent = '-';
+                    return;
+                }
+
+                // Calculate Hit %
+                let totalPicksWithActuals = 0;
+                let totalHits = 0;
+
+                data.forEach(entry => {
+                    entry.picks.forEach(pick => {
+                        if (pick.actual_points !== null) {
+                            totalPicksWithActuals++;
+                            // Hit = Actual >= Predicted
+                            if (pick.actual_points >= pick.predicted_points) {
+                                totalHits++;
+                            }
+                        }
+                    });
+                });
+
+                const hitRate = totalPicksWithActuals > 0
+                    ? ((totalHits / totalPicksWithActuals) * 100).toFixed(1) + '%'
+                    : '-';
+
+                document.getElementById('hit-rate-display').textContent = hitRate;
+
+                // Render Dropdowns
+                let html = '';
+
+                data.forEach(entry => {
+                    let gwTotalActual = 0;
+                    let gwTotalPred = 0;
+                    let hasActuals = false;
+
+                    // Pre-calculate GW totals
+                    entry.picks.forEach(pick => {
+                        if (pick.actual_points !== null) {
+                            gwTotalActual += pick.actual_points;
+                            hasActuals = true;
+                        }
+                        gwTotalPred += pick.predicted_points;
+                    });
+
+                    const summaryText = hasActuals
+                        ? `Actual: ${gwTotalActual} pts (Pred: ${gwTotalPred.toFixed(0)})`
+                        : `Pred: ${gwTotalPred.toFixed(0)} pts (Pending)`;
+
+                    html += `
+                        <details>
+                            <summary>
+                                <span>Gameweek ${entry.gameweek}</span>
+                                <span class="gw-summary-stats">${summaryText}</span>
+                            </summary>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Player</th>
+                                            <th>Predicted</th>
+                                            <th>Actual</th>
+                                            <th>Diff</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                    `;
+
+                    entry.picks.forEach(pick => {
+                        let actualDisplay = '-';
+                        let diffDisplay = '-';
+                        let rowClass = '';
+
+                        if (pick.actual_points !== null) {
+                            actualDisplay = pick.actual_points;
+                            const diff = pick.actual_points - pick.predicted_points;
+                            diffDisplay = diff > 0 ? `+${diff.toFixed(1)}` : diff.toFixed(1);
+
+                            if (pick.actual_points >= pick.predicted_points) {
+                                rowClass = 'style="color: var(--accent-green);"';
+                            } else if (pick.actual_points < pick.predicted_points - 2) {
+                                rowClass = 'style="color: #ff4d4d;"';
+                            }
+                        }
+
+                        html += `
+                            <tr>
+                                <td>${pick.web_name}</td>
+                                <td class="mono-font">${pick.predicted_points.toFixed(1)}</td>
+                                <td class="mono-font" ${rowClass}>${actualDisplay}</td>
+                                <td class="mono-font">${diffDisplay}</td>
+                            </tr>
+                        `;
+                    });
+
+                    html += `</tbody></table></div></details>`;
+                });
+
+                historyContainer.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error fetching history:', error);
+                document.getElementById('history-section').innerHTML = '<p>Error loading history.</p>';
             });
     </script>
 </body>

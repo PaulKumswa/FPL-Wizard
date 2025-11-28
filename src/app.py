@@ -96,5 +96,18 @@ def get_predictions():
     
     return jsonify(response)
 
+@app.route('/api/history')
+def get_history():
+    try:
+        with open('data/history/predictions_log.json', 'r') as f:
+            history = json.load(f)
+        # Sort by gameweek descending
+        history.sort(key=lambda x: x['gameweek'], reverse=True)
+        return jsonify(history)
+    except FileNotFoundError:
+        return jsonify([])
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
