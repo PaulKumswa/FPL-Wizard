@@ -171,6 +171,124 @@
             color: #888;
             padding: 20px;
         }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+
+        .arch-card {
+            background-color: #222;
+            border: 1px solid var(--accent-purple);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .arch-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .arch-card h3 {
+            color: var(--accent-green);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            border-bottom: 1px solid rgba(0, 255, 133, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .arch-card p {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .arch-card p strong {
+            color: var(--text-color);
+            min-width: 80px;
+            display: inline-block;
+        }
+
+        .pos-badge {
+            display: inline-block;
+            background-color: var(--accent-purple);
+            color: var(--accent-green);
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mono-font {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .gameweek-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .gw-card {
+                min-width: unset;
+                width: 80%;
+                margin-bottom: 15px;
+            }
+
+            th,
+            td {
+                padding: 12px 8px;
+                font-size: 0.9em;
+            }
+
+            .player-img {
+                width: 30px;
+                height: 40px;
+            }
+
+            .team-logo {
+                width: 25px;
+                height: 25px;
+            }
+
+            .player-cell,
+            .team-cell {
+                gap: 8px;
+            }
+
+            .points-cell {
+                font-size: 1em;
+            }
+        }
     </style>
 </head>
 
@@ -178,11 +296,8 @@
     <div class="container">
         <header>
             <h1>FPL Underdog Predictor</h1>
-            <p class="author">Created by Dalen Kumswa</p>
             <p class="subtitle">
-                Predictions based on a custom trained machine learning model, updated weekly.
-                The model identifies high-potential "underdog" players (less than 10% ownership, under £8.0m)
-                with strong form or underlying stats.
+                AI-driven predictions identifying high-potential differentials for the upcoming gameweek.
             </p>
         </header>
 
@@ -190,10 +305,37 @@
             <p class="loading">Loading gameweek info...</p>
         </div>
 
-        <h2>5 Underdogs to Watch Next Week</h2>
+        <!-- System Architecture Section -->
+        <h2>System Architecture</h2>
+        <div class="architecture-grid">
+            <div class="arch-card">
+                <h3>Data Pipeline</h3>
+                <p><strong>SOURCE:</strong> FPL API, Understat</p>
+                <p><strong>PROCESS:</strong> Python ETL (Extract, Transform, Load)</p>
+                <p><strong>UPDATE:</strong> Weekly (Post-Gameweek)</p>
+            </div>
+            <div class="arch-card">
+                <h3>Model Specs</h3>
+                <p><strong>ALGORITHM:</strong> RandomForestRegressor</p>
+                <p><strong>PARAMS:</strong> n_estimators=100</p>
+                <p><strong>FEATURES:</strong> Cost, Ownership, Recent Form (5-GW avg), Opponent Strength, Home/Away</p>
+            </div>
+            <div class="arch-card">
+                <h3>Inference Logic</h3>
+                <p><strong>FILTERS:</strong> Ownership < 10%, Cost < £8.0m</p>
+                        <p><strong>CRITERIA:</strong> Form > 2.0 OR ICT > 3.0</p>
+                        <p><strong>OUTPUT:</strong> Top 5 Predicted Points</p>
+            </div>
+        </div>
+
+        <h2>Upcoming Gameweek Predictions</h2>
         <div id="predictions">
             <p class="loading">Loading predictions...</p>
         </div>
+
+        <footer>
+            <p>Built with Google Antigravity and ChatGPT Codex</p>
+        </footer>
     </div>
 
     <script>
@@ -230,10 +372,11 @@
                                 <tr>
                                     <th>Player</th>
                                     <th>Team</th>
-                                    <th>Next Opponent</th>
+                                    <th>Pos</th>
+                                    <th>Opponent</th>
                                     <th>Cost (£)</th>
-                                    <th>Ownership (%)</th>
-                                    <th>Predicted Points</th>
+                                    <th>Own (%)</th>
+                                    <th>Pred Points</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -254,15 +397,16 @@
                                     <span>${player.team_name}</span>
                                 </div>
                             </td>
+                            <td><span class="pos-badge">${player.position}</span></td>
                             <td>
                                 <div class="team-cell">
                                     <img src="${player.opponent_logo_url}" alt="${player.next_opponent_name}" class="team-logo">
                                     <span>${player.next_opponent_name}</span>
                                 </div>
                             </td>
-                            <td>${(player.now_cost / 10).toFixed(1)}</td>
-                            <td>${player.selected_by_percent}%</td>
-                            <td class="points-cell">${player.predicted_points.toFixed(2)}</td>
+                            <td class="mono-font">${(player.now_cost / 10).toFixed(1)}</td>
+                            <td class="mono-font">${player.selected_by_percent}%</td>
+                            <td class="points-cell mono-font">[ ${player.predicted_points.toFixed(1)} ]</td>
                         </tr>
                     `;
                 });

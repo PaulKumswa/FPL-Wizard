@@ -75,14 +75,18 @@ def get_predictions():
     
     # Select columns to display
     # Select columns to display
-    display_cols = ['web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'code', 'team_code', 'opponent_team_code']
+    display_cols = ['web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'code', 'team_code', 'opponent_team_code', 'element_type']
     result = top_players[display_cols].to_dict(orient='records')
     
-    # Add image URLs
+    # Position Mapping
+    pos_map = {1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD'}
+
+    # Add image URLs and Position
     for player in result:
         player['photo_url'] = f"https://resources.premierleague.com/premierleague/photos/players/110x140/p{int(player['code'])}.png"
         player['team_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['team_code'])}.png"
         player['opponent_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['opponent_team_code'])}.png"
+        player['position'] = pos_map.get(player['element_type'], 'UNK')
 
     response = {
         'gameweek_info': metadata,
