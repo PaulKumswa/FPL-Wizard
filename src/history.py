@@ -37,9 +37,10 @@ def log_predictions(predictions_df, gameweek_info):
         return
 
     # Check if we already logged this GW
-    if any(entry['gameweek'] == current_gw for entry in history):
-        print(f"Predictions for GW {current_gw} already logged. Skipping.")
-        return
+    existing_entry = next((item for item in history if item['gameweek'] == current_gw), None)
+    if existing_entry:
+        print(f"Predictions for GW {current_gw} already logged. Overwriting.")
+        history.remove(existing_entry)
 
     # Prepare log entry
     timestamp = datetime.now().isoformat()
