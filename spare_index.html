@@ -217,12 +217,15 @@
             margin-bottom: 8px;
             font-size: 0.95em;
             line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
         }
 
         .arch-card p strong {
             color: var(--text-color);
-            min-width: 80px;
+            min-width: 90px;
             display: inline-block;
+            flex-shrink: 0;
         }
 
         .pos-badge {
@@ -401,21 +404,22 @@
         <div class="architecture-grid">
             <div class="arch-card">
                 <h3>Data Pipeline</h3>
-                <p><strong>SOURCE:</strong> FPL API, Understat</p>
-                <p><strong>PROCESS:</strong> Python ETL (Extract, Transform, Load)</p>
+                <p><strong>SOURCE:</strong> Official FPL API (Bootstrap, Fixtures, History)</p>
+                <p><strong>PROCESS:</strong> 5-week rolling averages for key metrics (Form, Saves, xG)</p>
                 <p><strong>UPDATE:</strong> Weekly (Post-Gameweek)</p>
             </div>
             <div class="arch-card">
-                <h3>Model Specs</h3>
-                <p><strong>ALGORITHM:</strong> RandomForestRegressor</p>
-                <p><strong>PARAMS:</strong> n_estimators=100</p>
-                <p><strong>FEATURES:</strong> Cost, Ownership, Recent Form (5-GW avg), Opponent Strength, Home/Away</p>
+                <h3>Machine Learning</h3>
+                <p><strong>MODELS:</strong> 4 separate Random Forest models (GKP, DEF, MID, FWD)</p>
+                <p><strong>STRATEGY:</strong> Position-specific training & Tiered Regularization</p>
+                <p><strong>FEATURES:</strong> Cost, Ownership, Recent Form, Opponent Strength</p>
             </div>
             <div class="arch-card">
-                <h3>Inference Logic</h3>
-                <p><strong>FILTERS:</strong> Ownership < 10%, Cost < £8.0m</p>
-                        <p><strong>CRITERIA:</strong> Form > 2.0 OR ICT > 3.0</p>
-                        <p><strong>OUTPUT:</strong> Top 5 Predicted Points</p>
+                <h3>Inference Engine</h3>
+                <p><strong>SELECTION:</strong> Top 1 per position + 1 Wildcard</p>
+                <p><strong>FILTERS:</strong> Ownership < 10% (Underdog criteria)</p>
+                        <p><strong>OUTPUT:</strong> One underdog per position + next overall highest predicted points
+                        </p>
             </div>
         </div>
 
@@ -560,6 +564,7 @@
                                     <thead>
                                         <tr>
                                             <th>Player</th>
+                                            <th>Pos</th>
                                             <th>Predicted</th>
                                             <th>Actual</th>
                                             <th>Diff</th>
@@ -588,6 +593,7 @@
                         html += `
                             <tr>
                                 <td>${pick.web_name}</td>
+                                <td><span class="pos-badge" style="font-size: 0.7em; padding: 2px 6px;">${pick.position || '-'}</span></td>
                                 <td class="mono-font">${pick.predicted_points.toFixed(1)}</td>
                                 <td class="mono-font" ${rowClass}>${actualDisplay}</td>
                                 <td class="mono-font">${diffDisplay}</td>
