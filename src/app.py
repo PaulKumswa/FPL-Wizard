@@ -87,6 +87,7 @@ def get_predictions():
         player['team_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['team_code'])}.png"
         player['opponent_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['opponent_team_code'])}.png"
         player['position'] = pos_map.get(player['element_type'], 'UNK')
+        player['profile_url'] = f"https://www.premierleague.com/players/{int(player['code'])}/{player['web_name']}/overview"
 
     response = {
         'gameweek_info': metadata,

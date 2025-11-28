@@ -230,6 +230,18 @@
             font-family: 'Roboto Mono', monospace;
         }
 
+        .player-link {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .player-link:hover {
+            color: var(--accent-green);
+            text-decoration: underline;
+        }
+
         footer {
             text-align: center;
             margin-top: 60px;
@@ -305,6 +317,12 @@
             <p class="loading">Loading gameweek info...</p>
         </div>
 
+        <!-- Upcoming Gameweek Predictions -->
+        <h2>Upcoming Gameweek Predictions</h2>
+        <div id="predictions">
+            <p class="loading">Loading predictions...</p>
+        </div>
+
         <!-- System Architecture Section -->
         <h2>System Architecture</h2>
         <div class="architecture-grid">
@@ -328,13 +346,8 @@
             </div>
         </div>
 
-        <h2>Upcoming Gameweek Predictions</h2>
-        <div id="predictions">
-            <p class="loading">Loading predictions...</p>
-        </div>
-
         <footer>
-            <p>Built with Google Antigravity and ChatGPT Codex</p>
+            <p>Built by Dalen with Antigravity and Codex</p>
         </footer>
     </div>
 
@@ -388,7 +401,7 @@
                             <td>
                                 <div class="player-cell">
                                     <img src="${player.photo_url}" alt="${player.web_name}" class="player-img">
-                                    <span>${player.web_name}</span>
+                                    <a href="${player.profile_url}" target="_blank" class="player-link">${player.web_name}</a>
                                 </div>
                             </td>
                             <td>
@@ -406,7 +419,7 @@
                             </td>
                             <td class="mono-font">${(player.now_cost / 10).toFixed(1)}</td>
                             <td class="mono-font">${player.selected_by_percent}%</td>
-                            <td class="points-cell mono-font">[ ${player.predicted_points.toFixed(1)} ]</td>
+                            <td class="points-cell mono-font"> ${player.predicted_points.toFixed(1)} </td>
                         </tr>
                     `;
                 });
