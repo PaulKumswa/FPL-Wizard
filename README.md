@@ -30,6 +30,12 @@ This repository pulls its raw data from two stable sources:
 
    *Note: The full pipeline fetches data from the FPL API and Understat. The first run may take a few minutes.*
 
+   **Manual History Update**:
+   If you re-run the model or want to force an update to the history log (overwriting the current gameweek's entry if it exists), run:
+   ```bash
+   python update_pipeline.py --quick --no-serve
+   ```
+
 ## Deployment
 The easiest way to deploy this app is using **Render** (free tier available).
 
