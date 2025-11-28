@@ -50,6 +50,7 @@ def log_predictions(predictions_df, gameweek_info):
         picks.append({
             'player_id': int(row['element']) if 'element' in row else int(row.get('id', 0)),
             'web_name': row['web_name'],
+            'position': row.get('position', 'UNK'),
             'predicted_points': float(row['predicted_points']),
             'actual_points': None  # To be filled later
         })

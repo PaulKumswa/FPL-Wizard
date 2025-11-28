@@ -1,36 +1,41 @@
 [
   {
     "gameweek": 13,
-    "timestamp": "2025-11-28T13:04:46.707807",
+    "timestamp": "2025-11-28T17:07:05.740918",
     "picks": [
       {
-        "player_id": 694,
-        "web_name": "Mukiele",
-        "predicted_points": 10.42,
+        "player_id": 502,
+        "web_name": "Sels",
+        "position": "GKP",
+        "predicted_points": 4.739069149804445,
         "actual_points": null
       },
       {
-        "player_id": 505,
-        "web_name": "Milenkovi\u0107",
-        "predicted_points": 8.294,
+        "player_id": 506,
+        "web_name": "Murillo",
+        "position": "DEF",
+        "predicted_points": 7.28,
         "actual_points": null
       },
       {
-        "player_id": 50,
-        "web_name": "Buend\u00eda",
-        "predicted_points": 7.5,
+        "player_id": 328,
+        "web_name": "Sessegnon",
+        "position": "MID",
+        "predicted_points": 5.43,
         "actual_points": null
       },
       {
-        "player_id": 668,
-        "web_name": "Xhaka",
-        "predicted_points": 6.786666666666666,
+        "player_id": 597,
+        "web_name": "Richarlison",
+        "position": "FWD",
+        "predicted_points": 4.2102008547008545,
         "actual_points": null
       },
       {
-        "player_id": 593,
-        "web_name": "P.M.Sarr",
-        "predicted_points": 6.45,
+        "player_id": 476,
+        "web_name": "Burn",
+        "position": "DEF",
+        "predicted_points": 6.28,
         "actual_points": null
       }
     ]

@@ -48,40 +48,50 @@ def preprocess_data(players, teams, events, histories, fixtures):
     print(f"Current GW: {current_gw_id}, Next GW: {next_gw_id}")
     
     # --- Prepare Team Strength Map ---
-    # We want 'strength_overall_home' and 'strength_overall_away' or just 'strength'
-    # Let's use 'strength' combined.
-    # teams columns: id, name, strength, strength_overall_home, strength_overall_away, etc.
     team_strength = teams[['id', 'name', 'short_name', 'strength', 'code']].set_index('id')
     
     # --- Prepare Training Data (Historical) ---
-    # histories has: element, round, opponent_team, was_home, total_points, etc.
-    
     # Merge player info to histories
-    # players cols: id, web_name, team, element_type, now_cost
     player_info = players[['id', 'web_name', 'team', 'element_type', 'now_cost', 'selected_by_percent', 'code', 'ict_index']]
     train_df = histories.merge(player_info, left_on='element', right_on='id', suffixes=('', '_player'))
     
     # Add opponent strength
-    # opponent_team is the ID of the opponent
     train_df = train_df.merge(team_strength[['strength']], left_on='opponent_team', right_index=True)
     train_df.rename(columns={'strength': 'opponent_strength'}, inplace=True)
     
-    # Calculate Form (Rolling average of points)
+    # --- Feature Engineering: Rolling Averages ---
     # Ensure sorted by element and round
     train_df = train_df.sort_values(['element', 'round'])
     
-    # We want "form entering the match". So shift the points and calculate rolling mean.
-    # Group by element, shift 1 (to exclude current match), then rolling mean.
-    train_df['prev_points'] = train_df.groupby('element')['total_points'].shift(1)
-    train_df['recent_form'] = train_df.groupby('element')['prev_points'].transform(lambda x: x.rolling(window=5, min_periods=1).mean())
+    # Metrics to calculate rolling averages for
+    metrics = [
+        'total_points',
+        'clean_sheets', 
+        'saves', 
+        'goals_conceded', 
+        'goals_scored', 
+        'assists', 
+        'threat', 
+        'influence', 
+        'creativity', 
+        'penalties_saved'
+    ]
     
-    # Fill NaN form (first matches) with 0 or global average? 0 is safer for now.
-    train_df['recent_form'] = train_df['recent_form'].fillna(0)
+    # Calculate rolling averages (lagged by 1 to represent "form entering the match")
+    # We shift by 1 first, so we don't use the current match's stats to predict the current match's points
+    for metric in metrics:
+        col_name = f'recent_{metric}'
+        # Group by element, shift 1, then rolling mean
+        train_df[f'prev_{metric}'] = train_df.groupby('element')[metric].shift(1)
+        train_df[col_name] = train_df.groupby('element')[f'prev_{metric}'].transform(lambda x: x.rolling(window=5, min_periods=1).mean())
+        train_df[col_name] = train_df[col_name].fillna(0)
+        
+        # Drop the temporary prev column
+        train_df.drop(columns=[f'prev_{metric}'], inplace=True)
     
-    # Features for training
-    # Target: total_points
-    # Features: now_cost (proxy for quality), selected_by_percent, recent_form, opponent_strength, was_home
-    
+    # Rename recent_total_points to recent_form for consistency with existing code
+    train_df.rename(columns={'recent_total_points': 'recent_form'}, inplace=True)
+
     # Clean up
     train_df.rename(columns={'was_home': 'is_home'}, inplace=True)
     train_df['is_home'] = train_df['is_home'].astype(int)
@@ -98,74 +108,56 @@ def preprocess_data(players, teams, events, histories, fixtures):
             home_team = fixture['team_h']
             away_team = fixture['team_a']
             
-            # Get players for home team
+            # Helper to build row
+            def build_row(p, is_home, opponent_id):
+                opp_strength = team_strength.loc[opponent_id, 'strength']
+                
+                # Get recent stats from history
+                p_hist = histories[histories['element'] == p['id']]
+                
+                stats = {}
+                if not p_hist.empty:
+                    p_hist = p_hist.sort_values('round')
+                    # Calculate rolling mean of last 5 actual matches
+                    for metric in metrics:
+                        val = p_hist[metric].tail(5).mean()
+                        key = 'recent_form' if metric == 'total_points' else f'recent_{metric}'
+                        stats[key] = val
+                else:
+                    for metric in metrics:
+                        key = 'recent_form' if metric == 'total_points' else f'recent_{metric}'
+                        stats[key] = 0.0
+
+                row = {
+                    'element': p['id'],
+                    'web_name': p['web_name'],
+                    'team': p['team'],
+                    'team_name': team_strength.loc[p['team'], 'name'],
+                    'next_opponent_id': opponent_id,
+                    'next_opponent_name': team_strength.loc[opponent_id, 'name'],
+                    'is_home': 1 if is_home else 0,
+                    'opponent_strength': opp_strength,
+                    'now_cost': p['now_cost'],
+                    'selected_by_percent': float(p['selected_by_percent']),
+                    'element_type': p['element_type'],
+                    'code': p['code'],
+                    'team_code': team_strength.loc[p['team'], 'code'],
+                    'opponent_team_code': team_strength.loc[opponent_id, 'code'],
+                    'ict_index': float(p['ict_index'])
+                }
+                # Add stats
+                row.update(stats)
+                return row
+
+            # Home Players
             home_players = players[players['team'] == home_team]
             for _, p in home_players.iterrows():
-                # Opponent is away_team
-                opp_strength = team_strength.loc[away_team, 'strength']
+                inference_rows.append(build_row(p, True, away_team))
                 
-                # Get recent form (from last available history)
-                # We can take the last 'recent_form' from train_df for this player
-                # OR re-calculate including the very last match.
-                # Let's take the last calculated form from train_df + update with last match?
-                # Simpler: Just take the mean of last 5 matches in histories.
-                p_hist = histories[histories['element'] == p['id']]
-                if not p_hist.empty:
-                    p_hist = p_hist.sort_values('round')
-                    form = p_hist['total_points'].tail(5).mean()
-                else:
-                    form = 0
-                
-                inference_rows.append({
-                    'element': p['id'],
-                    'web_name': p['web_name'],
-                    'team': home_team,
-                    'team_name': team_strength.loc[home_team, 'name'],
-                    'next_opponent_id': away_team,\
-                    'next_opponent_name': team_strength.loc[away_team, 'name'],
-                    'is_home': 1,
-                    'opponent_strength': opp_strength,
-                    'recent_form': form,
-                    'now_cost': p['now_cost'],
-                    'selected_by_percent': float(p['selected_by_percent']),
-                    'element_type': p['element_type'],
-                    'code': p['code'],
-                    'team_code': team_strength.loc[home_team, 'code'],
-                    'opponent_team_code': team_strength.loc[away_team, 'code'],
-                    'ict_index': float(p['ict_index'])
-                })
-                
-            # Get players for away team
+            # Away Players
             away_players = players[players['team'] == away_team]
             for _, p in away_players.iterrows():
-                # Opponent is home_team
-                opp_strength = team_strength.loc[home_team, 'strength']
-                
-                p_hist = histories[histories['element'] == p['id']]
-                if not p_hist.empty:
-                    p_hist = p_hist.sort_values('round')
-                    form = p_hist['total_points'].tail(5).mean()
-                else:
-                    form = 0
-                
-                inference_rows.append({
-                    'element': p['id'],
-                    'web_name': p['web_name'],
-                    'team': away_team,
-                    'team_name': team_strength.loc[away_team, 'name'],
-                    'next_opponent_id': home_team,
-                    'next_opponent_name': team_strength.loc[home_team, 'name'],
-                    'is_home': 0,
-                    'opponent_strength': opp_strength,
-                    'recent_form': form,
-                    'now_cost': p['now_cost'],
-                    'selected_by_percent': float(p['selected_by_percent']),
-                    'element_type': p['element_type'],
-                    'code': p['code'],
-                    'team_code': team_strength.loc[away_team, 'code'],
-                    'opponent_team_code': team_strength.loc[home_team, 'code'],
-                    'ict_index': float(p['ict_index'])
-                })
+                inference_rows.append(build_row(p, False, home_team))
                 
         inference_df = pd.DataFrame(inference_rows)
     else:

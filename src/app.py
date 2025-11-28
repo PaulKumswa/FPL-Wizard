@@ -8,18 +8,31 @@ app = Flask(__name__)
 
 def load_model_and_data():
     try:
-        with open('models/fpl_model.pkl', 'rb') as f:
-            model = pickle.load(f)
+        models = {}
+        features_map = {}
         
-        with open('models/model_features.pkl', 'rb') as f:
-            features = pickle.load(f)
+        # Load models for each position
+        positions = {'GKP': 1, 'DEF': 2, 'MID': 3, 'FWD': 4}
+        for name, _ in positions.items():
+            model_path = f'models/fpl_model_{name}.pkl'
+            feature_path = f'models/model_features_{name}.pkl'
+            
+            if not os.path.exists(model_path) or not os.path.exists(feature_path):
+                print(f"Warning: Model or features for {name} not found.")
+                continue
+                
+            with open(model_path, 'rb') as f:
+                models[name] = pickle.load(f)
+            
+            with open(feature_path, 'rb') as f:
+                features_map[name] = pickle.load(f)
             
         df = pd.read_csv('data/processed/inference_data.csv')
         
         with open('data/processed/metadata.json', 'r') as f:
             metadata = json.load(f)
         
-        return model, features, df, metadata
+        return models, features_map, df, metadata
     except Exception as e:
         print(f"Error loading model or data: {e}")
         return None, None, None, None
@@ -30,20 +43,11 @@ def index():
 
 @app.route('/api/predictions')
 def get_predictions():
-    model, features, df, metadata = load_model_and_data()
+    models, features_map, df, metadata = load_model_and_data()
     
-    if model is None:
-        return jsonify({'error': 'Model or data not found'}), 500
+    if not models:
+        return jsonify({'error': 'Models or data not found'}), 500
     
-    # Make predictions
-    # Ensure features exist
-    for feature in features:
-        if feature not in df.columns:
-            return jsonify({'error': f'Missing feature: {feature}'}), 500
-            
-    # Drop rows with missing values in features
-    df = df.dropna(subset=features)
-
     # Advanced Underdog Logic
     # 1. Ownership < 10% (Deep Differential)
     # 2. Price < £8.0m (Budget Gem)
@@ -67,16 +71,63 @@ def get_predictions():
         df['selected_by_percent'] = pd.to_numeric(df['selected_by_percent'])
         df = df[df['selected_by_percent'] < 10]
 
-    predictions = model.predict(df[features])
-    df['predicted_points'] = predictions
+    # Make predictions per position
+    df['predicted_points'] = 0.0
     
-    # Sort by predicted points descending and take Top 5
-    top_players = df.sort_values('predicted_points', ascending=False).head(5)
+    # Position Mapping: 1=GKP, 2=DEF, 3=MID, 4=FWD
+    pos_map_rev = {1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD'}
     
-    # Select columns to display
+    for pos_id, pos_name in pos_map_rev.items():
+        if pos_name not in models:
+            continue
+            
+        model = models[pos_name]
+        features = features_map[pos_name]
+        
+        # Filter for this position
+        pos_mask = df['element_type'] == pos_id
+        if not pos_mask.any():
+            continue
+            
+        # Ensure features exist
+        # If a feature is missing (e.g. recent_saves), fill with 0
+        X = df.loc[pos_mask, features].copy()
+        for f in features:
+            if f not in X.columns:
+                X[f] = 0
+                
+        preds = model.predict(X)
+        df.loc[pos_mask, 'predicted_points'] = preds
+
+    # Selection Logic: Top 1 per position + 1 Wildcard
+    final_picks = []
+    
+    # Sort by predicted points descending
+    df_sorted = df.sort_values('predicted_points', ascending=False)
+    
+    # Pick Top 1 for each position
+    for pos_id in [1, 2, 3, 4]:
+        pos_candidates = df_sorted[df_sorted['element_type'] == pos_id]
+        if not pos_candidates.empty:
+            pick = pos_candidates.iloc[0]
+            final_picks.append(pick)
+            # Remove from pool to avoid duplicates (though unlikely with 1 per pos)
+            df_sorted = df_sorted[df_sorted['element'] != pick['element']]
+            
+    # Pick 1 Wildcard (highest remaining)
+    if len(final_picks) < 5 and not df_sorted.empty:
+        wildcard = df_sorted.iloc[0]
+        final_picks.append(wildcard)
+        
+    # Convert back to DataFrame for easier handling
+    result_df = pd.DataFrame(final_picks)
+    
+    # Sort by predicted points for display
+    result_df = result_df.sort_values('predicted_points', ascending=False)
+    
     # Select columns to display
     display_cols = ['web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'code', 'team_code', 'opponent_team_code', 'element_type']
-    result = top_players[display_cols].to_dict(orient='records')
+    result = result_df[display_cols].to_dict(orient='records')
     
     # Position Mapping
     pos_map = {1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD'}
