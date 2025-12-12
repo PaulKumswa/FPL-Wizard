@@ -3,10 +3,9 @@ Built with ChatGPT Codex and Google Antigravity
 
 It provides predictions based on a custom trained machine learning model, updated weekly. The model identifies high-potential "underdog" players (less than 10% ownership, under £8.0m) with strong form or underlying stats.
 
-This repository pulls its raw data from two stable sources:
+This repository pulls its raw data from one source:
 
 - **Fantasy Premier League official API** – provides player metadata, fixtures, and per-gameweek points.
-- **Understat** – scraped to add xG/xA and other advanced metrics for each season.
 
 ## Quick start
 

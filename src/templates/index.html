@@ -417,9 +417,10 @@
             <div class="arch-card">
                 <h3>Inference Engine</h3>
                 <p><strong>SELECTION:</strong> Top 1 per position + 1 Wildcard</p>
-                <p><strong>FILTERS:</strong> Ownership < 10% (Underdog criteria)</p>
-                        <p><strong>OUTPUT:</strong> One underdog per position + next overall highest predicted points
-                        </p>
+                <p><strong>FILTERS:</strong> Ownership < 10% (Underdog criteria). Also, likelyness to play> 75% </10>
+                </p>
+                <p><strong>OUTPUT:</strong> One underdog per position + next overall highest predicted points
+                </p>
             </div>
         </div>
 
@@ -540,6 +541,22 @@
                     let gwTotalPred = 0;
                     let hasActuals = false;
 
+
+                    if (entry.picks.length === 0) {
+                        html += `
+                            <details>
+                                <summary>
+                                    <span>Gameweek ${entry.gameweek}</span>
+                                    <span class="gw-summary-stats" style="font-style: italic;">No predictions made</span>
+                                </summary>
+                                <div style="padding: 15px; color: #888; text-align: center;">
+                                    No models were run for this gameweek.
+                                </div>
+                            </details>
+                        `;
+                        return;
+                    }
+
                     // Pre-calculate GW totals
                     entry.picks.forEach(pick => {
                         if (pick.actual_points !== null) {
@@ -554,7 +571,7 @@
                         : `Pred: ${gwTotalPred.toFixed(0)} pts (Pending)`;
 
                     html += `
-                        <details>
+                        <details open>
                             <summary>
                                 <span>Gameweek ${entry.gameweek}</span>
                                 <span class="gw-summary-stats">${summaryText}</span>

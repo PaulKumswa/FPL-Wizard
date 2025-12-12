@@ -59,6 +59,19 @@ def get_predictions():
     df['recent_form'] = pd.to_numeric(df['recent_form'])
     df['ict_index'] = pd.to_numeric(df['ict_index'])
 
+    # Availability Filter (Option 1)
+    if 'chance_of_playing_next_round' in df.columns:
+        df['chance_of_playing_next_round'] = pd.to_numeric(df['chance_of_playing_next_round'], errors='coerce').fillna(100)
+        # Filter for availability first
+        df = df[
+            (df['chance_of_playing_next_round'] >= 75) &
+            (~df['status'].isin(['s', 'u', 'n']))
+        ]
+    
+    # Keep a copy of available players for fallback
+    df_available = df.copy()
+
+    # Strict Criteria
     df = df[
         (df['selected_by_percent'] < 10) & 
         (df['now_cost'] < 80) & 
@@ -66,10 +79,8 @@ def get_predictions():
     ]
     
     if df.empty:
-        # Fallback if too strict: just < 10% ownership
-        df = pd.read_csv('data/processed/inference_data.csv')
-        df['selected_by_percent'] = pd.to_numeric(df['selected_by_percent'])
-        df = df[df['selected_by_percent'] < 10]
+        # Fallback: Use available players, just < 10% ownership checks
+        df = df_available[df_available['selected_by_percent'] < 10]
 
     # Make predictions per position
     df['predicted_points'] = 0.0

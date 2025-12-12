@@ -143,7 +143,10 @@ def preprocess_data(players, teams, events, histories, fixtures):
                     'code': p['code'],
                     'team_code': team_strength.loc[p['team'], 'code'],
                     'opponent_team_code': team_strength.loc[opponent_id, 'code'],
-                    'ict_index': float(p['ict_index'])
+                    'ict_index': float(p['ict_index']),
+                    'status': p['status'],
+                    'chance_of_playing_next_round': p['chance_of_playing_next_round'],
+                    'news': p['news']
                 }
                 # Add stats
                 row.update(stats)
