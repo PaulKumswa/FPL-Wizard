@@ -95,34 +95,75 @@
         "web_name": "Vicario",
         "position": "GKP",
         "predicted_points": 4.117758240942066,
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 411,
         "web_name": "O\u2019Reilly",
         "position": "DEF",
         "predicted_points": 5.96,
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 242,
         "web_name": "Dewsbury-Hall",
         "position": "MID",
         "predicted_points": 6.74,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 624,
         "web_name": "Bowen",
         "position": "FWD",
         "predicted_points": 4.031208513708514,
-        "actual_points": null
+        "actual_points": 8.0
       },
       {
         "player_id": 299,
         "web_name": "Ndiaye",
         "position": "MID",
         "predicted_points": 5.9,
+        "actual_points": 2.0
+      }
+    ]
+  },
+  {
+    "gameweek": 17,
+    "timestamp": "2025-12-18T03:31:26.826604",
+    "picks": [
+      {
+        "player_id": 366,
+        "web_name": "A.Becker",
+        "position": "GKP",
+        "predicted_points": 4.29925667796256,
+        "actual_points": null
+      },
+      {
+        "player_id": 407,
+        "web_name": "Matheus N.",
+        "position": "DEF",
+        "predicted_points": 7.7,
+        "actual_points": null
+      },
+      {
+        "player_id": 242,
+        "web_name": "Dewsbury-Hall",
+        "position": "MID",
+        "predicted_points": 7.94,
+        "actual_points": null
+      },
+      {
+        "player_id": 597,
+        "web_name": "Richarlison",
+        "position": "FWD",
+        "predicted_points": 5.0418347763347775,
+        "actual_points": null
+      },
+      {
+        "player_id": 408,
+        "web_name": "R\u00faben",
+        "position": "DEF",
+        "predicted_points": 6.43,
         "actual_points": null
       }
     ]
