@@ -1,12 +1,78 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import pandas as pd
 import pickle
 import json
 import os
+import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
 
-def load_model_and_data():
+# --- Usage Statistics Setup ---
+DB_PATH = 'data/stats.db'
+
+def init_db():
+    """Initialize the stats database if it doesn't exist."""
+    print("Initializing database...") # Debug print
+    try:
+        if not os.path.exists('data'):
+             os.makedirs('data')
+        
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute('''
+            CREATE TABLE IF NOT EXISTS visits (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL,
+                endpoint TEXT NOT NULL,
+                user_agent TEXT
+            )
+        ''')
+        conn.commit()
+        conn.close()
+        print("Database initialized successfully.")
+    except Exception as e:
+        print(f"Error initializing database: {e}")
+
+def log_visit(endpoint):
+    """Log a visit to a specific endpoint."""
+    try:
+        # Initialize strictly if needed, but ideally we call it on startup
+        # For simplicity in this script, checking exists is enough or robust error handling
+        if not os.path.exists(DB_PATH):
+            init_db()
+
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        timestamp = datetime.now().isoformat()
+        user_agent = request.headers.get('User-Agent')
+        c.execute('INSERT INTO visits (timestamp, endpoint, user_agent) VALUES (?, ?, ?)',
+                  (timestamp, endpoint, user_agent))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Failed to log visit: {e}")
+
+# Initialize DB on import/startup
+init_db()
+# -----------------------------
+
+def load_data():
+    try:
+        if not os.path.exists('data/processed/inference_data.csv') or not os.path.exists('data/processed/metadata.json'):
+             return None, None
+
+        df = pd.read_csv('data/processed/inference_data.csv')
+        
+        with open('data/processed/metadata.json', 'r') as f:
+            metadata = json.load(f)
+        
+        return df, metadata
+    except Exception as e:
+        print(f"Error loading data: {e}")
+        return None, None
+
+def load_models():
     try:
         models = {}
         features_map = {}
@@ -26,28 +92,26 @@ def load_model_and_data():
             
             with open(feature_path, 'rb') as f:
                 features_map[name] = pickle.load(f)
-            
-        df = pd.read_csv('data/processed/inference_data.csv')
-        
-        with open('data/processed/metadata.json', 'r') as f:
-            metadata = json.load(f)
-        
-        return models, features_map, df, metadata
+                
+        return models, features_map
     except Exception as e:
-        print(f"Error loading model or data: {e}")
-        return None, None, None, None
+        print(f"Error loading models: {e}")
+        return None, None
 
 @app.route('/')
 def index():
+    log_visit('index')
     return render_template('index.html')
 
 @app.route('/api/predictions')
 def get_predictions():
+    log_visit('predictions')
 
-    models, features_map, df, metadata = load_model_and_data()
+    # Load data only initially (Fast)
+    df, metadata = load_data()
     
-    if not models or df is None:
-        return jsonify({'error': 'Models or data not found'}), 500
+    if df is None:
+        return jsonify({'error': 'Data not found'}), 500
 
     # Try to load from history first (Consistency with Pipeline)
     try:
@@ -83,6 +147,13 @@ def get_predictions():
     except Exception as e:
         print(f"Warning: Failed to load from history: {e}")
         # Fallthrough to calculation
+    
+    # Load models only if calculation is needed (Slow)
+    print("History not found or failed, loading models for inference...")
+    models, features_map = load_models()
+
+    if not models:
+        return jsonify({'error': 'Models not found'}), 500
 
     
     # Advanced Underdog Logic
@@ -212,6 +283,7 @@ def format_predictions_response(result_df, metadata):
 
 @app.route('/api/history')
 def get_history():
+    log_visit('history')
     try:
         with open('data/history/predictions_log.json', 'r') as f:
             history = json.load(f)
@@ -220,6 +292,33 @@ def get_history():
         return jsonify(history)
     except FileNotFoundError:
         return jsonify([])
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/stats')
+def get_stats():
+    try:
+        if not os.path.exists(DB_PATH):
+             return jsonify({'error': 'No stats database found'}), 404
+             
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        
+        # Total visits per endpoint
+        c.execute('SELECT endpoint, COUNT(*) FROM visits GROUP BY endpoint')
+        total_counts = dict(c.fetchall())
+        
+        # Visits today
+        today = datetime.now().strftime('%Y-%m-%d')
+        c.execute('SELECT endpoint, COUNT(*) FROM visits WHERE timestamp LIKE ? GROUP BY endpoint', (f'{today}%',))
+        today_counts = dict(c.fetchall())
+        
+        conn.close()
+        
+        return jsonify({
+            'total_visits': total_counts,
+            'todays_visits': today_counts
+        })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
