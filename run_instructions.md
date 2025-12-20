@@ -46,6 +46,12 @@ To update the site with new predictions:
 2. Commit and push the updated `data/` and `models/` folders to GitHub.
 3. Render will automatically redeploy the site with the new data.
 
+To view the statistics, you can simply visit the /api/stats endpoint in your browser while the application is running.
+
+Locally: http://127.0.0.1:5000/api/stats
+
+On Deployed Site: Append /api/stats to website's URL (e.g., https://fplunderdogs-com.onrender.com/api/stats).
+
 `src/test_api.py` contains a lightweight smoke test that hits each data source and prints samples (disable or trim network calls if running in a restricted environment).
 
 Next steps will build feature engineering, modelling, and optimisation layers on top of these new data sources.
