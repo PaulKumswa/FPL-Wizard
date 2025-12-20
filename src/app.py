@@ -43,10 +43,47 @@ def index():
 
 @app.route('/api/predictions')
 def get_predictions():
+
     models, features_map, df, metadata = load_model_and_data()
     
-    if not models:
+    if not models or df is None:
         return jsonify({'error': 'Models or data not found'}), 500
+
+    # Try to load from history first (Consistency with Pipeline)
+    try:
+        current_gw = metadata.get('next_gameweek')
+        history_path = 'data/history/predictions_log.json'
+        
+        if os.path.exists(history_path):
+            with open(history_path, 'r') as f:
+                history = json.load(f)
+            
+            # Find entry for current gameweek
+            gw_entry = next((item for item in history if item['gameweek'] == current_gw), None)
+            
+            if gw_entry:
+                print(f"Loading predictions from history for GW {current_gw}")
+                # Get player IDs from history
+                hist_ids = [p['player_id'] for p in gw_entry['picks']]
+                
+                # Filter DataFrame for these players
+                final_df = df[df['element'].isin(hist_ids)].copy()
+                
+                # Ensure we strictly follow the history order/content if possible, 
+                # or just return these players. 
+                # We need to map predicted_points from history if we want to be exact matches
+                # but using the re-calculated ones from model is fine too as they should be identical.
+                # Let's map strict points from history to be 100% sure.
+                id_to_points = {p['player_id']: p['predicted_points'] for p in gw_entry['picks']}
+                final_df['predicted_points'] = final_df['element'].map(id_to_points)
+                
+                # Prepare result immediately
+                return format_predictions_response(final_df, metadata)
+
+    except Exception as e:
+        print(f"Warning: Failed to load from history: {e}")
+        # Fallthrough to calculation
+
     
     # Advanced Underdog Logic
     # 1. Ownership < 10% (Deep Differential)
@@ -112,27 +149,40 @@ def get_predictions():
 
     # Selection Logic: Top 1 per position + 1 Wildcard
     final_picks = []
-    
-    # Sort by predicted points descending
     df_sorted = df.sort_values('predicted_points', ascending=False)
     
-    # Pick Top 1 for each position
+    # Track (team, position) pairs to prevent "Same Team + Same Position" duplicates
+    selected_combinations = set()
+
     for pos_id in [1, 2, 3, 4]:
         pos_candidates = df_sorted[df_sorted['element_type'] == pos_id]
         if not pos_candidates.empty:
             pick = pos_candidates.iloc[0]
             final_picks.append(pick)
-            # Remove from pool to avoid duplicates (though unlikely with 1 per pos)
+            selected_combinations.add((pick['team'], pick['element_type']))
             df_sorted = df_sorted[df_sorted['element'] != pick['element']]
             
-    # Pick 1 Wildcard (highest remaining)
     if len(final_picks) < 5 and not df_sorted.empty:
-        wildcard = df_sorted.iloc[0]
-        final_picks.append(wildcard)
+        wildcard = None
+        # Find first candidate that isn't (Same Team AND Same Position) as an existing pick
+        for idx, row in df_sorted.iterrows():
+            if (row['team'], row['element_type']) not in selected_combinations:
+                wildcard = row
+                break
+        
+        # Fallback: If for some reason we filtered everyone out (unlikely), take top remaining
+        if wildcard is None and not df_sorted.empty:
+            wildcard = df_sorted.iloc[0]
+
+        if wildcard is not None:
+            final_picks.append(wildcard)
         
     # Convert back to DataFrame for easier handling
     result_df = pd.DataFrame(final_picks)
     
+    return format_predictions_response(result_df, metadata)
+
+def format_predictions_response(result_df, metadata):
     # Sort by predicted points for display
     result_df = result_df.sort_values('predicted_points', ascending=False)
     
@@ -157,6 +207,8 @@ def get_predictions():
     }
     
     return jsonify(response)
+    
+
 
 @app.route('/api/history')
 def get_history():
