@@ -129,7 +129,7 @@
   },
   {
     "gameweek": 17,
-    "timestamp": "2025-12-18T03:31:26.826604",
+    "timestamp": "2025-12-20T06:44:21.594490",
     "picks": [
       {
         "player_id": 366,
@@ -160,10 +160,10 @@
         "actual_points": null
       },
       {
-        "player_id": 408,
-        "web_name": "R\u00faben",
+        "player_id": 295,
+        "web_name": "Keane",
         "position": "DEF",
-        "predicted_points": 6.43,
+        "predicted_points": 5.9,
         "actual_points": null
       }
     ]

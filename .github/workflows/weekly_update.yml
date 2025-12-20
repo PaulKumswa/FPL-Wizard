@@ -2,8 +2,8 @@ name: Weekly FPL Data Update
 
 on:
   schedule:
-    # Run every Thursday at 2 AM UTC (after gameweek finishes)
-    - cron: '0 2 * * 4'
+    # Run every 6 hours to check if deadline is approaching
+    - cron: '0 */6 * * *'
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
@@ -24,11 +24,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
+      - name: Check Deadline
+        id: check
+        run: |
+          python src/check_deadline.py
+          
       - name: Run data pipeline
+        if: steps.check.outputs.should_update == 'true'
         run: |
           python update_pipeline.py --no-serve
           
       - name: Commit and push if changes
+        if: steps.check.outputs.should_update == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"

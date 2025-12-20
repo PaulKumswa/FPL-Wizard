@@ -157,16 +157,31 @@ def main():
         final_picks = []
         df_sorted = df.sort_values('predicted_points', ascending=False)
         
+        # Track (team, position) pairs to prevent "Same Team + Same Position" duplicates
+        selected_combinations = set()
+
         for pos_id in [1, 2, 3, 4]:
             pos_candidates = df_sorted[df_sorted['element_type'] == pos_id]
             if not pos_candidates.empty:
                 pick = pos_candidates.iloc[0]
                 final_picks.append(pick)
+                selected_combinations.add((pick['team'], pick['element_type']))
                 df_sorted = df_sorted[df_sorted['element'] != pick['element']]
                 
         if len(final_picks) < 5 and not df_sorted.empty:
-            wildcard = df_sorted.iloc[0]
-            final_picks.append(wildcard)
+            wildcard = None
+            # Find first candidate that isn't (Same Team AND Same Position) as an existing pick
+            for idx, row in df_sorted.iterrows():
+                if (row['team'], row['element_type']) not in selected_combinations:
+                    wildcard = row
+                    break
+            
+            # Fallback: If for some reason we filtered everyone out (unlikely), take top remaining
+            if wildcard is None and not df_sorted.empty:
+                wildcard = df_sorted.iloc[0]
+
+            if wildcard is not None:
+                final_picks.append(wildcard)
         
         top_5 = pd.DataFrame(final_picks)
         top_5['position'] = top_5['element_type'].map(pos_map_rev)
