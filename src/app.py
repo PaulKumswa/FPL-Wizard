@@ -171,9 +171,10 @@ def get_predictions():
     if 'chance_of_playing_next_round' in df.columns:
         df['chance_of_playing_next_round'] = pd.to_numeric(df['chance_of_playing_next_round'], errors='coerce').fillna(100)
         # Filter for availability first
+        # status: a=available, d=doubtful, i=international, n=loan/ineligible, s=suspended, u=unavailable(injury)
         df = df[
             (df['chance_of_playing_next_round'] >= 75) &
-            (~df['status'].isin(['s', 'u', 'n']))
+            (~df['status'].isin(['s', 'u', 'n', 'i', 'd']))
         ]
     
     # Keep a copy of available players for fallback
@@ -258,7 +259,8 @@ def format_predictions_response(result_df, metadata):
     result_df = result_df.sort_values('predicted_points', ascending=False)
     
     # Select columns to display
-    display_cols = ['web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'code', 'team_code', 'opponent_team_code', 'element_type']
+    # Select columns to display
+    display_cols = ['web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'code', 'team_code', 'opponent_team_code', 'element_type', 'recent_expected_goals', 'recent_expected_assists', 'recent_team_xga']
     result = result_df[display_cols].to_dict(orient='records')
     
     # Position Mapping
@@ -270,7 +272,7 @@ def format_predictions_response(result_df, metadata):
         player['team_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['team_code'])}.png"
         player['opponent_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['opponent_team_code'])}.png"
         player['position'] = pos_map.get(player['element_type'], 'UNK')
-        player['profile_url'] = f"https://www.premierleague.com/players/{int(player['code'])}/{player['web_name']}/overview"
+        player['profile_url'] = f"https://www.premierleague.com/en/players/{int(player['code'])}/{player['web_name']}/overview"
 
     response = {
         'gameweek_info': metadata,

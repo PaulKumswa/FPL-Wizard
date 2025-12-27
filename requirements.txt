@@ -5,4 +5,8 @@ python-dotenv
 pyarrow
 scikit-learn
 flask
-gunicorn 
+gunicorn
+understatapi
+fuzzywuzzy
+python-Levenshtein
+unidecode

@@ -22,6 +22,7 @@ Typical usage (PowerShell):
 from __future__ import annotations
 
 import argparse
+import sys
 import json
 import os
 import time
@@ -180,101 +181,60 @@ def build_fpl_player_gameweeks(
     return df
 
 # ---------------------------------------------------------------------------
-# Understat scraping utilities
+# Understat API (using understatapi library)
 # ---------------------------------------------------------------------------
 
-
-def _understat_session() -> requests.Session:
-    sess = requests.Session()
-    sess.headers.update({'User-Agent': DEFAULT_USER_AGENT})
-    return sess
-
-
-def _extract_understat_json(script_text: str, var_name: str) -> Any:
-    pattern = re.compile(rf"var\s+{re.escape(var_name)}\s*=\s*JSON.parse\('([^']*)'\)")
-    match = pattern.search(script_text)
-    if match:
-        raw = match.group(1)
-        decoded = bytes(raw, 'utf-8').decode('unicode_escape')
-        return json.loads(decoded)
-    fallback = re.compile(rf"var\s+{re.escape(var_name)}\s*=\s*(\[.*?\]);", re.DOTALL)
-    match = fallback.search(script_text)
-    if match:
-        return json.loads(match.group(1))
-    return None
-
-
-def _coerce_numeric(df: pd.DataFrame, cols: Iterable[str]) -> pd.DataFrame:
-    for col in cols:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors='coerce')
-    return df
-
-
-def fetch_understat_league_page(
+def fetch_understat_data(
     league: str = 'EPL',
-    season: int = 2023,
-    *,
-    session: Optional[requests.Session] = None,
-) -> BeautifulSoup:
-    url = f"{UNDERSTAT_BASE_URL}/league/{league}/{season}"
-    sess = session or _understat_session()
-    resp = sess.get(url, timeout=60)
-    resp.raise_for_status()
-    return BeautifulSoup(resp.text, 'html.parser')
+    season: int = 2025,
+    out_dir: Path = Path('data/raw')
+) -> None:
+    """
+    Fetches both Player and Team data from Understat using `understatapi`.
+    Saves to:
+      - data/raw/understat_players_{season}.json
+      - data/raw/understat_teams_{season}.json
+    """
+    try:
+        from understatapi import UnderstatClient
+    except ImportError:
+        print("Error: understatapi not installed. Run `pip install understatapi`")
+        return
 
+    print(f"Fetching Understat data for {league} {season}...")
+    
+    understat = UnderstatClient()
+    
+    # 1. Fetch Player Data
+    # Note: understatapi might raise errors if season is invalid or connection fails
+    # We use a try-except block for soft-fail as per plan
+    try:
+        players_payload = understat.league(league=league).get_player_data(season=str(season))
+        # The payload is usually a list of dicts directly
+        out_players = out_dir / f"understat_players_{season}.json"
+        _save_json(players_payload, out_players)
+    except Exception as e:
+        print(f"Failed to fetch Understat Players: {e}")
+        # Create empty file to prevent downstream crash? Or just leave it missing.
+        # Plan says "Soft Fail", so we continue.
 
-def fetch_understat_players(
-    league: str = 'EPL',
-    season: int = 2023,
-    *,
-    session: Optional[requests.Session] = None,
-) -> pd.DataFrame:
-    soup = fetch_understat_league_page(league=league, season=season, session=session)
-    script = next((s for s in soup.find_all('script') if 'playersData' in s.text), None)
-    if script is None:
-        raise RuntimeError('Could not locate playersData in Understat payload')
-    data = _extract_understat_json(script.text, 'playersData')
-    if data is None:
-        raise RuntimeError('Failed to parse playersData JSON')
-    df = pd.DataFrame(data)
-    numeric_cols = [
-        'games',
-        'time',
-        'goals',
-        'xG',
-        'assists',
-        'xA',
-        'shots',
-        'key_passes',
-        'xGChain',
-        'xGBuildup',
-    ]
-    return _coerce_numeric(df, numeric_cols)
+    # 2. Fetch Team Data (for xGA)
+    try:
+        teams_payload = understat.league(league=league).get_team_data(season=str(season))
+        out_teams = out_dir / f"understat_teams_{season}.json"
+        _save_json(teams_payload, out_teams)
+    except Exception as e:
+        print(f"Failed to fetch Understat Teams: {e}")
 
+    # 3. Fetch Match Data (for Time-Series)
+    try:
+        matches_payload = understat.league(league=league).get_match_data(season=str(season))
+        # This returns a list of matches. Each match has 'h' (home) and 'a' (away) stats, including players.
+        out_matches = out_dir / f"understat_matches_{season}.json"
+        _save_json(matches_payload, out_matches)
+    except Exception as e:
+        print(f"Failed to fetch Understat Matches: {e}")
 
-def fetch_understat_matches(
-    league: str = 'EPL',
-    season: int = 2023,
-    *,
-    session: Optional[requests.Session] = None,
-) -> pd.DataFrame:
-    soup = fetch_understat_league_page(league=league, season=season, session=session)
-    script = next((s for s in soup.find_all('script') if 'matchesData' in s.text), None)
-    if script is None:
-        raise RuntimeError('Could not locate matchesData in Understat payload')
-    data = _extract_understat_json(script.text, 'matchesData')
-    if data is None:
-        raise RuntimeError('Failed to parse matchesData JSON')
-    df = pd.DataFrame(data)
-    numeric_cols = [
-        'xG_home',
-        'xG_away',
-        'forecast_win',
-        'forecast_draw',
-        'forecast_lose',
-    ]
-    return _coerce_numeric(df, numeric_cols)
 
 # ---------------------------------------------------------------------------
 # CLI
@@ -289,20 +249,19 @@ def _parse_args() -> argparse.Namespace:
             'fpl_bootstrap',
             'fpl_fixtures',
             'fpl_histories',
-            'understat_players',
-            'understat_matches',
+            'understat_all', # Consolidated command
         ],
         required=True,
         help='Which dataset to fetch',
     )
-    ap.add_argument('--out', type=str, required=True, help='Output file path (csv/parquet/json)')
-    ap.add_argument('--season', type=int, default=2023, help='Season identifier for Understat (e.g. 2023)')
+    ap.add_argument('--out', type=str, required=False, help='Output file path (DEPRECATED for understat)')
+    ap.add_argument('--season', type=int, default=2025, help='Season identifier for Understat (e.g. 2025)')
     ap.add_argument('--league', type=str, default='EPL', help='Understat league code (default: EPL)')
     ap.add_argument(
         '--limit',
         type=int,
         default=None,
-        help='Optional limit when building FPL player histories (useful for quick samples)',
+        help='Optional limit when building FPL player histories',
     )
     ap.add_argument(
         '--sleep',
@@ -315,35 +274,30 @@ def _parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = _parse_args()
-    out_path = Path(args.out)
+    # Handle optional out path for FPL
+    out_path = Path(args.out) if args.out else None
 
     if args.resource == 'fpl_bootstrap':
+        if not out_path: raise ValueError("--out required for fpl_bootstrap")
         payload = fetch_fpl_bootstrap()
         _save_json(payload, out_path)
         return
 
     if args.resource == 'fpl_fixtures':
+        if not out_path: raise ValueError("--out required for fpl_fixtures")
         fixtures = fetch_fpl_fixtures()
         _save_json(fixtures, out_path)
         return
 
     if args.resource == 'fpl_histories':
+        if not out_path: raise ValueError("--out required for fpl_histories")
         sleep_sec = args.sleep if args.sleep is not None else DEFAULT_FPL_SLEEP
         df = build_fpl_player_gameweeks(limit=args.limit, sleep_sec=sleep_sec)
         _save_dataframe(df, out_path)
         return
 
-    session = _understat_session()
-    time.sleep(DEFAULT_UNDERSTAT_SLEEP)
-
-    if args.resource == 'understat_players':
-        df = fetch_understat_players(league=args.league, season=args.season, session=session)
-        _save_dataframe(df, out_path)
-        return
-
-    if args.resource == 'understat_matches':
-        df = fetch_understat_matches(league=args.league, season=args.season, session=session)
-        _save_dataframe(df, out_path)
+    if args.resource == 'understat_all':
+        fetch_understat_data(league=args.league, season=args.season)
         return
 
     raise ValueError(f'Unsupported resource: {args.resource}')

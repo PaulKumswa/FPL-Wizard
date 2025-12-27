@@ -6,5 +6,6 @@ It provides predictions based on a custom trained machine learning model, update
 This repository pulls its raw data from one source:
 
 - **Fantasy Premier League official API** – provides player metadata, fixtures, and per-gameweek points.
+- **Understat API** – provides advanced metrics (xG, xA) and team defensive strength (xGA).
 
 Next steps will include better inference, feature engineering, and incorporation of more data sources.

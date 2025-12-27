@@ -404,8 +404,8 @@
         <div class="architecture-grid">
             <div class="arch-card">
                 <h3>Data Pipeline</h3>
-                <p><strong>SOURCE:</strong> Official FPL API (Bootstrap, Fixtures, History)</p>
-                <p><strong>PROCESS:</strong> 5-week rolling averages for key metrics (Form, Saves, xG)</p>
+                <p><strong>SOURCE:</strong> Official FPL API (Bootstrap) + Understat (xG/xA)</p>
+                <p><strong>PROCESS:</strong> 5-week rolling averages for Form, xG, xA, and Team xGA</p>
                 <p><strong>UPDATE:</strong> Weekly (Post-Gameweek)</p>
             </div>
             <div class="arch-card">
@@ -456,6 +456,7 @@
                                     <th>Opponent</th>
                                     <th>Cost (£)</th>
                                     <th>Own (%)</th>
+                                    <th>Stat (5GW)</th>
                                     <th>Pred Points</th>
                                 </tr>
                             </thead>
@@ -486,6 +487,12 @@
                             </td>
                             <td class="mono-font">${(player.now_cost / 10).toFixed(1)}</td>
                             <td class="mono-font">${player.selected_by_percent}%</td>
+                            <td class="mono-font">
+                                ${(player.element_type === 3 || player.element_type === 4)
+                            ? `<span style="font-size:0.85em; color:#ccc;">xG: <strong style="color:#fff;">${(player.recent_expected_goals || 0).toFixed(2)}</strong><br>xA: <strong style="color:#fff;">${(player.recent_expected_assists || 0).toFixed(2)}</strong></span>`
+                            : `<span style="font-size:0.85em; color:#ccc;">TxGA: <strong style="color:#ff6b6b;">${(player.recent_team_xga || 0).toFixed(2)}</strong></span>`
+                        }
+                            </td>
                             <td class="points-cell mono-font"> ${player.predicted_points.toFixed(1)} </td>
                         </tr>
                     `;
@@ -571,7 +578,7 @@
                         : `Pred: ${gwTotalPred.toFixed(0)} pts (Pending)`;
 
                     html += `
-                        <details open>
+                        <details>
                             <summary>
                                 <span>Gameweek ${entry.gameweek}</span>
                                 <span class="gw-summary-stats">${summaryText}</span>

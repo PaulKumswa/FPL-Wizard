@@ -25,6 +25,9 @@
    ```bash
    python update_pipeline.py --quick --no-serve
    ```
+    
+    **Configuration**:
+    The pipeline defaults to the **2025** season for Understat data. You can override this by editing `update_pipeline.py` or `src/data_fetch.py` if needed.
 
 ## Deployment
 The easiest way to deploy this app is using **Render** (free tier available).

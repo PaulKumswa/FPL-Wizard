@@ -87,8 +87,49 @@
     ]
   },
   {
+    "gameweek": 17,
+    "timestamp": "2025-12-20T07:10:38.953516",
+    "picks": [
+      {
+        "player_id": 366,
+        "web_name": "A.Becker",
+        "position": "GKP",
+        "predicted_points": 4.29925667796256,
+        "actual_points": 3.0
+      },
+      {
+        "player_id": 407,
+        "web_name": "Matheus N.",
+        "position": "DEF",
+        "predicted_points": 7.7,
+        "actual_points": 8.0
+      },
+      {
+        "player_id": 242,
+        "web_name": "Dewsbury-Hall",
+        "position": "MID",
+        "predicted_points": 7.94,
+        "actual_points": 0.0
+      },
+      {
+        "player_id": 597,
+        "web_name": "Richarlison",
+        "position": "FWD",
+        "predicted_points": 5.0418347763347775,
+        "actual_points": 4.0
+      },
+      {
+        "player_id": 295,
+        "web_name": "Keane",
+        "position": "DEF",
+        "predicted_points": 5.9,
+        "actual_points": 4.0
+      }
+    ]
+  },
+  {
     "gameweek": 16,
-    "timestamp": "2025-12-12T00:39:02.550482",
+    "timestamp": "2025-12-26T20:08:32.028366",
     "picks": [
       {
         "player_id": 565,
@@ -119,51 +160,51 @@
         "actual_points": 8.0
       },
       {
-        "player_id": 299,
-        "web_name": "Ndiaye",
+        "player_id": 418,
+        "web_name": "Doku",
         "position": "MID",
-        "predicted_points": 5.9,
-        "actual_points": 2.0
+        "predicted_points": 5.59,
+        "actual_points": 0.0
       }
     ]
   },
   {
-    "gameweek": 17,
-    "timestamp": "2025-12-20T07:10:38.953516",
+    "gameweek": 19,
+    "timestamp": "2025-12-26T20:26:42.823611",
     "picks": [
       {
-        "player_id": 366,
-        "web_name": "A.Becker",
+        "player_id": 253,
+        "web_name": "Henderson",
         "position": "GKP",
-        "predicted_points": 4.29925667796256,
+        "predicted_points": 5.0757864979877345,
         "actual_points": null
       },
       {
-        "player_id": 407,
-        "web_name": "Matheus N.",
+        "player_id": 291,
+        "web_name": "Tarkowski",
         "position": "DEF",
-        "predicted_points": 7.7,
+        "predicted_points": 6.48,
         "actual_points": null
       },
       {
-        "player_id": 242,
-        "web_name": "Dewsbury-Hall",
+        "player_id": 517,
+        "web_name": "Anderson",
         "position": "MID",
-        "predicted_points": 7.94,
+        "predicted_points": 5.11,
         "actual_points": null
       },
       {
         "player_id": 597,
         "web_name": "Richarlison",
         "position": "FWD",
-        "predicted_points": 5.0418347763347775,
+        "predicted_points": 3.0052264679764686,
         "actual_points": null
       },
       {
-        "player_id": 295,
-        "web_name": "Keane",
+        "player_id": 440,
+        "web_name": "Dalot",
         "position": "DEF",
-        "predicted_points": 5.9,
+        "predicted_points": 5.53,
         "actual_points": null
       }
     ]

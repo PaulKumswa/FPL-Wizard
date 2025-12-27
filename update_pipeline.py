@@ -12,13 +12,20 @@ import src.history as history
 
 def run_command(command, description):
     print(f"--- {description} ---")
+    if isinstance(command, list):
+        print(f"Running: {' '.join(command)}")
+        shell_mode = False
+    else:
+        print(f"Running: {command}")
+        shell_mode = True
+        
     try:
         # Run command and stream output
         process = subprocess.Popen(
             command, 
-            shell=True, 
             stdout=subprocess.PIPE, 
             stderr=subprocess.STDOUT,
+            shell=shell_mode,
             text=True
         )
         
@@ -48,25 +55,32 @@ def main():
     args = parser.parse_args()
 
     print("Starting FPL Pipeline...\n")
+    print(f"Python Executable: {sys.executable}")
     
     if not args.quick:
         # 1. Fetch Data
         # Fetch Bootstrap
         run_command(
-            f"{sys.executable} -m src.data_fetch --resource fpl_bootstrap --out data/raw/fpl_bootstrap.json",
+            [sys.executable, '-m', 'src.data_fetch', '--resource', 'fpl_bootstrap', '--out', 'data/raw/fpl_bootstrap.json'],
             "Fetching FPL Bootstrap Data"
         )
         
         # Fetch Fixtures
         run_command(
-            f"{sys.executable} -m src.data_fetch --resource fpl_fixtures --out data/raw/fpl_fixtures.json",
+            [sys.executable, '-m', 'src.data_fetch', '--resource', 'fpl_fixtures', '--out', 'data/raw/fpl_fixtures.json'],
             "Fetching FPL Fixtures"
         )
         
         # Fetch Histories
         run_command(
-            f"{sys.executable} -m src.data_fetch --resource fpl_histories --out data/raw/fpl_histories.parquet",
-            "Fetching FPL Player Histories (This may take a few minutes)"
+            [sys.executable, '-m', 'src.data_fetch', '--resource', 'fpl_histories', '--out', 'data/raw/fpl_histories.parquet'],
+            "Fetching FPL Histories"
+        )
+
+        # Fetch Understat (All) - using new consolidated resource
+        run_command(
+            [sys.executable, '-m', 'src.data_fetch', '--resource', 'understat_all', '--season', '2025'],
+            "Fetching Understat Data"
         )
         
         # Update Actuals for past predictions
@@ -78,16 +92,14 @@ def main():
         print("--- History Update Complete ---\n")
         
         # 2. Preprocess
-        run_command(
-            f"{sys.executable} src/preprocess.py",
-            "Preprocessing Data"
-        )
-        
-        # 3. Train Model
-        run_command(
-            f"{sys.executable} src/train_model.py",
-            "Training Model"
-        )
+        run_command([sys.executable, 'src/preprocess.py'], "Preprocessing Data")
+
+        # 3. ID Mapping
+        run_command([sys.executable, 'src/id_map.py'], "Mapping IDs")
+
+        # 4. Train Models
+        run_command([sys.executable, 'src/train_model.py'], "Training Models")
+        run_command(f'"{sys.executable}" src/train_model.py', "Training Models")
         
     # 4. Log New Predictions
     print("--- Logging New Predictions ---")
@@ -119,6 +131,14 @@ def main():
         df['recent_form'] = pd.to_numeric(df['recent_form'])
         df['ict_index'] = pd.to_numeric(df['ict_index'])
 
+        # Filter for availability first
+        # status: a=available, d=doubtful, i=international, n=loan/ineligible, s=suspended, u=unavailable(injury)
+        if 'status' in df.columns:
+             df = df[~df['status'].isin(['s', 'u', 'n', 'i', 'd'])]
+        if 'chance_of_playing_next_round' in df.columns:
+            df['chance_of_playing_next_round'] = pd.to_numeric(df['chance_of_playing_next_round'], errors='coerce').fillna(100)
+            df = df[df['chance_of_playing_next_round'] >= 75]
+
         df = df[
             (df['selected_by_percent'] < 10) & 
             (df['now_cost'] < 80) & 
@@ -130,6 +150,14 @@ def main():
                 df['selected_by_percent'] = pd.to_numeric(df['selected_by_percent'])
                 df = df[df['selected_by_percent'] < 10]
         
+        if df.empty:
+                df = pd.read_csv('data/processed/inference_data.csv')
+                df['selected_by_percent'] = pd.to_numeric(df['selected_by_percent'])
+                df = df[df['selected_by_percent'] < 10]
+        
+        if 'web_name' in df.columns:
+             pass # Removed manual exclusion
+
         # Predict per position
         df['predicted_points'] = 0.0
         pos_map_rev = {1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD'}
