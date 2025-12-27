@@ -379,10 +379,11 @@
 
             <!-- Hit % Card -->
             <div class="dashboard-card">
-                <h3>All-Time Hit Rate</h3>
+                <h3>5-GW Hit Rate</h3>
                 <div class="card-value" id="hit-rate-display">-</div>
                 <p class="card-desc">
-                    Percentage of picks where <strong>Actual Points ≥ Predicted Points</strong>.
+                    Rolling percentage of picks over last 5 active weeks where <strong>Actual ≥ 0.9 ×
+                        Predicted</strong>.
                 </p>
             </div>
         </div>
@@ -518,29 +519,40 @@
                     return;
                 }
 
-                // Calculate Hit %
-                let totalPicksWithActuals = 0;
+                // Filter for entries with actual points
+                const entriesWithActuals = data.filter(entry =>
+                    entry.picks.some(pick => pick.actual_points !== null)
+                );
+
+                // Take only the last 5 gameweeks with actuals
+                const recentEntries = entriesWithActuals.slice(0, 5);
+
+                // Calculate Hit % (5-GW Rolling with 10% buffer)
+                let totalPicks = 0;
                 let totalHits = 0;
 
-                data.forEach(entry => {
+                recentEntries.forEach(entry => {
                     entry.picks.forEach(pick => {
                         if (pick.actual_points !== null) {
-                            totalPicksWithActuals++;
-                            // Hit = Actual >= Predicted
-                            if (pick.actual_points >= pick.predicted_points) {
+                            totalPicks++;
+                            // Hit = Actual >= Math.floor(Predicted) * 0.9 (10% buffer)
+                            // We floor the predicted points because players score integers.
+                            // If predicted 5.6 and actual 5, Math.floor(5.6) = 5. 5 >= 4.5 is True.
+                            // This ensures we're comparing "apples to apples" regarding achievable scores.
+                            if (pick.actual_points >= (Math.floor(pick.predicted_points) * 0.9)) {
                                 totalHits++;
                             }
                         }
                     });
                 });
 
-                const hitRate = totalPicksWithActuals > 0
-                    ? ((totalHits / totalPicksWithActuals) * 100).toFixed(1) + '%'
+                const hitRate = totalPicks > 0
+                    ? ((totalHits / totalPicks) * 100).toFixed(1) + '%'
                     : '-';
 
                 document.getElementById('hit-rate-display').textContent = hitRate;
 
-                // Render Dropdowns
+                // Render Dropdowns (Show all history, not just 5 weeks)
                 let html = '';
 
                 data.forEach(entry => {
@@ -607,9 +619,12 @@
                             const diff = pick.actual_points - pick.predicted_points;
                             diffDisplay = diff > 0 ? `+${diff.toFixed(1)}` : diff.toFixed(1);
 
-                            if (pick.actual_points >= pick.predicted_points) {
+                            // Highlight Logic
+                            // Use the same condition as the metric for consistency
+                            if (pick.actual_points >= (Math.floor(pick.predicted_points) * 0.9)) {
                                 rowClass = 'style="color: var(--accent-green);"';
                             } else if (pick.actual_points < pick.predicted_points - 2) {
+                                // Keep the "huge miss" red
                                 rowClass = 'style="color: #ff4d4d;"';
                             }
                         }
