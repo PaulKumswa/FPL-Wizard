@@ -164,7 +164,7 @@ def main():
     # Run Flask app
     # We use call directly here because we want it to block and serve
     try:
-        subprocess.run([sys.executable, "src/app.py"], check=True)
+        subprocess.run([sys.executable, "-m", "src.app"], check=True)
     except KeyboardInterrupt:
         print("\nPipeline stopped by user.")
     except Exception as e:

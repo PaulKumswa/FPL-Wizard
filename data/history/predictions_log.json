@@ -170,41 +170,41 @@
   },
   {
     "gameweek": 19,
-    "timestamp": "2025-12-26T20:26:42.823611",
+    "timestamp": "2025-12-28T13:47:06.937350",
     "picks": [
       {
         "player_id": 253,
         "web_name": "Henderson",
         "position": "GKP",
-        "predicted_points": 5.0757864979877345,
+        "predicted_points": 5.052956516899031,
         "actual_points": null
       },
       {
         "player_id": 291,
         "web_name": "Tarkowski",
         "position": "DEF",
-        "predicted_points": 6.48,
+        "predicted_points": 5.9720018250679106,
         "actual_points": null
       },
       {
-        "player_id": 517,
-        "web_name": "Anderson",
+        "player_id": 237,
+        "web_name": "Enzo",
         "position": "MID",
-        "predicted_points": 5.11,
+        "predicted_points": 4.546680283758139,
         "actual_points": null
       },
       {
-        "player_id": 597,
-        "web_name": "Richarlison",
+        "player_id": 624,
+        "web_name": "Bowen",
         "position": "FWD",
-        "predicted_points": 3.0052264679764686,
+        "predicted_points": 2.8359249639249646,
         "actual_points": null
       },
       {
-        "player_id": 440,
-        "web_name": "Dalot",
+        "player_id": 403,
+        "web_name": "Gvardiol",
         "position": "DEF",
-        "predicted_points": 5.53,
+        "predicted_points": 5.160353182771529,
         "actual_points": null
       }
     ]

@@ -11,7 +11,7 @@ import pandas as pd
 import pickle
 import os
 import json
-from src.config import FEATURE_CONFIGS, POSITION_MAP_REV, MAX_COST, MAX_OWNERSHIP, MIN_FORM, MIN_ICT
+from src.config import FEATURE_CONFIGS, POSITION_MAP_REV, POSITION_MAP, MAX_COST, MAX_OWNERSHIP, MIN_FORM, MIN_ICT
 
 def load_models(model_dir='models'):
     """Load trained models from the specified directory."""
