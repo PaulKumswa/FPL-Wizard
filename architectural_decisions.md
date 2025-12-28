@@ -65,3 +65,7 @@ Models are trained independently for each position (`element_type`) to capture u
 ## 4. Operational Decisions
 *   **Updates**: The pipeline (`update_pipeline.py`) is designed to run end-to-end (Fetch -> Train -> Predict) or in `--quick` mode (Predict only).
 *   **Visualization**: Web interface serves purely as a display layer for the pre-calculated `inference_data.csv`.
+*   **Modular Inference**:
+    *   Per the Dec 2025 Refactor, all prediction logic and model loading is centralized in `src/inference.py`.
+    *   Feature selection and hyperparameters are defined in `src/config.py`.
+    *   Both `update_pipeline.py` (Automation) and `src/app.py` (Web UI) consume these shared modules to ensure 100% consistency in results.

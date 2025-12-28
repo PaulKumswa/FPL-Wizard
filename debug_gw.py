@@ -1,3 +1,9 @@
+"""
+debug_gw.py
+Description: This script reads the FPL bootstrap data and prints a formatted table of gameweek (event) information.
+It displays the ID, Name, Deadline, Current Status, Next Status, and Finished Status for a range of gameweeks.
+Useful for verifying the current state of the FPL season as seen by the application.
+"""
 import json
 import pandas as pd
 from datetime import datetime

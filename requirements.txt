@@ -10,3 +10,4 @@ understatapi
 fuzzywuzzy
 python-Levenshtein
 unidecode
+pytest

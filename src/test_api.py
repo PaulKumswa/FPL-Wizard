@@ -1,4 +1,9 @@
-﻿"""Simple spot-checks for the data_fetch module."""
+﻿"""
+src/test_api.py
+Description: A simple scratchpad script for spot-checking the functionality of the `src.data_fetch` module.
+It runs basic fetches for bootstrap, fixtures, and histories to ensure the API clients are working as expected
+and printing sample data structures.
+"""
 
 from __future__ import annotations
 

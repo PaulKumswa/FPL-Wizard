@@ -1,3 +1,11 @@
+"""
+src/history.py
+Description: Manages the storage and retrieval of prediction history and actual points.
+Key functions:
+- `log_predictions`: Saves generated predictions (top 5) for a gameweek to a JSON log.
+- `update_actuals`: Backfills the 'actual_points' for past predictions by checking against historical data.
+It ensures that we can track performance over time.
+"""
 import json
 import pandas as pd
 from pathlib import Path

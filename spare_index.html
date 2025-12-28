@@ -1,3 +1,8 @@
+<!-- 
+spare_index.html
+Description: A manual backup of the main index.html file.
+Used as a recovery point in case the primary template (src/templates/index.html) becomes corrupted or unusable.
+-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -379,10 +384,11 @@
 
             <!-- Hit % Card -->
             <div class="dashboard-card">
-                <h3>All-Time Hit Rate</h3>
+                <h3>5-GW Hit Rate</h3>
                 <div class="card-value" id="hit-rate-display">-</div>
                 <p class="card-desc">
-                    Percentage of picks where <strong>Actual Points ≥ Predicted Points</strong>.
+                    Rolling percentage of picks over last 5 active weeks where <strong>Actual ≥ 0.9 ×
+                        Predicted</strong>.
                 </p>
             </div>
         </div>
@@ -404,8 +410,8 @@
         <div class="architecture-grid">
             <div class="arch-card">
                 <h3>Data Pipeline</h3>
-                <p><strong>SOURCE:</strong> Official FPL API (Bootstrap, Fixtures, History)</p>
-                <p><strong>PROCESS:</strong> 5-week rolling averages for key metrics (Form, Saves, xG)</p>
+                <p><strong>SOURCE:</strong> Official FPL API (Bootstrap) + Understat (xG/xA)</p>
+                <p><strong>PROCESS:</strong> 5-week rolling averages for Form, xG, xA, and Team xGA</p>
                 <p><strong>UPDATE:</strong> Weekly (Post-Gameweek)</p>
             </div>
             <div class="arch-card">
@@ -417,9 +423,10 @@
             <div class="arch-card">
                 <h3>Inference Engine</h3>
                 <p><strong>SELECTION:</strong> Top 1 per position + 1 Wildcard</p>
-                <p><strong>FILTERS:</strong> Ownership < 10% (Underdog criteria)</p>
-                        <p><strong>OUTPUT:</strong> One underdog per position + next overall highest predicted points
-                        </p>
+                <p><strong>FILTERS:</strong> Ownership < 10% (Underdog criteria). Also, likelyness to play> 75% </10>
+                </p>
+                <p><strong>OUTPUT:</strong> One underdog per position + next overall highest predicted points
+                </p>
             </div>
         </div>
 
@@ -455,6 +462,7 @@
                                     <th>Opponent</th>
                                     <th>Cost (£)</th>
                                     <th>Own (%)</th>
+                                    <th>Stat (5GW)</th>
                                     <th>Pred Points</th>
                                 </tr>
                             </thead>
@@ -485,6 +493,12 @@
                             </td>
                             <td class="mono-font">${(player.now_cost / 10).toFixed(1)}</td>
                             <td class="mono-font">${player.selected_by_percent}%</td>
+                            <td class="mono-font">
+                                ${(player.element_type === 3 || player.element_type === 4)
+                            ? `<span style="font-size:0.85em; color:#ccc;">xG: <strong style="color:#fff;">${(player.recent_expected_goals || 0).toFixed(2)}</strong><br>xA: <strong style="color:#fff;">${(player.recent_expected_assists || 0).toFixed(2)}</strong></span>`
+                            : `<span style="font-size:0.85em; color:#ccc;">TxGA: <strong style="color:#ff6b6b;">${(player.recent_team_xga || 0).toFixed(2)}</strong></span>`
+                        }
+                            </td>
                             <td class="points-cell mono-font"> ${player.predicted_points.toFixed(1)} </td>
                         </tr>
                     `;
@@ -510,35 +524,62 @@
                     return;
                 }
 
-                // Calculate Hit %
-                let totalPicksWithActuals = 0;
+                // Filter for entries with actual points
+                const entriesWithActuals = data.filter(entry =>
+                    entry.picks.some(pick => pick.actual_points !== null)
+                );
+
+                // Take only the last 5 gameweeks with actuals
+                const recentEntries = entriesWithActuals.slice(0, 5);
+
+                // Calculate Hit % (5-GW Rolling with 10% buffer)
+                let totalPicks = 0;
                 let totalHits = 0;
 
-                data.forEach(entry => {
+                recentEntries.forEach(entry => {
                     entry.picks.forEach(pick => {
                         if (pick.actual_points !== null) {
-                            totalPicksWithActuals++;
-                            // Hit = Actual >= Predicted
-                            if (pick.actual_points >= pick.predicted_points) {
+                            totalPicks++;
+                            // Hit = Actual >= Math.floor(Predicted) * 0.9 (10% buffer)
+                            // We floor the predicted points because players score integers.
+                            // If predicted 5.6 and actual 5, Math.floor(5.6) = 5. 5 >= 4.5 is True.
+                            // This ensures we're comparing "apples to apples" regarding achievable scores.
+                            if (pick.actual_points >= (Math.floor(pick.predicted_points) * 0.9)) {
                                 totalHits++;
                             }
                         }
                     });
                 });
 
-                const hitRate = totalPicksWithActuals > 0
-                    ? ((totalHits / totalPicksWithActuals) * 100).toFixed(1) + '%'
+                const hitRate = totalPicks > 0
+                    ? ((totalHits / totalPicks) * 100).toFixed(1) + '%'
                     : '-';
 
                 document.getElementById('hit-rate-display').textContent = hitRate;
 
-                // Render Dropdowns
+                // Render Dropdowns (Show all history, not just 5 weeks)
                 let html = '';
 
                 data.forEach(entry => {
                     let gwTotalActual = 0;
                     let gwTotalPred = 0;
                     let hasActuals = false;
+
+
+                    if (entry.picks.length === 0) {
+                        html += `
+                            <details>
+                                <summary>
+                                    <span>Gameweek ${entry.gameweek}</span>
+                                    <span class="gw-summary-stats" style="font-style: italic;">No predictions made</span>
+                                </summary>
+                                <div style="padding: 15px; color: #888; text-align: center;">
+                                    No models were run for this gameweek.
+                                </div>
+                            </details>
+                        `;
+                        return;
+                    }
 
                     // Pre-calculate GW totals
                     entry.picks.forEach(pick => {
@@ -583,9 +624,12 @@
                             const diff = pick.actual_points - pick.predicted_points;
                             diffDisplay = diff > 0 ? `+${diff.toFixed(1)}` : diff.toFixed(1);
 
-                            if (pick.actual_points >= pick.predicted_points) {
+                            // Highlight Logic
+                            // Use the same condition as the metric for consistency
+                            if (pick.actual_points >= (Math.floor(pick.predicted_points) * 0.9)) {
                                 rowClass = 'style="color: var(--accent-green);"';
                             } else if (pick.actual_points < pick.predicted_points - 2) {
+                                // Keep the "huge miss" red
                                 rowClass = 'style="color: #ff4d4d;"';
                             }
                         }

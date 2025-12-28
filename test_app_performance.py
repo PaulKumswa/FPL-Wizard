@@ -1,3 +1,9 @@
+"""
+test_app_performance.py
+Description: This script tests the consistency and response time of the Flask application's API.
+It spins up the server in a separate thread and makes requests to the predictions endpoint to measure latency.
+Useful for verifying that the application is serving requests efficiently.
+"""
 import time
 import json
 import requests

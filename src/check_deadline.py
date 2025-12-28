@@ -1,3 +1,10 @@
+"""
+src/check_deadline.py
+Description: A utility script used by GitHub Actions (or other schedulers) to determine if the pipeline should run.
+It checks the FPL API for the next gameweek deadline and compares it with the current time.
+It sets a GitHub Output variable `should_update` to 'true' if the update window is open (e.g., < 24h before deadline) 
+and predictions haven't been generated yet.
+"""
 
 import os
 import sys

@@ -1,3 +1,12 @@
+"""
+src/app.py
+Description: The main Flask application entry point for the FPL Predictor website.
+It defines the web routes (/, /api/predictions, /api/history, /api/stats) and handles the application logic.
+Key features include:
+- Serving the main HTML template.
+- Providing a JSON API for predictions, defaulting to historical data for consistency but falling back to live inference.
+- Logging and serving simple usage statistics (visit counts).
+"""
 from flask import Flask, render_template, jsonify, request
 import pandas as pd
 import pickle
@@ -5,6 +14,7 @@ import json
 import os
 import sqlite3
 from datetime import datetime
+import src.inference as inference
 
 app = Flask(__name__)
 
@@ -72,31 +82,7 @@ def load_data():
         print(f"Error loading data: {e}")
         return None, None
 
-def load_models():
-    try:
-        models = {}
-        features_map = {}
-        
-        # Load models for each position
-        positions = {'GKP': 1, 'DEF': 2, 'MID': 3, 'FWD': 4}
-        for name, _ in positions.items():
-            model_path = f'models/fpl_model_{name}.pkl'
-            feature_path = f'models/model_features_{name}.pkl'
-            
-            if not os.path.exists(model_path) or not os.path.exists(feature_path):
-                print(f"Warning: Model or features for {name} not found.")
-                continue
-                
-            with open(model_path, 'rb') as f:
-                models[name] = pickle.load(f)
-            
-            with open(feature_path, 'rb') as f:
-                features_map[name] = pickle.load(f)
-                
-        return models, features_map
-    except Exception as e:
-        print(f"Error loading models: {e}")
-        return None, None
+
 
 @app.route('/')
 def index():
@@ -150,104 +136,23 @@ def get_predictions():
     
     # Load models only if calculation is needed (Slow)
     print("History not found or failed, loading models for inference...")
-    models, features_map = load_models()
+    models = inference.load_models()
 
     if not models:
         return jsonify({'error': 'Models not found'}), 500
 
+    # Predict
+    df = inference.predict_points(df, models)
     
-    # Advanced Underdog Logic
-    # 1. Ownership < 10% (Deep Differential)
-    # 2. Price < £8.0m (Budget Gem)
-    # 3. Form > 2.0 OR ICT Index > 3.0 (Active/Good Underlying Stats)
+    # Select Best Team
+    # app.py previously had manual "Advanced Underdog Logic" hardcoded here.
+    # Now that logic is in inference.select_best_team via src.config
+    final_picks_df = inference.select_best_team(df)
     
-    # Ensure columns are numeric
-    df['selected_by_percent'] = pd.to_numeric(df['selected_by_percent'])
-    df['now_cost'] = pd.to_numeric(df['now_cost'])
-    df['recent_form'] = pd.to_numeric(df['recent_form'])
-    df['ict_index'] = pd.to_numeric(df['ict_index'])
+    if final_picks_df.empty:
+         return jsonify({'error': 'No valid predictions found'}), 500
 
-    # Availability Filter (Option 1)
-    if 'chance_of_playing_next_round' in df.columns:
-        df['chance_of_playing_next_round'] = pd.to_numeric(df['chance_of_playing_next_round'], errors='coerce').fillna(100)
-        # Filter for availability first
-        # status: a=available, d=doubtful, i=international, n=loan/ineligible, s=suspended, u=unavailable(injury)
-        df = df[
-            (df['chance_of_playing_next_round'] >= 75) &
-            (~df['status'].isin(['s', 'u', 'n', 'i', 'd']))
-        ]
-    
-    # Keep a copy of available players for fallback
-    df_available = df.copy()
-
-    # Strict Criteria
-    df = df[
-        (df['selected_by_percent'] < 10) & 
-        (df['now_cost'] < 80) & 
-        ((df['recent_form'] > 2.0) | (df['ict_index'] > 3.0))
-    ]
-    
-    if df.empty:
-        # Fallback: Use available players, just < 10% ownership checks
-        df = df_available[df_available['selected_by_percent'] < 10]
-
-    # Make predictions per position
-    df['predicted_points'] = 0.0
-    
-    # Position Mapping: 1=GKP, 2=DEF, 3=MID, 4=FWD
-    pos_map_rev = {1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD'}
-    
-    for pos_id, pos_name in pos_map_rev.items():
-        if pos_name not in models:
-            continue
-            
-        model = models[pos_name]
-        features = features_map[pos_name]
-        
-        # Filter for this position
-        pos_mask = df['element_type'] == pos_id
-        if not pos_mask.any():
-            continue
-            
-        # Ensure features exist
-        # If a feature is missing (e.g. recent_saves), fill with 0
-        X = df.loc[pos_mask, features].copy()
-        for f in features:
-            if f not in X.columns:
-                X[f] = 0
-                
-        preds = model.predict(X)
-        df.loc[pos_mask, 'predicted_points'] = preds
-
-    # Selection Logic: Top 1 per position + 1 Wildcard
-    final_picks = []
-    df_sorted = df.sort_values('predicted_points', ascending=False)
-    
-    # Track (team, position) pairs to prevent "Same Team + Same Position" duplicates
-    selected_combinations = set()
-
-    for pos_id in [1, 2, 3, 4]:
-        pos_candidates = df_sorted[df_sorted['element_type'] == pos_id]
-        if not pos_candidates.empty:
-            pick = pos_candidates.iloc[0]
-            final_picks.append(pick)
-            selected_combinations.add((pick['team'], pick['element_type']))
-            df_sorted = df_sorted[df_sorted['element'] != pick['element']]
-            
-    if len(final_picks) < 5 and not df_sorted.empty:
-        wildcard = None
-        # Find first candidate that isn't (Same Team AND Same Position) as an existing pick
-        for idx, row in df_sorted.iterrows():
-            if (row['team'], row['element_type']) not in selected_combinations:
-                wildcard = row
-                break
-        
-        # Fallback: If for some reason we filtered everyone out (unlikely), take top remaining
-        if wildcard is None and not df_sorted.empty:
-            wildcard = df_sorted.iloc[0]
-
-        if wildcard is not None:
-            final_picks.append(wildcard)
+    return format_predictions_response(final_picks_df, metadata)
         
     # Convert back to DataFrame for easier handling
     result_df = pd.DataFrame(final_picks)

@@ -1,9 +1,19 @@
+"""
+src/id_map.py
+Description: Handles the mapping of player IDs between FPL (Fantasy Premier League) and Understat data sources.
+Since FPL and Understat use different naming conventions and IDs, this script uses fuzzy matching (fuzzywuzzy) 
+to link players. It maintains a persistent mapping file `known_id_mapping.json` to store verified mappings, 
+improving accuracy and performance over subsequent runs.
+"""
 import json
 import pandas as pd
 import os
 from pathlib import Path
 from fuzzywuzzy import process, fuzz
 import unidecode
+
+MAPPING_FILE = Path('data/config/known_id_mapping.json')
+OUTPUT_FILE = Path('data/processed/id_mapping.csv')
 
 def normalize_name(name):
     """Normalize names: lowercase, remove accents, strip whitespace."""
@@ -24,8 +34,6 @@ def load_data():
         fpl_players['team_name'] = fpl_players['team'].map(fpl_teams_map)
         
         # Load Understat
-        # Find the latest understat file or specific one. For now assume 2024.
-        # Check files in dir for latest
         files = os.listdir('data/raw')
         understat_files = [f for f in files if 'understat_players_' in f and f.endswith('.json')]
         if not understat_files:
@@ -45,96 +53,111 @@ def load_data():
         print(f"Error loading data: {e}")
         return None, None
 
+def load_known_mappings():
+    if MAPPING_FILE.exists():
+        with open(MAPPING_FILE, 'r') as f:
+            return json.load(f)
+    return {}
+
+def save_known_mappings(mappings):
+    MAPPING_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(MAPPING_FILE, 'w') as f:
+        json.dump(mappings, f, indent=2)
+    print(f"Updated known mappings: {MAPPING_FILE}")
+
 def map_ids():
     fpl_players, understat_players = load_data()
     if fpl_players is None or understat_players is None:
         return
 
-    # Load Overrides
-    overrides = {}
-    if os.path.exists('data/config/id_mapping_overrides.json'):
-        with open('data/config/id_mapping_overrides.json', 'r') as f:
-            overrides = json.load(f)
-
-    # Prepare Mappings
-    mapping = []
+    known_mappings = load_known_mappings()
+    final_mapping_list = []
     
     # Pre-process names
     fpl_players['norm_name'] = (fpl_players['first_name'] + " " + fpl_players['second_name']).apply(normalize_name)
-    fpl_players['web_name_norm'] = fpl_players['web_name'].apply(normalize_name)
     understat_players['norm_name'] = understat_players['player_name'].apply(normalize_name)
     
-    # Team Mapping (FPL -> Understat)
-    # Understat team names might differ slightly (e.g. "Man Utd" vs "Manchester United")
-    # We might need a small map here too if they differ drastically.
-    # For now, let's try fuzzy matching on player + team.
+    # Create Understat Lookup for fast access
+    us_lookup = understat_players.set_index('norm_name')[['id', 'player_name']].to_dict('index')
     
-    matched_count = 0
+    # List of names for fuzzy matching
+    us_names = understat_players['norm_name'].tolist()
+    
+    new_mappings_found = False
     
     print(f"Mapping {len(fpl_players)} FPL players...")
 
     for _, fpl_p in fpl_players.iterrows():
-        fpl_name = fpl_p['norm_name']
-        fpl_web_name = fpl_p['web_name_norm']
-        fpl_id = fpl_p['id']
-        fpl_team = normalize_name(fpl_p['team_name'])
+        fpl_id = str(fpl_p['id']) # Use string keys for JSON
+        fpl_full_name = f"{fpl_p['first_name']} {fpl_p['second_name']}"
+        fpl_norm = fpl_p['norm_name']
         
+        # 1. Check Known Mappings
+        if fpl_id in known_mappings:
+            entry = known_mappings[fpl_id]
+            final_mapping_list.append({
+                'fpl_id': int(fpl_id),
+                'understat_id': entry['understat_id'],
+                'fpl_name': fpl_full_name,
+                'understat_name': entry['understat_name'],
+                'score': 100 # Trusted
+            })
+            continue
+
+        # 2. Try Exact Match
         match_id = None
         match_name = None
         score = 0
         
-        # 1. Check Overrides (using full raw name)
-        full_name_raw = f"{fpl_p['first_name']} {fpl_p['second_name']}"
-        if full_name_raw in overrides:
-            target_name = overrides[full_name_raw]
-            # Find ID for this target name
-            u_p = understat_players[understat_players['player_name'] == target_name]
-            if not u_p.empty:
-                match_id = u_p.iloc[0]['id']
-                match_name = u_p.iloc[0]['player_name']
-                score = 100
+        if fpl_norm in us_lookup:
+            match = us_lookup[fpl_norm]
+            match_id = match['id']
+            match_name = match['player_name']
+            score = 100
+        else:
+            # 3. Fuzzy Match
+            best_match = process.extractOne(fpl_norm, us_names, scorer=fuzz.token_sort_ratio)
+            if best_match and best_match[1] > 85: # Threshold
+                score = best_match[1]
+                # Find ID
+                matched_row = understat_players[understat_players['norm_name'] == best_match[0]].iloc[0]
+                match_id = matched_row['id']
+                match_name = matched_row['player_name']
         
-        # 2. Exact/Fuzzy Match
-        if match_id is None:
-            # Filter Understat players by Team if possible? 
-            # Team names might not match exactly, so we default to searching global list if we can't match team.
-            # But searching global list is risky for common names.
-            # Let's try to find potential candidates.
-            
-            # Simple Exact Match first
-            exact = understat_players[understat_players['norm_name'] == fpl_name]
-            if not exact.empty:
-                match_id = exact.iloc[0]['id']
-                match_name = exact.iloc[0]['player_name']
-                score = 100
-            else:
-                # Fuzzy Match
-                # We prioritize matching last name or web name
-                best_match = process.extractOne(fpl_name, understat_players['norm_name'].tolist(), scorer=fuzz.token_sort_ratio)
-                if best_match and best_match[1] > 85:
-                    idx = understat_players[understat_players['norm_name'] == best_match[0]].index[0]
-                    match_id = understat_players.loc[idx, 'id']
-                    match_name = understat_players.loc[idx, 'player_name']
-                    score = best_match[1]
-                
-        # Append Result
+        # 4. Result
         if match_id:
-            mapping.append({
-                'fpl_id': fpl_id,
+            # Add to Final List
+            final_mapping_list.append({
+                'fpl_id': int(fpl_id),
                 'understat_id': match_id,
-                'fpl_name': full_name_raw,
+                'fpl_name': fpl_full_name,
                 'understat_name': match_name,
                 'score': score
             })
-            matched_count += 1
+            
+            # Add to Persistent Storage (Learning)
+            known_mappings[fpl_id] = {
+                'understat_id': match_id,
+                'fpl_name': fpl_full_name,
+                'understat_name': match_name
+            }
+            new_mappings_found = True
+        else:
+            # Log failure (optional: add to a "missing" list?)
+            # print(f"Could not map: {fpl_full_name}")
+            pass
+            
+    # Save Persistent
+    if new_mappings_found:
+        save_known_mappings(known_mappings)
         
-    # Save
-    mapping_df = pd.DataFrame(mapping)
-    os.makedirs('data/processed', exist_ok=True)
-    mapping_df.to_csv('data/processed/id_mapping.csv', index=False)
+    # Save CSV for Pipeline
+    mapping_df = pd.DataFrame(final_mapping_list)
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    mapping_df.to_csv(OUTPUT_FILE, index=False)
     
-    print(f"Mapping complete. Mapped {matched_count}/{len(fpl_players)} players.")
-    print(f"Saved to data/processed/id_mapping.csv")
+    print(f"Mapping complete. Mapped {len(mapping_df)}/{len(fpl_players)} players.")
+    print(f"Saved pipeline map to {OUTPUT_FILE}")
 
 if __name__ == "__main__":
     map_ids()

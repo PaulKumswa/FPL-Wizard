@@ -1,9 +1,16 @@
+"""
+src/train_model.py
+Description: Responsible for training the machine learning models used for points prediction.
+It loads the processed `train_data.csv`, splits it by player position (GKP, DEF, MID, FWD), and trains a 
+RandomForestRegressor for each position. The trained models and their feature lists are saved to the `models/` directory.
+"""
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 import pickle
 import os
+from src.config import FEATURE_CONFIGS
 
 def train_model():
     # Load processed data
@@ -13,48 +20,8 @@ def train_model():
         print("Error: Training data not found. Run src/preprocess.py first.")
         return
 
-    # Define Feature Sets per Position
-    # 1: GKP, 2: DEF, 3: MID, 4: FWD
-    feature_configs = {
-        1: {
-            'name': 'GKP',
-            'features': [
-                'now_cost', 'selected_by_percent', 'recent_form', 'opponent_strength', 'is_home',
-                'recent_clean_sheets', 'recent_saves', 'recent_goals_conceded', 'recent_penalties_saved',
-                'recent_team_xga'
-            ],
-            'min_samples_leaf': 5  # Strict regularization for sparse data
-        },
-        2: {
-            'name': 'DEF',
-            'features': [
-                'now_cost', 'selected_by_percent', 'recent_form', 'opponent_strength', 'is_home',
-                'recent_clean_sheets', 'recent_goals_conceded', 'recent_assists', 'recent_goals_scored',
-                'recent_threat', 'recent_influence', 'recent_team_xga'
-            ],
-            'min_samples_leaf': 3  # Increased for generalization
-        },
-        3: {
-            'name': 'MID',
-            'features': [
-                'now_cost', 'selected_by_percent', 'recent_form', 'opponent_strength', 'is_home',
-                'recent_goals_scored', 'recent_assists', 'recent_clean_sheets', 
-                'recent_creativity', 'recent_threat', 'recent_influence',
-                'recent_team_xg', 'recent_expected_goals', 'recent_expected_assists'
-            ],
-            'min_samples_leaf': 3  # Increased for generalization
-        },
-        4: {
-            'name': 'FWD',
-            'features': [
-                'now_cost', 'selected_by_percent', 'recent_form', 'opponent_strength', 'is_home',
-                'recent_goals_scored', 'recent_assists', 
-                'recent_threat', 'recent_influence',
-                'recent_team_xg', 'recent_expected_goals', 'recent_expected_assists'
-            ],
-            'min_samples_leaf': 3  # Moderate regularization
-        }
-    }
+    # Use Feature Configs from src.config
+    feature_configs = FEATURE_CONFIGS
     
     target = 'total_points'
     os.makedirs('models', exist_ok=True)

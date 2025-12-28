@@ -1,3 +1,9 @@
+"""
+debug_data.py
+Description: This script is used for debugging purposes to check the status of specific players (e.g., Bassey) 
+in the FPL bootstrap data and verify the freshness of the Understat match data.
+It prints player status, news, and the most recent match data found.
+"""
 import json
 import pandas as pd
 from datetime import datetime

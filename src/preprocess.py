@@ -1,3 +1,11 @@
+"""
+src/preprocess.py
+Description: The core data processing module for the FPL pipeline.
+It merges raw data from multiple sources (FPL Bootstrap, FPL Histories, FPL Fixtures, Understat Matches) to create:
+1. `train_data.csv`: Historical data with features (rolling averages of form, xG, xGA, etc.) for model training.
+2. `inference_data.csv`: A snapshot of players and their features for the upcoming gameweek to generate predictions.
+It handles feature engineering, team strength mapping, and data cleaning.
+"""
 import pandas as pd
 import json
 import os
