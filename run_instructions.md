@@ -15,6 +15,9 @@
    **Quick Launch (App Only)**:
    If you already have data and just want to launch the website:
    ```bash
+   python -m src.app
+
+   uses the below to rerun the models and update the predictions without fetching more data
    python update_pipeline.py --quick
    ```
 
