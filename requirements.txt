@@ -11,3 +11,4 @@ fuzzywuzzy
 python-Levenshtein
 unidecode
 pytest
+aiohttp
