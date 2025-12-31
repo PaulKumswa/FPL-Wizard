@@ -15,8 +15,18 @@ import os
 import sqlite3
 from datetime import datetime
 import src.inference as inference
+import src.data_fetch as data_fetch
+import time
 
 app = Flask(__name__)
+
+# --- Cache Setup ---
+LIVE_DATA_CACHE = {
+    'last_updated': 0,
+    'data': None,
+    'gameweek': None
+}
+CACHE_DURATION = 300  # 5 minutes
 
 # --- Usage Statistics Setup ---
 DB_PATH = 'data/stats.db'
@@ -165,7 +175,7 @@ def format_predictions_response(result_df, metadata):
     
     # Select columns to display
     # Select columns to display
-    display_cols = ['web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'code', 'team_code', 'opponent_team_code', 'element_type', 'recent_expected_goals', 'recent_expected_assists', 'recent_team_xga']
+    display_cols = ['element', 'web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'code', 'team_code', 'opponent_team_code', 'element_type', 'recent_expected_goals', 'recent_expected_assists', 'recent_team_xga']
     result = result_df[display_cols].to_dict(orient='records')
     
     # Position Mapping
@@ -227,6 +237,67 @@ def get_stats():
             'todays_visits': today_counts
         })
     except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/live')
+def get_live_scores():
+    global LIVE_DATA_CACHE
+    
+    current_time = time.time()
+    
+    if LIVE_DATA_CACHE['data'] and (current_time - LIVE_DATA_CACHE['last_updated'] < CACHE_DURATION):
+        print("Returning live data from cache")
+        return jsonify(LIVE_DATA_CACHE['data'])
+        
+    print("Fetching fresh live data from FPL...")
+    try:
+        bootstrap = data_fetch.fetch_fpl_bootstrap()
+        current_event = next((e for e in bootstrap['events'] if e['is_current']), None)
+        
+        if not current_event:
+            return jsonify({})
+            
+        gw_id = current_event['id']
+        live_json = data_fetch.get_gameweek_live_data(gw_id)
+        
+        if not live_json or 'elements' not in live_json:
+            return jsonify({})
+            
+        live_map = {}
+        for element in live_json['elements']:
+            stats = element['stats']
+            live_map[element['id']] = {
+                'points': stats['total_points'],
+                'minutes': stats['minutes'],
+                'finished': False # Default to False, updated below
+            }
+        
+        fixtures = data_fetch.fetch_fpl_fixtures()
+        team_fixture_status = {} 
+        gw_fixtures = [f for f in fixtures if f['event'] == gw_id]
+        
+        for f in gw_fixtures:
+            is_finished = f['finished']
+            team_fixture_status[f['team_h']] = is_finished
+            team_fixture_status[f['team_a']] = is_finished
+            
+        id_to_team = {e['id']: e['team'] for e in bootstrap['elements']}
+        
+        for pid, data in live_map.items():
+            tid = id_to_team.get(pid)
+            if tid:
+                 data['finished'] = team_fixture_status.get(tid, False)
+                 
+        LIVE_DATA_CACHE = {
+            'last_updated': current_time,
+            'data': live_map,
+            'gameweek': gw_id
+        }
+        
+        return jsonify(live_map)
+        
+    except Exception as e:
+        print(f"Error in /api/live: {e}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

@@ -467,9 +467,9 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                                     <th>Pos</th>
                                     <th>Opponent</th>
                                     <th>Cost (£)</th>
-                                    <th>Own (%)</th>
                                     <th>Stat (5GW)</th>
                                     <th>Min Points</th>
+                                    <th>Live Pts</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -498,7 +498,6 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                                 </div>
                             </td>
                             <td class="mono-font">${(player.now_cost / 10).toFixed(1)}</td>
-                            <td class="mono-font">${player.selected_by_percent}%</td>
                             <td class="mono-font">
                                 ${(player.element_type === 3 || player.element_type === 4)
                             ? `<span style="font-size:0.85em; color:#ccc;">xG: <strong style="color:#fff;">${(player.recent_expected_goals || 0).toFixed(2)}</strong><br>xA: <strong style="color:#fff;">${(player.recent_expected_assists || 0).toFixed(2)}</strong></span>`
@@ -506,12 +505,16 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                         }
                             </td>
                             <td class="points-cell mono-font"> ${player.predicted_points.toFixed(1)} </td>
+                            <td class="points-cell mono-font" id="live-${player.element}" style="color: #888;">-</td>
                         </tr>
                     `;
                 });
 
                 html += `</tbody></table></div>`;
                 predContainer.innerHTML = html;
+
+                // Trigger live updates
+                updateLiveScores();
             })
             .catch(error => {
                 document.getElementById('predictions').innerHTML = `<p style="color: #ff4d4d;">Error fetching data.</p>`;
@@ -660,6 +663,33 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 console.error('Error fetching history:', error);
                 document.getElementById('history-section').innerHTML = '<p>Error loading history.</p>';
             });
+
+        function updateLiveScores() {
+            console.log("Fetching live scores...");
+            fetch('/api/live')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error || !data) return;
+
+                    for (const [pid, stats] of Object.entries(data)) {
+                        const cell = document.getElementById(`live-${pid}`);
+                        if (cell) {
+                            cell.textContent = stats.points;
+
+                            // Style Logic
+                            if (stats.finished) {
+                                cell.style.color = 'var(--accent-green)'; // Match Over
+                            } else if (stats.minutes > 0) {
+                                cell.style.color = '#ff4d4d'; // Live / Playing
+                                cell.style.fontWeight = 'bold';
+                            } else {
+                                cell.style.color = '#888'; // Not started
+                            }
+                        }
+                    }
+                })
+                .catch(err => console.error("Live update failed", err));
+        }
     </script>
 </body>
 

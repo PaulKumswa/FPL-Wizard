@@ -169,6 +169,18 @@ async def fetch_all_histories(element_ids: List[int]) -> List[Dict]:
             
     return results
 
+def get_gameweek_live_data(gameweek: int) -> Dict[str, Any]:
+    """Fetch live stats for a specific gameweek (all players)."""
+    url = f"{FPL_BASE_URL}/event/{gameweek}/live/"
+    try:
+        resp = requests.get(url, timeout=30)
+        resp.raise_for_status()
+        return resp.json()
+    except Exception as e:
+        print(f"Error fetching live data for GW{gameweek}: {e}")
+        return {}
+
+
 def build_fpl_player_gameweeks_smart(
     out_path: Path,
     limit: Optional[int] = None,
