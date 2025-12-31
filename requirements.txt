@@ -12,3 +12,4 @@ python-Levenshtein
 unidecode
 pytest
 aiohttp
+nest_asyncio
