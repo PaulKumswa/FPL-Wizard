@@ -2,8 +2,9 @@ name: Keep Alive Ping
 
 on:
   schedule:
-    # Run every 14 minutes to beat the 15-minute inactivity timeout
-    - cron: '*/10 * * * *'
+    # Run every 5 minutes. Sleep up to 10 mins. Max gap = 5 + 10 = 15 mins (edge case).
+    # Normally much less.
+    - cron: '*/5 * * * *'
   workflow_dispatch: # Allow manual triggering
 
 jobs:
@@ -12,5 +13,9 @@ jobs:
     steps:
       - name: Ping Website
         run: |
+          # Sleep for a random time between 0 and 600 seconds (10 minutes)
+          SLEEP_TIME=$((RANDOM % 600))
+          echo "Sleeping for $SLEEP_TIME seconds"
+          sleep $SLEEP_TIME
           curl -I https://fplunderdogs-com.onrender.com
           echo "Ping sent to https://fplunderdogs-com.onrender.com"

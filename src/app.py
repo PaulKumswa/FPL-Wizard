@@ -24,9 +24,12 @@ app = Flask(__name__)
 LIVE_DATA_CACHE = {
     'last_updated': 0,
     'data': None,
-    'gameweek': None
+    'gameweek': None,
+    'window_start': None,
+    'window_end': None
 }
 CACHE_DURATION = 300  # 5 minutes
+WINDOW_BUFFER = 2.5 * 3600 # 2.5 hours in seconds
 
 # --- Usage Statistics Setup ---
 DB_PATH = 'data/stats.db'
@@ -245,6 +248,24 @@ def get_live_scores():
     
     current_time = time.time()
     
+    # 0. Check Window optimizations (if we have window data)
+    # If we are strictly OUTSIDE the window (and have data), we can extend cache duration
+    # or just return early.
+    
+    if LIVE_DATA_CACHE['gameweek']:
+        # If before start, return empty (save API call)
+        if LIVE_DATA_CACHE['window_start'] and current_time < LIVE_DATA_CACHE['window_start']:
+             print("Optimization: Before Gameweek Start. Returning empty.")
+             return jsonify({})
+             
+        # If after end, Cache Duration can be longer (e.g. 1 hour)
+        if LIVE_DATA_CACHE['window_end'] and current_time > LIVE_DATA_CACHE['window_end']:
+             # If we have data and it's fresh-ish (1 hour), return it
+             if LIVE_DATA_CACHE['data'] and (current_time - LIVE_DATA_CACHE['last_updated'] < 3600):
+                 print("Optimization: Gameweek Over (Cached).")
+                 return jsonify(LIVE_DATA_CACHE['data'])
+
+    # Standard Cache Check
     if LIVE_DATA_CACHE['data'] and (current_time - LIVE_DATA_CACHE['last_updated'] < CACHE_DURATION):
         print("Returning live data from cache")
         return jsonify(LIVE_DATA_CACHE['data'])
@@ -258,6 +279,32 @@ def get_live_scores():
             return jsonify({})
             
         gw_id = current_event['id']
+        
+        # Calculate Window (First fetch or update)
+        fixtures = data_fetch.fetch_fpl_fixtures()
+        gw_fixtures = [f for f in fixtures if f['event'] == gw_id]
+        
+        if gw_fixtures:
+            # Parse kickoffs
+            kickoffs = [datetime.fromisoformat(f['kickoff_time'].replace('Z', '+00:00')).timestamp() for f in gw_fixtures]
+            if kickoffs:
+                min_ko = min(kickoffs)
+                max_ko = max(kickoffs)
+                
+                window_start = min_ko
+                window_end = max_ko + WINDOW_BUFFER
+                
+                # Check Optimization AGAIN after fetching metadata
+                # (Handle case where we didn't have cache yet)
+                if current_time < window_start:
+                    print(f"Optimization: GW{gw_id} starts at {datetime.fromtimestamp(window_start)}. Now: {datetime.fromtimestamp(current_time)}. Skipping live fetch.")
+                    # Update cache metadata only
+                    LIVE_DATA_CACHE['gameweek'] = gw_id
+                    LIVE_DATA_CACHE['window_start'] = window_start
+                    LIVE_DATA_CACHE['window_end'] = window_end
+                    return jsonify({})
+        
+        # Proceed to fetch live data...
         live_json = data_fetch.get_gameweek_live_data(gw_id)
         
         if not live_json or 'elements' not in live_json:
@@ -269,12 +316,10 @@ def get_live_scores():
             live_map[element['id']] = {
                 'points': stats['total_points'],
                 'minutes': stats['minutes'],
-                'finished': False # Default to False, updated below
+                'finished': False 
             }
         
-        fixtures = data_fetch.fetch_fpl_fixtures()
         team_fixture_status = {} 
-        gw_fixtures = [f for f in fixtures if f['event'] == gw_id]
         
         for f in gw_fixtures:
             is_finished = f['finished']
@@ -291,7 +336,9 @@ def get_live_scores():
         LIVE_DATA_CACHE = {
             'last_updated': current_time,
             'data': live_map,
-            'gameweek': gw_id
+            'gameweek': gw_id,
+            'window_start': locals().get('window_start'), # Safe get
+            'window_end': locals().get('window_end')
         }
         
         return jsonify(live_map)

@@ -69,3 +69,15 @@ Models are trained independently for each position (`element_type`) to capture u
     *   Per the Dec 2025 Refactor, all prediction logic and model loading is centralized in `src/inference.py`.
     *   Feature selection and hyperparameters are defined in `src/config.py`.
     *   Both `update_pipeline.py` (Automation) and `src/app.py` (Web UI) consume these shared modules to ensure 100% consistency in results.
+
+## 5. User Interface & Live Data
+*   **Live Points**: During active gameweeks, the "Selection %" column is replaced by "Live Points".
+    *   **Visual Indicators**:
+        *   **Red**: Match is Live/Ongoing.
+        *   **Green**: Match Finished.
+    *   **Data Source**: FPL `element-summary` API.
+    *   **Caching**: Server-side caching (5 minutes) is implemented on the `/api/live-data` endpoint to minimize calls to the FPL API and prevent rate-limiting.
+
+## 6. Infrastructure & Reliability
+*   **Keep Alive Strategy**: To prevent the free-tier hosting (Render) from spinning down due to inactivity, a GitHub Action (`keep_alive.yml`) pings the site.
+    *   **Randomization**: The workflow runs every 5 minutes but includes a random sleep delay (0-10 minutes) before the ping. This ensures the site stays active while making the traffic pattern less predictable.
