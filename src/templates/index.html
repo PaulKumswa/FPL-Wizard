@@ -513,8 +513,8 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 html += `</tbody></table></div>`;
                 predContainer.innerHTML = html;
 
-                // Trigger live updates
-                updateLiveScores();
+                // Trigger live updates with explicit next gameweek
+                updateLiveScores(data.gameweek_info.next_gameweek);
             })
             .catch(error => {
                 document.getElementById('predictions').innerHTML = `<p style="color: #ff4d4d;">Error fetching data.</p>`;
@@ -664,9 +664,18 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 document.getElementById('history-section').innerHTML = '<p>Error loading history.</p>';
             });
 
-        function updateLiveScores() {
-            console.log("Fetching live scores...");
-            fetch('/api/live')
+        // Update Live Scores
+        // Parameter: gameweek (int, optional) - The gameweek to fetch. 
+        // We typically pass the "Next" gameweek to ensure we don't accidentally show old live data 
+        // if the previous gameweek hasn't technically "finished" in the API's eyes.
+        function updateLiveScores(gameweek) {
+            console.log(`Fetching live scores for GW ${gameweek || 'current'}...`);
+            let url = '/api/live';
+            if (gameweek) {
+                url += `?gw=${gameweek}`;
+            }
+
+            fetch(url)
                 .then(res => res.json())
                 .then(data => {
                     if (data.error || !data) return;

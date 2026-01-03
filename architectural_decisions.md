@@ -80,8 +80,10 @@ Models are trained independently for each position (`element_type`) to capture u
     *   **Visual Indicators**:
         *   **Red**: Match is Live/Ongoing.
         *   **Green**: Match Finished.
-    *   **Data Source**: FPL `element-summary` API.
-    *   **Caching**: Server-side caching (5 minutes) is implemented on the `/api/live-data` endpoint to minimize calls to the FPL API and prevent rate-limiting.
+    *   **Data Source**: FPL `/event/{id}/live` API (Gameweek Live Data).
+    *   **Synchronization**: The frontend explicitly requests live data for the **Predicted Gameweek** (e.g., `?gw=20`).
+        *   *Rationale*: This prevents the display of stale data from the *previous* "current" gameweek (e.g., GW19) when valid predictions exist for an upcoming, unstarted gameweek.
+    *   **Caching**: Server-side caching (5 minutes) is implemented on the `/api/live` endpoint to minimize calls to the FPL API and prevent rate-limiting.
 
 ## 7. Infrastructure & Reliability
 *   **Keep Alive Strategy**: To prevent the free-tier hosting (Render) from spinning down due to inactivity, a GitHub Action (`keep_alive.yml`) pings the site.

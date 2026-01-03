@@ -244,45 +244,66 @@ def get_stats():
 
 @app.route('/api/live')
 def get_live_scores():
+    """
+    Fetch live scores for a specific gameweek.
+    
+    Query Params:
+        gw (int, optional): The gameweek ID to fetch live data for. 
+                            If not provided, defaults to the 'current' active gameweek.
+                            
+    Logic:
+        - If 'gw' is provided (e.g., ?gw=20), we fetch live stats for that specific event.
+          - Crucially, if GW20 hasn't started yet, the FPL API returns nothing or 0s, 
+            which allows us to correctly display "-" in the frontend.
+        - If 'gw' is NOT provided, we determine the 'current' gameweek from FPL.
+          - This often points to the *previous* week (e.g., GW19) until GW20 starts.
+    """
     global LIVE_DATA_CACHE
     
     current_time = time.time()
-    
-    # 0. Check Window optimizations (if we have window data)
-    # If we are strictly OUTSIDE the window (and have data), we can extend cache duration
-    # or just return early.
-    
-    if LIVE_DATA_CACHE['gameweek']:
-        # If before start, return empty (save API call)
-        if LIVE_DATA_CACHE['window_start'] and current_time < LIVE_DATA_CACHE['window_start']:
-             print("Optimization: Before Gameweek Start. Returning empty.")
-             return jsonify({})
-             
-        # If after end, Cache Duration can be longer (e.g. 1 hour)
-        if LIVE_DATA_CACHE['window_end'] and current_time > LIVE_DATA_CACHE['window_end']:
-             # If we have data and it's fresh-ish (1 hour), return it
-             if LIVE_DATA_CACHE['data'] and (current_time - LIVE_DATA_CACHE['last_updated'] < 3600):
-                 print("Optimization: Gameweek Over (Cached).")
-                 return jsonify(LIVE_DATA_CACHE['data'])
+    requested_gw = request.args.get('gw', type=int)
 
-    # Standard Cache Check
-    if LIVE_DATA_CACHE['data'] and (current_time - LIVE_DATA_CACHE['last_updated'] < CACHE_DURATION):
-        print("Returning live data from cache")
-        return jsonify(LIVE_DATA_CACHE['data'])
+    # If a specific GW is requested, we bypass the standard "current" logic 
+    # if it doesn't match our cache. OR we treat the cache key as (gw_id).
+    # For simplicity/safety in this fix, if a GW is requested that is DIFFERENT 
+    # from our cached GW, we wipe/ignore cache or use a separate logic.
+    # But since the app is single-threaded/global cache, let's just invalidate if mismatch.
+    
+    if requested_gw and LIVE_DATA_CACHE['gameweek'] != requested_gw:
+        # If we asked for GW20 but cache has GW19, we must fetch fresh.
+        # We don't want to rely on the "window" optimization for the wrong week.
+        pass 
+    elif LIVE_DATA_CACHE['gameweek']:
+        # Standard Cache Check (same GW)
+        # Check Window optimizations
+        if LIVE_DATA_CACHE['window_start'] and current_time < LIVE_DATA_CACHE['window_start']:
+             if not requested_gw or requested_gw == LIVE_DATA_CACHE['gameweek']:
+                 print("Optimization: Before Gameweek Start. Returning empty.")
+                 return jsonify({})
+             
+        if LIVE_DATA_CACHE['data'] and (current_time - LIVE_DATA_CACHE['last_updated'] < CACHE_DURATION):
+            print("Returning live data from cache")
+            return jsonify(LIVE_DATA_CACHE['data'])
         
-    print("Fetching fresh live data from FPL...")
+    print(f"Fetching fresh live data from FPL (Requested GW: {requested_gw})...")
     try:
-        bootstrap = data_fetch.fetch_fpl_bootstrap()
-        current_event = next((e for e in bootstrap['events'] if e['is_current']), None)
-        
-        if not current_event:
-            return jsonify({})
+        if requested_gw:
+            gw_id = requested_gw
+        else:
+            # Default behavior (Old logic)
+            bootstrap = data_fetch.fetch_fpl_bootstrap()
+            current_event = next((e for e in bootstrap['events'] if e['is_current']), None)
             
-        gw_id = current_event['id']
+            if not current_event:
+                return jsonify({})
+            gw_id = current_event['id']
         
         # Calculate Window (First fetch or update)
         fixtures = data_fetch.fetch_fpl_fixtures()
         gw_fixtures = [f for f in fixtures if f['event'] == gw_id]
+        
+        window_start = None
+        window_end = None
         
         if gw_fixtures:
             # Parse kickoffs
@@ -294,20 +315,25 @@ def get_live_scores():
                 window_start = min_ko
                 window_end = max_ko + WINDOW_BUFFER
                 
-                # Check Optimization AGAIN after fetching metadata
-                # (Handle case where we didn't have cache yet)
+                # Check Optimization AGAIN
                 if current_time < window_start:
                     print(f"Optimization: GW{gw_id} starts at {datetime.fromtimestamp(window_start)}. Now: {datetime.fromtimestamp(current_time)}. Skipping live fetch.")
                     # Update cache metadata only
                     LIVE_DATA_CACHE['gameweek'] = gw_id
                     LIVE_DATA_CACHE['window_start'] = window_start
                     LIVE_DATA_CACHE['window_end'] = window_end
+                    # Clear data since it's a new/future week
+                    LIVE_DATA_CACHE['data'] = {} 
+                    LIVE_DATA_CACHE['last_updated'] = current_time
                     return jsonify({})
         
         # Proceed to fetch live data...
+        print(f"Fetching live stats for GW{gw_id}...")
         live_json = data_fetch.get_gameweek_live_data(gw_id)
         
+        # If API returns empty or error for future gameweek
         if not live_json or 'elements' not in live_json:
+            print(f"No live elements found for GW{gw_id} (likely future). returning empty.")
             return jsonify({})
             
         live_map = {}
@@ -319,13 +345,25 @@ def get_live_scores():
                 'finished': False 
             }
         
-        team_fixture_status = {} 
-        
-        for f in gw_fixtures:
-            is_finished = f['finished']
-            team_fixture_status[f['team_h']] = is_finished
-            team_fixture_status[f['team_a']] = is_finished
+        # Fetch status only if we have fixtures
+        team_fixture_status = {}
+        if gw_fixtures:
+            for f in gw_fixtures:
+                is_finished = f['finished']
+                team_fixture_status[f['team_h']] = is_finished
+                team_fixture_status[f['team_a']] = is_finished
             
+        # We need bootstrap to map teams if we haven't already
+        # Potentially slow if we call it every time, but get_live_scores is cached 5 mins.
+        # For robustness, let's basic map if we can.
+        # Ideally we'd have a global team map.
+        # For now, let's skip the expensive bootstrap fetch if we only have requested_gw
+        # unless we really need 'finished' status. 
+        # Actually, without 'bootstrap', id_to_team fails.
+        # Let's fetch bootstrap if we didn't get it above.
+        if requested_gw:
+             bootstrap = data_fetch.fetch_fpl_bootstrap()
+             
         id_to_team = {e['id']: e['team'] for e in bootstrap['elements']}
         
         for pid, data in live_map.items():
