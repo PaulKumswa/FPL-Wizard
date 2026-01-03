@@ -182,35 +182,35 @@
         "web_name": "Henderson",
         "position": "GKP",
         "predicted_points": 5.052956516899031,
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 291,
         "web_name": "Tarkowski",
         "position": "DEF",
         "predicted_points": 5.9720018250679106,
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 237,
         "web_name": "Enzo",
         "position": "MID",
         "predicted_points": 4.546680283758139,
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 624,
         "web_name": "Bowen",
         "position": "FWD",
         "predicted_points": 2.8359249639249646,
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 403,
         "web_name": "Gvardiol",
         "position": "DEF",
         "predicted_points": 5.160353182771529,
-        "actual_points": null
+        "actual_points": 1.0
       }
     ]
   }

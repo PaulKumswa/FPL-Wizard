@@ -1908,5 +1908,40 @@
     "understat_id": "13484",
     "fpl_name": "Mateus Man\u00e9",
     "understat_name": "Mateus Man\u00e9"
+  },
+  "42": {
+    "understat_id": "13392",
+    "fpl_name": "Andr\u00e9s Garc\u00eda",
+    "understat_name": "Andr\u00e9s Garc\u00eda"
+  },
+  "754": {
+    "understat_id": "14193",
+    "fpl_name": "George Hemmings",
+    "understat_name": "George Hemmings"
+  },
+  "296": {
+    "understat_id": "10292",
+    "fpl_name": "Nathan Patterson",
+    "understat_name": "Nathan Patterson"
+  },
+  "769": {
+    "understat_id": "14266",
+    "fpl_name": "Bendito Mantato",
+    "understat_name": "Bendito Mantato"
+  },
+  "535": {
+    "understat_id": "8537",
+    "fpl_name": "Dennis Cirkin",
+    "understat_name": "Dennis Cirkin"
+  },
+  "572": {
+    "understat_id": "9105",
+    "fpl_name": "Radu Dr\u0103gu\u0219in",
+    "understat_name": "Radu Dragusin"
+  },
+  "620": {
+    "understat_id": "12474",
+    "fpl_name": "George Earthy",
+    "understat_name": "George Earthy"
   }
 }

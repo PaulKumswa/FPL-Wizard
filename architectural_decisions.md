@@ -70,7 +70,12 @@ Models are trained independently for each position (`element_type`) to capture u
     *   Feature selection and hyperparameters are defined in `src/config.py`.
     *   Both `update_pipeline.py` (Automation) and `src/app.py` (Web UI) consume these shared modules to ensure 100% consistency in results.
 
-## 5. User Interface & Live Data
+## 5. Code Structure & Modules (New Jan 2026)
+*   **Package-First Approach**: The project is structured as a Python package (`src`).
+*   **Execution**: All scripts within `src/` MUST be executed as modules (e.g., `python -m src.train_model`) rather than as standalone scripts (`python src/train_model.py`).
+    *   *Rationale*: This ensures the `sys.path` is correctly set to the project root (`C:\fpl-ml`), enabling absolute imports (e.g., `from src.config import ...`) to resolve correctly from anywhere in the codebase.
+
+## 6. User Interface & Live Data
 *   **Live Points**: During active gameweeks, the "Selection %" column is replaced by "Live Points".
     *   **Visual Indicators**:
         *   **Red**: Match is Live/Ongoing.
@@ -78,6 +83,6 @@ Models are trained independently for each position (`element_type`) to capture u
     *   **Data Source**: FPL `element-summary` API.
     *   **Caching**: Server-side caching (5 minutes) is implemented on the `/api/live-data` endpoint to minimize calls to the FPL API and prevent rate-limiting.
 
-## 6. Infrastructure & Reliability
+## 7. Infrastructure & Reliability
 *   **Keep Alive Strategy**: To prevent the free-tier hosting (Render) from spinning down due to inactivity, a GitHub Action (`keep_alive.yml`) pings the site.
     *   **Randomization**: The workflow runs every 5 minutes but includes a random sleep delay (0-10 minutes) before the ping. This ensures the site stays active while making the traffic pattern less predictable.

@@ -105,14 +105,13 @@ def main():
         print("--- History Update Complete ---\n")
         
         # 2. Preprocess
-        run_command([sys.executable, 'src/preprocess.py'], "Preprocessing Data")
+        run_command([sys.executable, '-m', 'src.preprocess'], "Preprocessing Data")
 
         # 3. ID Mapping
-        run_command([sys.executable, 'src/id_map.py'], "Mapping IDs")
+        run_command([sys.executable, '-m', 'src.id_map'], "Mapping IDs")
 
         # 4. Train Models
-        run_command([sys.executable, 'src/train_model.py'], "Training Models")
-        run_command(f'"{sys.executable}" src/train_model.py', "Training Models")
+        run_command([sys.executable, '-m', 'src.train_model'], "Training Models")
         
     # 4. Log New Predictions
     print("--- Logging New Predictions ---")

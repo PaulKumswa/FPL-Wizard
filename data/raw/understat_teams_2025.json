@@ -461,6 +461,60 @@
         "loses": 0,
         "pts": 3,
         "npxGD": 0.5646199999999999
+      },
+      {
+        "h_a": "a",
+        "xG": 2.05918,
+        "xGA": 1.97155,
+        "npxG": 2.05918,
+        "npxGA": 1.97155,
+        "ppda": {
+          "att": 284,
+          "def": 7
+        },
+        "ppda_allowed": {
+          "att": 187,
+          "def": 39
+        },
+        "deep": 6,
+        "deep_allowed": 11,
+        "scored": 2,
+        "missed": 1,
+        "xpts": 1.444,
+        "result": "w",
+        "date": "2025-12-27 17:30:00",
+        "wins": 1,
+        "draws": 0,
+        "loses": 0,
+        "pts": 3,
+        "npxGD": 0.0876300000000001
+      },
+      {
+        "h_a": "a",
+        "xG": 2.94195,
+        "xGA": 4.41335,
+        "npxG": 2.94195,
+        "npxGA": 4.41335,
+        "ppda": {
+          "att": 171,
+          "def": 8
+        },
+        "ppda_allowed": {
+          "att": 262,
+          "def": 31
+        },
+        "deep": 4,
+        "deep_allowed": 8,
+        "scored": 1,
+        "missed": 4,
+        "xpts": 0.5795,
+        "result": "l",
+        "date": "2025-12-30 20:15:00",
+        "wins": 0,
+        "draws": 0,
+        "loses": 1,
+        "pts": 0,
+        "npxGD": -1.4714000000000005
       }
     ]
   },
@@ -926,6 +980,60 @@
         "loses": 1,
         "pts": 0,
         "npxGD": -0.872787
+      },
+      {
+        "h_a": "a",
+        "xG": 1.25204,
+        "xGA": 1.24948,
+        "npxG": 1.25204,
+        "npxGA": 1.24948,
+        "ppda": {
+          "att": 244,
+          "def": 21
+        },
+        "ppda_allowed": {
+          "att": 177,
+          "def": 21
+        },
+        "deep": 6,
+        "deep_allowed": 4,
+        "scored": 0,
+        "missed": 0,
+        "xpts": 1.3984,
+        "result": "d",
+        "date": "2025-12-27 15:00:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": 0.0025600000000001177
+      },
+      {
+        "h_a": "a",
+        "xG": 1.69525,
+        "xGA": 1.75445,
+        "npxG": 1.69525,
+        "npxGA": 1.75445,
+        "ppda": {
+          "att": 309,
+          "def": 23
+        },
+        "ppda_allowed": {
+          "att": 150,
+          "def": 27
+        },
+        "deep": 4,
+        "deep_allowed": 16,
+        "scored": 2,
+        "missed": 0,
+        "xpts": 1.3394,
+        "result": "w",
+        "date": "2025-12-30 19:30:00",
+        "wins": 1,
+        "draws": 0,
+        "loses": 0,
+        "pts": 3,
+        "npxGD": -0.05920000000000014
       }
     ]
   },
@@ -1391,6 +1499,60 @@
         "loses": 0,
         "pts": 1,
         "npxGD": 1.337942
+      },
+      {
+        "h_a": "a",
+        "xG": 2.56183,
+        "xGA": 2.8513,
+        "npxG": 2.56183,
+        "npxGA": 2.8513,
+        "ppda": {
+          "att": 206,
+          "def": 30
+        },
+        "ppda_allowed": {
+          "att": 166,
+          "def": 20
+        },
+        "deep": 5,
+        "deep_allowed": 9,
+        "scored": 1,
+        "missed": 4,
+        "xpts": 1.1932,
+        "result": "l",
+        "date": "2025-12-27 15:00:00",
+        "wins": 0,
+        "draws": 0,
+        "loses": 1,
+        "pts": 0,
+        "npxGD": -0.2894700000000001
+      },
+      {
+        "h_a": "a",
+        "xG": 3.49142,
+        "xGA": 2.33294,
+        "npxG": 3.49142,
+        "npxGA": 1.57177,
+        "ppda": {
+          "att": 253,
+          "def": 16
+        },
+        "ppda_allowed": {
+          "att": 119,
+          "def": 24
+        },
+        "deep": 8,
+        "deep_allowed": 10,
+        "scored": 2,
+        "missed": 2,
+        "xpts": 2.1684,
+        "result": "d",
+        "date": "2025-12-30 19:30:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": 1.9196500000000003
       }
     ]
   },
@@ -1856,6 +2018,60 @@
         "loses": 0,
         "pts": 1,
         "npxGD": 0.39116800000000007
+      },
+      {
+        "h_a": "h",
+        "xG": 0.805957,
+        "xGA": 2.60653,
+        "npxG": 0.805957,
+        "npxGA": 2.60653,
+        "ppda": {
+          "att": 305,
+          "def": 15
+        },
+        "ppda_allowed": {
+          "att": 217,
+          "def": 22
+        },
+        "deep": 5,
+        "deep_allowed": 16,
+        "scored": 1,
+        "missed": 1,
+        "xpts": 0.30510000000000004,
+        "result": "d",
+        "date": "2025-12-28 14:00:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": -1.8005729999999998
+      },
+      {
+        "h_a": "h",
+        "xG": 0.962141,
+        "xGA": 2.44247,
+        "npxG": 0.962141,
+        "npxGA": 2.44247,
+        "ppda": {
+          "att": 316,
+          "def": 37
+        },
+        "ppda_allowed": {
+          "att": 148,
+          "def": 26
+        },
+        "deep": 5,
+        "deep_allowed": 17,
+        "scored": 0,
+        "missed": 0,
+        "xpts": 0.4552,
+        "result": "d",
+        "date": "2026-01-01 20:00:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": -1.4803290000000002
       }
     ]
   },
@@ -2321,6 +2537,60 @@
         "loses": 1,
         "pts": 0,
         "npxGD": -2.138453
+      },
+      {
+        "h_a": "h",
+        "xG": 0.929681,
+        "xGA": 0.870768,
+        "npxG": 0.929681,
+        "npxGA": 0.870768,
+        "ppda": {
+          "att": 167,
+          "def": 23
+        },
+        "ppda_allowed": {
+          "att": 298,
+          "def": 9
+        },
+        "deep": 16,
+        "deep_allowed": 6,
+        "scored": 0,
+        "missed": 1,
+        "xpts": 1.3204,
+        "result": "l",
+        "date": "2025-12-28 16:30:00",
+        "wins": 0,
+        "draws": 0,
+        "loses": 1,
+        "pts": 0,
+        "npxGD": 0.05891299999999999
+      },
+      {
+        "h_a": "h",
+        "xG": 2.35346,
+        "xGA": 1.75434,
+        "npxG": 2.35346,
+        "npxGA": 1.75434,
+        "ppda": {
+          "att": 335,
+          "def": 13
+        },
+        "ppda_allowed": {
+          "att": 203,
+          "def": 25
+        },
+        "deep": 10,
+        "deep_allowed": 9,
+        "scored": 1,
+        "missed": 1,
+        "xpts": 1.8459999999999999,
+        "result": "d",
+        "date": "2026-01-01 17:30:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": 0.5991200000000001
       }
     ]
   },
@@ -2786,6 +3056,60 @@
         "loses": 0,
         "pts": 1,
         "npxGD": -1.8525299999999998
+      },
+      {
+        "h_a": "h",
+        "xG": 1.97155,
+        "xGA": 2.05918,
+        "npxG": 1.97155,
+        "npxGA": 2.05918,
+        "ppda": {
+          "att": 187,
+          "def": 39
+        },
+        "ppda_allowed": {
+          "att": 284,
+          "def": 7
+        },
+        "deep": 11,
+        "deep_allowed": 6,
+        "scored": 1,
+        "missed": 2,
+        "xpts": 1.2811,
+        "result": "l",
+        "date": "2025-12-27 17:30:00",
+        "wins": 0,
+        "draws": 0,
+        "loses": 1,
+        "pts": 0,
+        "npxGD": -0.0876300000000001
+      },
+      {
+        "h_a": "h",
+        "xG": 2.33294,
+        "xGA": 3.49142,
+        "npxG": 1.57177,
+        "npxGA": 3.49142,
+        "ppda": {
+          "att": 119,
+          "def": 24
+        },
+        "ppda_allowed": {
+          "att": 253,
+          "def": 16
+        },
+        "deep": 10,
+        "deep_allowed": 8,
+        "scored": 2,
+        "missed": 2,
+        "xpts": 0.6411,
+        "result": "d",
+        "date": "2025-12-30 19:30:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": -1.9196500000000003
       }
     ]
   },
@@ -3251,6 +3575,60 @@
         "loses": 1,
         "pts": 0,
         "npxGD": -2.56045
+      },
+      {
+        "h_a": "h",
+        "xG": 1.13719,
+        "xGA": 1.11436,
+        "npxG": 1.13719,
+        "npxGA": 1.11436,
+        "ppda": {
+          "att": 247,
+          "def": 20
+        },
+        "ppda_allowed": {
+          "att": 200,
+          "def": 20
+        },
+        "deep": 11,
+        "deep_allowed": 5,
+        "scored": 0,
+        "missed": 1,
+        "xpts": 1.3638,
+        "result": "l",
+        "date": "2025-12-27 15:00:00",
+        "wins": 0,
+        "draws": 0,
+        "loses": 1,
+        "pts": 0,
+        "npxGD": 0.022829999999999906
+      },
+      {
+        "h_a": "h",
+        "xG": 2.27644,
+        "xGA": 3.08914,
+        "npxG": 1.51527,
+        "npxGA": 1.56681,
+        "ppda": {
+          "att": 305,
+          "def": 21
+        },
+        "ppda_allowed": {
+          "att": 178,
+          "def": 26
+        },
+        "deep": 5,
+        "deep_allowed": 5,
+        "scored": 2,
+        "missed": 2,
+        "xpts": 0.8082,
+        "result": "d",
+        "date": "2025-12-30 19:30:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": -0.05154000000000014
       }
     ]
   },
@@ -3716,6 +4094,60 @@
         "loses": 1,
         "pts": 0,
         "npxGD": 0.11741000000000001
+      },
+      {
+        "h_a": "a",
+        "xG": 0.870768,
+        "xGA": 0.929681,
+        "npxG": 0.870768,
+        "npxGA": 0.929681,
+        "ppda": {
+          "att": 298,
+          "def": 9
+        },
+        "ppda_allowed": {
+          "att": 167,
+          "def": 23
+        },
+        "deep": 6,
+        "deep_allowed": 16,
+        "scored": 1,
+        "missed": 0,
+        "xpts": 1.3333000000000002,
+        "result": "w",
+        "date": "2025-12-28 16:30:00",
+        "wins": 1,
+        "draws": 0,
+        "loses": 0,
+        "pts": 3,
+        "npxGD": -0.05891299999999999
+      },
+      {
+        "h_a": "a",
+        "xG": 0.608309,
+        "xGA": 0.556304,
+        "npxG": 0.608309,
+        "npxGA": 0.556304,
+        "ppda": {
+          "att": 303,
+          "def": 16
+        },
+        "ppda_allowed": {
+          "att": 213,
+          "def": 28
+        },
+        "deep": 7,
+        "deep_allowed": 3,
+        "scored": 0,
+        "missed": 0,
+        "xpts": 1.3421,
+        "result": "d",
+        "date": "2026-01-01 20:00:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": 0.05200499999999997
       }
     ]
   },
@@ -4181,6 +4613,60 @@
         "loses": 0,
         "pts": 3,
         "npxGD": 0.872787
+      },
+      {
+        "h_a": "h",
+        "xG": 2.54318,
+        "xGA": 0.710064,
+        "npxG": 2.54318,
+        "npxGA": 0.710064,
+        "ppda": {
+          "att": 236,
+          "def": 17
+        },
+        "ppda_allowed": {
+          "att": 249,
+          "def": 23
+        },
+        "deep": 8,
+        "deep_allowed": 6,
+        "scored": 2,
+        "missed": 1,
+        "xpts": 2.5946,
+        "result": "w",
+        "date": "2025-12-27 15:00:00",
+        "wins": 1,
+        "draws": 0,
+        "loses": 0,
+        "pts": 3,
+        "npxGD": 1.833116
+      },
+      {
+        "h_a": "h",
+        "xG": 4.41335,
+        "xGA": 2.94195,
+        "npxG": 4.41335,
+        "npxGA": 2.94195,
+        "ppda": {
+          "att": 262,
+          "def": 31
+        },
+        "ppda_allowed": {
+          "att": 171,
+          "def": 8
+        },
+        "deep": 8,
+        "deep_allowed": 4,
+        "scored": 4,
+        "missed": 1,
+        "xpts": 2.2514,
+        "result": "w",
+        "date": "2025-12-30 20:15:00",
+        "wins": 1,
+        "draws": 0,
+        "loses": 0,
+        "pts": 3,
+        "npxGD": 1.4714000000000005
       }
     ]
   },
@@ -4673,6 +5159,33 @@
         "loses": 1,
         "pts": 0,
         "npxGD": 0.18916900000000003
+      },
+      {
+        "h_a": "a",
+        "xG": 2.49248,
+        "xGA": 1.32551,
+        "npxG": 2.49248,
+        "npxGA": 1.32551,
+        "ppda": {
+          "att": 230,
+          "def": 20
+        },
+        "ppda_allowed": {
+          "att": 282,
+          "def": 23
+        },
+        "deep": 7,
+        "deep_allowed": 11,
+        "scored": 3,
+        "missed": 1,
+        "xpts": 2.2210000000000005,
+        "result": "w",
+        "date": "2025-12-30 19:30:00",
+        "wins": 1,
+        "draws": 0,
+        "loses": 0,
+        "pts": 3,
+        "npxGD": 1.16697
       }
     ]
   },
@@ -5138,6 +5651,60 @@
         "loses": 0,
         "pts": 3,
         "npxGD": -0.11741000000000001
+      },
+      {
+        "h_a": "h",
+        "xG": 1.56502,
+        "xGA": 0.780664,
+        "npxG": 1.56502,
+        "npxGA": 0.780664,
+        "ppda": {
+          "att": 171,
+          "def": 23
+        },
+        "ppda_allowed": {
+          "att": 295,
+          "def": 22
+        },
+        "deep": 12,
+        "deep_allowed": 2,
+        "scored": 2,
+        "missed": 1,
+        "xpts": 2.0151,
+        "result": "w",
+        "date": "2025-12-27 15:00:00",
+        "wins": 1,
+        "draws": 0,
+        "loses": 0,
+        "pts": 3,
+        "npxGD": 0.784356
+      },
+      {
+        "h_a": "h",
+        "xG": 1.67833,
+        "xGA": 0.15936,
+        "npxG": 1.67833,
+        "npxGA": 0.15936,
+        "ppda": {
+          "att": 150,
+          "def": 23
+        },
+        "ppda_allowed": {
+          "att": 280,
+          "def": 16
+        },
+        "deep": 10,
+        "deep_allowed": 1,
+        "scored": 0,
+        "missed": 0,
+        "xpts": 2.6571000000000002,
+        "result": "d",
+        "date": "2026-01-01 17:30:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": 1.5189700000000002
       }
     ]
   },
@@ -5603,6 +6170,60 @@
         "loses": 0,
         "pts": 3,
         "npxGD": 2.56045
+      },
+      {
+        "h_a": "a",
+        "xG": 1.46468,
+        "xGA": 0.600141,
+        "npxG": 1.46468,
+        "npxGA": 0.600141,
+        "ppda": {
+          "att": 136,
+          "def": 21
+        },
+        "ppda_allowed": {
+          "att": 299,
+          "def": 16
+        },
+        "deep": 11,
+        "deep_allowed": 4,
+        "scored": 2,
+        "missed": 1,
+        "xpts": 2.0779,
+        "result": "w",
+        "date": "2025-12-27 12:30:00",
+        "wins": 1,
+        "draws": 0,
+        "loses": 0,
+        "pts": 3,
+        "npxGD": 0.864539
+      },
+      {
+        "h_a": "a",
+        "xG": 2.44247,
+        "xGA": 0.962141,
+        "npxG": 2.44247,
+        "npxGA": 0.962141,
+        "ppda": {
+          "att": 148,
+          "def": 26
+        },
+        "ppda_allowed": {
+          "att": 316,
+          "def": 37
+        },
+        "deep": 17,
+        "deep_allowed": 5,
+        "scored": 0,
+        "missed": 0,
+        "xpts": 2.3851,
+        "result": "d",
+        "date": "2026-01-01 20:00:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": 1.4803290000000002
       }
     ]
   },
@@ -6095,6 +6716,33 @@
         "loses": 0,
         "pts": 3,
         "npxGD": -0.18916900000000003
+      },
+      {
+        "h_a": "h",
+        "xG": 1.13306,
+        "xGA": 1.21784,
+        "npxG": 1.13306,
+        "npxGA": 1.21784,
+        "ppda": {
+          "att": 207,
+          "def": 27
+        },
+        "ppda_allowed": {
+          "att": 296,
+          "def": 17
+        },
+        "deep": 6,
+        "deep_allowed": 7,
+        "scored": 1,
+        "missed": 1,
+        "xpts": 1.2485,
+        "result": "d",
+        "date": "2025-12-30 20:15:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": -0.08478000000000008
       }
     ]
   },
@@ -6560,6 +7208,60 @@
         "loses": 0,
         "pts": 1,
         "npxGD": -1.337942
+      },
+      {
+        "h_a": "h",
+        "xG": 1.24948,
+        "xGA": 1.25204,
+        "npxG": 1.24948,
+        "npxGA": 1.25204,
+        "ppda": {
+          "att": 177,
+          "def": 21
+        },
+        "ppda_allowed": {
+          "att": 244,
+          "def": 21
+        },
+        "deep": 4,
+        "deep_allowed": 6,
+        "scored": 0,
+        "missed": 0,
+        "xpts": 1.3078,
+        "result": "d",
+        "date": "2025-12-27 15:00:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": -0.0025600000000001177
+      },
+      {
+        "h_a": "h",
+        "xG": 1.32551,
+        "xGA": 2.49248,
+        "npxG": 1.32551,
+        "npxGA": 2.49248,
+        "ppda": {
+          "att": 282,
+          "def": 23
+        },
+        "ppda_allowed": {
+          "att": 230,
+          "def": 20
+        },
+        "deep": 11,
+        "deep_allowed": 7,
+        "scored": 1,
+        "missed": 3,
+        "xpts": 0.583,
+        "result": "l",
+        "date": "2025-12-30 19:30:00",
+        "wins": 0,
+        "draws": 0,
+        "loses": 1,
+        "pts": 0,
+        "npxGD": -1.16697
       }
     ]
   },
@@ -7025,6 +7727,60 @@
         "loses": 0,
         "pts": 1,
         "npxGD": -0.39116800000000007
+      },
+      {
+        "h_a": "a",
+        "xG": 0.710064,
+        "xGA": 2.54318,
+        "npxG": 0.710064,
+        "npxGA": 2.54318,
+        "ppda": {
+          "att": 249,
+          "def": 23
+        },
+        "ppda_allowed": {
+          "att": 236,
+          "def": 17
+        },
+        "deep": 6,
+        "deep_allowed": 8,
+        "scored": 1,
+        "missed": 2,
+        "xpts": 0.2768,
+        "result": "l",
+        "date": "2025-12-27 15:00:00",
+        "wins": 0,
+        "draws": 0,
+        "loses": 1,
+        "pts": 0,
+        "npxGD": -1.833116
+      },
+      {
+        "h_a": "a",
+        "xG": 3.08914,
+        "xGA": 2.27644,
+        "npxG": 1.56681,
+        "npxGA": 1.51527,
+        "ppda": {
+          "att": 178,
+          "def": 26
+        },
+        "ppda_allowed": {
+          "att": 305,
+          "def": 21
+        },
+        "deep": 5,
+        "deep_allowed": 5,
+        "scored": 2,
+        "missed": 2,
+        "xpts": 1.9821,
+        "result": "d",
+        "date": "2025-12-30 19:30:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": 0.05154000000000014
       }
     ]
   },
@@ -7490,6 +8246,60 @@
         "loses": 0,
         "pts": 3,
         "npxGD": 0.458212
+      },
+      {
+        "h_a": "a",
+        "xG": 1.11436,
+        "xGA": 1.13719,
+        "npxG": 1.11436,
+        "npxGA": 1.13719,
+        "ppda": {
+          "att": 200,
+          "def": 20
+        },
+        "ppda_allowed": {
+          "att": 247,
+          "def": 20
+        },
+        "deep": 5,
+        "deep_allowed": 11,
+        "scored": 1,
+        "missed": 0,
+        "xpts": 1.3251,
+        "result": "w",
+        "date": "2025-12-27 15:00:00",
+        "wins": 1,
+        "draws": 0,
+        "loses": 0,
+        "pts": 3,
+        "npxGD": -0.022829999999999906
+      },
+      {
+        "h_a": "a",
+        "xG": 1.75434,
+        "xGA": 2.35346,
+        "npxG": 1.75434,
+        "npxGA": 2.35346,
+        "ppda": {
+          "att": 203,
+          "def": 25
+        },
+        "ppda_allowed": {
+          "att": 335,
+          "def": 13
+        },
+        "deep": 9,
+        "deep_allowed": 10,
+        "scored": 1,
+        "missed": 1,
+        "xpts": 0.9235000000000001,
+        "result": "d",
+        "date": "2026-01-01 17:30:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": -0.5991200000000001
       }
     ]
   },
@@ -7955,6 +8765,60 @@
         "loses": 1,
         "pts": 0,
         "npxGD": -1.0560260000000001
+      },
+      {
+        "h_a": "a",
+        "xG": 0.780664,
+        "xGA": 1.56502,
+        "npxG": 0.780664,
+        "npxGA": 1.56502,
+        "ppda": {
+          "att": 295,
+          "def": 22
+        },
+        "ppda_allowed": {
+          "att": 171,
+          "def": 23
+        },
+        "deep": 2,
+        "deep_allowed": 12,
+        "scored": 1,
+        "missed": 2,
+        "xpts": 0.6966,
+        "result": "l",
+        "date": "2025-12-27 15:00:00",
+        "wins": 0,
+        "draws": 0,
+        "loses": 1,
+        "pts": 0,
+        "npxGD": -0.784356
+      },
+      {
+        "h_a": "a",
+        "xG": 1.21784,
+        "xGA": 1.13306,
+        "npxG": 1.21784,
+        "npxGA": 1.13306,
+        "ppda": {
+          "att": 296,
+          "def": 17
+        },
+        "ppda_allowed": {
+          "att": 207,
+          "def": 27
+        },
+        "deep": 7,
+        "deep_allowed": 6,
+        "scored": 1,
+        "missed": 1,
+        "xpts": 1.4411,
+        "result": "d",
+        "date": "2025-12-30 20:15:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": 0.08478000000000008
       }
     ]
   },
@@ -8420,6 +9284,60 @@
         "loses": 0,
         "pts": 3,
         "npxGD": 1.0560260000000001
+      },
+      {
+        "h_a": "h",
+        "xG": 2.8513,
+        "xGA": 2.56183,
+        "npxG": 2.8513,
+        "npxGA": 2.56183,
+        "ppda": {
+          "att": 166,
+          "def": 20
+        },
+        "ppda_allowed": {
+          "att": 206,
+          "def": 30
+        },
+        "deep": 9,
+        "deep_allowed": 5,
+        "scored": 4,
+        "missed": 1,
+        "xpts": 1.5703,
+        "result": "w",
+        "date": "2025-12-27 15:00:00",
+        "wins": 1,
+        "draws": 0,
+        "loses": 0,
+        "pts": 3,
+        "npxGD": 0.2894700000000001
+      },
+      {
+        "h_a": "h",
+        "xG": 0.556304,
+        "xGA": 0.608309,
+        "npxG": 0.556304,
+        "npxGA": 0.608309,
+        "ppda": {
+          "att": 213,
+          "def": 28
+        },
+        "ppda_allowed": {
+          "att": 303,
+          "def": 16
+        },
+        "deep": 3,
+        "deep_allowed": 7,
+        "scored": 0,
+        "missed": 0,
+        "xpts": 1.2242,
+        "result": "d",
+        "date": "2026-01-01 20:00:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": -0.05200499999999997
       }
     ]
   },
@@ -8885,6 +9803,60 @@
         "loses": 0,
         "pts": 3,
         "npxGD": 2.138453
+      },
+      {
+        "h_a": "a",
+        "xG": 2.60653,
+        "xGA": 0.805957,
+        "npxG": 2.60653,
+        "npxGA": 0.805957,
+        "ppda": {
+          "att": 217,
+          "def": 22
+        },
+        "ppda_allowed": {
+          "att": 305,
+          "def": 15
+        },
+        "deep": 16,
+        "deep_allowed": 5,
+        "scored": 1,
+        "missed": 1,
+        "xpts": 2.5662,
+        "result": "d",
+        "date": "2025-12-28 14:00:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": 1.8005729999999998
+      },
+      {
+        "h_a": "a",
+        "xG": 0.15936,
+        "xGA": 1.67833,
+        "npxG": 0.15936,
+        "npxGA": 1.67833,
+        "ppda": {
+          "att": 280,
+          "def": 16
+        },
+        "ppda_allowed": {
+          "att": 150,
+          "def": 23
+        },
+        "deep": 1,
+        "deep_allowed": 10,
+        "scored": 0,
+        "missed": 0,
+        "xpts": 0.1995,
+        "result": "d",
+        "date": "2026-01-01 17:30:00",
+        "wins": 0,
+        "draws": 1,
+        "loses": 0,
+        "pts": 1,
+        "npxGD": -1.5189700000000002
       }
     ]
   },
@@ -9350,6 +10322,60 @@
         "loses": 1,
         "pts": 0,
         "npxGD": -0.458212
+      },
+      {
+        "h_a": "h",
+        "xG": 0.600141,
+        "xGA": 1.46468,
+        "npxG": 0.600141,
+        "npxGA": 1.46468,
+        "ppda": {
+          "att": 299,
+          "def": 16
+        },
+        "ppda_allowed": {
+          "att": 136,
+          "def": 21
+        },
+        "deep": 4,
+        "deep_allowed": 11,
+        "scored": 1,
+        "missed": 2,
+        "xpts": 0.655,
+        "result": "l",
+        "date": "2025-12-27 12:30:00",
+        "wins": 0,
+        "draws": 0,
+        "loses": 1,
+        "pts": 0,
+        "npxGD": -0.864539
+      },
+      {
+        "h_a": "h",
+        "xG": 1.75445,
+        "xGA": 1.69525,
+        "npxG": 1.75445,
+        "npxGA": 1.69525,
+        "ppda": {
+          "att": 150,
+          "def": 27
+        },
+        "ppda_allowed": {
+          "att": 309,
+          "def": 23
+        },
+        "deep": 16,
+        "deep_allowed": 4,
+        "scored": 0,
+        "missed": 2,
+        "xpts": 1.3967,
+        "result": "l",
+        "date": "2025-12-30 19:30:00",
+        "wins": 0,
+        "draws": 0,
+        "loses": 1,
+        "pts": 0,
+        "npxGD": 0.05920000000000014
       }
     ]
   }
