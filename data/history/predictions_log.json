@@ -213,5 +213,46 @@
         "actual_points": 1.0
       }
     ]
+  },
+  {
+    "gameweek": 20,
+    "timestamp": "2026-01-03T10:29:40.813152",
+    "picks": [
+      {
+        "player_id": 139,
+        "web_name": "Verbruggen",
+        "position": "GKP",
+        "predicted_points": 4.406137010306516,
+        "actual_points": null
+      },
+      {
+        "player_id": 403,
+        "web_name": "Gvardiol",
+        "position": "DEF",
+        "predicted_points": 5.502186131436133,
+        "actual_points": null
+      },
+      {
+        "player_id": 668,
+        "web_name": "Xhaka",
+        "position": "MID",
+        "predicted_points": 5.344065911216205,
+        "actual_points": null
+      },
+      {
+        "player_id": 624,
+        "web_name": "Bowen",
+        "position": "FWD",
+        "predicted_points": 5.5890920329670335,
+        "actual_points": null
+      },
+      {
+        "player_id": 257,
+        "web_name": "Lacroix",
+        "position": "DEF",
+        "predicted_points": 4.726935853460444,
+        "actual_points": null
+      }
+    ]
   }
 ]
