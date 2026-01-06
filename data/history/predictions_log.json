@@ -223,34 +223,75 @@
         "web_name": "Verbruggen",
         "position": "GKP",
         "predicted_points": 4.406137010306516,
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 403,
         "web_name": "Gvardiol",
         "position": "DEF",
         "predicted_points": 5.502186131436133,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 668,
         "web_name": "Xhaka",
         "position": "MID",
         "predicted_points": 5.344065911216205,
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 624,
         "web_name": "Bowen",
         "position": "FWD",
         "predicted_points": 5.5890920329670335,
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 257,
         "web_name": "Lacroix",
         "position": "DEF",
         "predicted_points": 4.726935853460444,
+        "actual_points": 3.0
+      }
+    ]
+  },
+  {
+    "gameweek": 21,
+    "timestamp": "2026-01-06T01:20:53.969433",
+    "picks": [
+      {
+        "player_id": 253,
+        "web_name": "Henderson",
+        "position": "GKP",
+        "predicted_points": 4.861058426201423,
+        "actual_points": null
+      },
+      {
+        "player_id": 257,
+        "web_name": "Lacroix",
+        "position": "DEF",
+        "predicted_points": 6.952523581495135,
+        "actual_points": null
+      },
+      {
+        "player_id": 485,
+        "web_name": "Gordon",
+        "position": "MID",
+        "predicted_points": 5.456882353639665,
+        "actual_points": null
+      },
+      {
+        "player_id": 624,
+        "web_name": "Bowen",
+        "position": "FWD",
+        "predicted_points": 5.312245879120879,
+        "actual_points": null
+      },
+      {
+        "player_id": 295,
+        "web_name": "Keane",
+        "position": "DEF",
+        "predicted_points": 6.805728420805731,
         "actual_points": null
       }
     ]
