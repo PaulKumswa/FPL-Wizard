@@ -1,20 +1,31 @@
 """
 src/inference.py
-Description: Provides logic for generating FPL points predictions using trained machine learning models.
-Key functionality:
-- `load_models`: Loads the serialized RandomForest models for each position.
-- `predict_points`: Applies the models to a DataFrame of player features to predict points.
-- `select_best_team`: Implements the selection algorithm to pick the top 5 players (1 GK, 1 DEF, 1 MID, 1 FWD, 1 Wildcard)
-  based on predicted points, cost constraints, ownership limits, and form/ICT filters.
+Description: Generates FPL points predictions using component-based machine learning models.
+
+This module implements COMPONENT-BASED prediction:
+1. Loads component classifiers (goals, assists, clean sheets) for each position
+2. Predicts probability of each outcome occurring
+3. Aggregates probabilities into expected points using FPL scoring rules
+
+Key Functions:
+- `load_models`: Loads legacy regressor models (backward compatible)
+- `load_component_models`: Loads component classifiers
+- `predict_points`: Applies models to generate predictions
+- `select_best_team`: Selects top players based on predictions and constraints
 """
 import pandas as pd
 import pickle
 import os
 import json
 from src.config import FEATURE_CONFIGS, POSITION_MAP_REV, POSITION_MAP, MAX_COST, MAX_OWNERSHIP, MIN_FORM, MIN_ICT
+from src.scoring_constants import (
+    GOAL_POINTS, ASSIST_POINTS, CLEAN_SHEET_POINTS, 
+    APPEARANCE_POINTS, CLEAN_SHEET_POSITIONS, COMPONENT_TARGETS
+)
+
 
 def load_models(model_dir='models'):
-    """Load trained models from the specified directory."""
+    """Load legacy regressor models from the specified directory."""
     models = {}
     
     for name, _ in POSITION_MAP_REV.items():
@@ -23,18 +34,61 @@ def load_models(model_dir='models'):
             with open(model_path, 'rb') as f:
                 models[name] = pickle.load(f)
         else:
-            print(f"Warning: Model for {name} not found at {model_path}")
+            print(f"Warning: Legacy model for {name} not found at {model_path}")
             
     return models
 
-def predict_points(df, models):
+
+def load_component_models(model_dir='models'):
+    """
+    Load component classifier models for each position.
+    Returns nested dict: {position: {component: model}}
+    """
+    component_models = {}
+    
+    for pos_name in POSITION_MAP_REV.keys():
+        component_models[pos_name] = {}
+        pos_id = POSITION_MAP_REV[pos_name]
+        
+        for component in COMPONENT_TARGETS:
+            # Skip clean sheet for FWD
+            if component == 'cleansheet' and pos_id not in CLEAN_SHEET_POSITIONS:
+                continue
+                
+            model_path = os.path.join(model_dir, f'fpl_{component}_model_{pos_name}.pkl')
+            if os.path.exists(model_path):
+                with open(model_path, 'rb') as f:
+                    component_models[pos_name][component] = pickle.load(f)
+            else:
+                print(f"Warning: Component model not found: {model_path}")
+                
+    return component_models
+
+
+def predict_points(df, models, component_models=None):
     """
     Apply models to the dataframe to generate 'predicted_points'.
-    Returns the modified dataframe.
-    """
-    df['predicted_points'] = 0.0
     
-    for pos_name, model in models.items():
+    If component_models are available, uses component-based prediction:
+    - P(goal) * goal_points + P(assist) * assist_points + P(clean_sheet) * cs_points + appearance
+    
+    Falls back to legacy regressor if component models unavailable.
+    
+    Returns the modified dataframe with additional columns:
+    - predicted_points: Final prediction (component-based if available)
+    - predicted_points_legacy: Legacy regressor prediction
+    - p_goal, p_assist, p_cleansheet: Component probabilities
+    """
+    df = df.copy()
+    df['predicted_points'] = 0.0
+    df['predicted_points_legacy'] = 0.0
+    df['p_goal'] = 0.0
+    df['p_assist'] = 0.0
+    df['p_cleansheet'] = 0.0
+    
+    use_components = component_models is not None and len(component_models) > 0
+    
+    for pos_name, legacy_model in models.items():
         pos_id = POSITION_MAP_REV[pos_name]
         config = FEATURE_CONFIGS[pos_id]
         features = config['features']
@@ -52,12 +106,51 @@ def predict_points(df, models):
             if f not in X.columns:
                 X[f] = 0.0
         
-        X = X[features] # Ensure correct order and selection
+        X_features = X[features]
         
-        preds = model.predict(X)
-        df.loc[pos_mask, 'predicted_points'] = preds
+        # Legacy prediction (always compute for comparison)
+        legacy_preds = legacy_model.predict(X_features)
+        df.loc[pos_mask, 'predicted_points_legacy'] = legacy_preds
+        
+        # Component-based prediction
+        if use_components and pos_name in component_models:
+            pos_components = component_models[pos_name]
+            
+            # Goal probability
+            if 'goal' in pos_components:
+                p_goal = pos_components['goal'].predict_proba(X_features)[:, 1]
+                df.loc[pos_mask, 'p_goal'] = p_goal
+            else:
+                p_goal = 0.0
+            
+            # Assist probability
+            if 'assist' in pos_components:
+                p_assist = pos_components['assist'].predict_proba(X_features)[:, 1]
+                df.loc[pos_mask, 'p_assist'] = p_assist
+            else:
+                p_assist = 0.0
+            
+            # Clean sheet probability
+            if 'cleansheet' in pos_components and pos_id in CLEAN_SHEET_POSITIONS:
+                p_cs = pos_components['cleansheet'].predict_proba(X_features)[:, 1]
+                df.loc[pos_mask, 'p_cleansheet'] = p_cs
+            else:
+                p_cs = 0.0
+            
+            # Aggregate into expected points
+            expected_pts = (
+                p_goal * GOAL_POINTS[pos_id] +
+                p_assist * ASSIST_POINTS +
+                p_cs * CLEAN_SHEET_POINTS[pos_id] +
+                APPEARANCE_POINTS  # Baseline for 60+ minutes
+            )
+            df.loc[pos_mask, 'predicted_points'] = expected_pts
+        else:
+            # Fallback to legacy
+            df.loc[pos_mask, 'predicted_points'] = legacy_preds
         
     return df
+
 
 def select_best_team(df):
     """

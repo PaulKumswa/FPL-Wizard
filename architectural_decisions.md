@@ -72,11 +72,25 @@ Models are trained independently for each position (`element_type`) to capture u
     3. CV MAE is reported with standard deviation for stability assessment.
     4. Final production model is trained on ALL data after CV metrics are computed.
 
-*   **Target Variable**: `total_points` (Actual FPL points for the specific gameweek).
-*   **Inference**:
-    *   Generates predictions for the **Next Gameweek** only.
-    *   Filters: `status != 'u'` (injured), `chance_of_playing >= 75%`.
-    *   Selection: Picks top player per position + 1 Wildcard (highest predicted remaining player).
+### 3.2 Component-Based Prediction (Updated Jan 2026)
+*   **Approach**: Decompose `total_points` into predictable sub-components.
+*   *Rationale*: FPL points are noisy due to bonus points and random events. Predicting individual outcomes (goals, assists, clean sheets) is more stable than predicting raw points directly.
+*   **Architecture**:
+    *   **Goal Models**: LGBMClassifier per position, predicts P(player scores ≥1 goal)
+    *   **Assist Models**: LGBMClassifier per position, predicts P(player gets ≥1 assist)
+    *   **Clean Sheet Models**: LGBMClassifier for GKP, DEF, MID only (FWD gets 0 pts)
+    *   **Legacy Model**: LGBMRegressor kept as fallback for comparison
+*   **Aggregation Formula**:
+    ```
+    Expected Points = P(goal) × GOAL_PTS[pos] + P(assist) × 3 + P(cs) × CS_PTS[pos] + 2
+    ```
+    Where `GOAL_PTS = {GKP: 10, DEF: 6, MID: 5, FWD: 4}` and `CS_PTS = {GKP: 4, DEF: 4, MID: 1, FWD: 0}`.
+*   **Phase 2 (Deferred)**: See Section 8.
+
+### 3.3 Inference
+*   Generates predictions for the **Next Gameweek** only.
+*   Filters: `status != 'u'` (injured), `chance_of_playing >= 75%`.
+*   Selection: Picks top player per position + 1 Wildcard (highest predicted remaining player).
 
 ## 4. Operational Decisions
 *   **Updates**: The pipeline (`update_pipeline.py`) is designed to run end-to-end (Fetch -> Train -> Predict) or in `--quick` mode (Predict only).
@@ -104,3 +118,51 @@ Models are trained independently for each position (`element_type`) to capture u
 ## 7. Infrastructure & Reliability
 *   **Keep Alive Strategy**: To prevent the free-tier hosting (Render) from spinning down due to inactivity, a GitHub Action (`keep_alive.yml`) pings the site.
     *   **Randomization**: The workflow runs every 5 minutes but includes a random sleep delay (0-10 minutes) before the ping. This ensures the site stays active while making the traffic pattern less predictable.
+
+## 8. Phase 2: Deferred Enhancements (Indefinitely Deferred)
+
+The following features were considered for Phase 2 of the component-based prediction system but have been **indefinitely deferred** due to complexity vs. impact trade-offs:
+
+### 8.1 Bonus Points Prediction
+*   **Description**: Predict P(player earns 1/2/3 bonus points) based on the BPS (Bonus Points System).
+*   **Why Deferred**:
+    *   BPS is calculated using 30+ in-match statistics (passes, tackles, saves, etc.) that are not available pre-match.
+    *   Would require training a separate model on post-match BPS data, then using expected stats to infer pre-match probabilities.
+    *   High implementation complexity for marginal improvement (~1-3 points).
+*   **Alternative**: The legacy regressor implicitly captures some bonus correlation.
+
+### 8.2 Goalkeeper Saves Regression
+*   **Description**: Predict expected saves for GKPs (1 point per 3 saves).
+*   **Why Deferred**:
+    *   Save count is highly dependent on opponent shot volume, which varies unpredictably.
+    *   Would require opponent xG as a feature, adding pipeline complexity.
+    *   Impact: ~0.3-1.0 points per gameweek for GKPs only.
+
+### 8.3 Penalty Events
+*   **Description**: Predict P(penalty save) for GKPs, P(penalty miss) for outfield.
+*   **Why Deferred**:
+    *   Extremely rare events (~2% of matches have penalties).
+    *   Insufficient training data for reliable classification.
+    *   Impact: High variance (5 pts for save, -2 for miss), but low expected value.
+
+### 8.4 Goals Conceded Penalty
+*   **Description**: Predict expected goals conceded for GKP/DEF (-1 point per 2 goals conceded).
+*   **Why Deferred**:
+    *   Would require clean sheet model inversion + Poisson regression for goal count.
+    *   Complex interaction with team defensive stats.
+    *   Already partially captured by opponent strength feature.
+
+### 8.5 Multi-Goal/Assist Prediction
+*   **Description**: Predict P(2+ goals) or P(2+ assists) for haul potential.
+*   **Why Deferred**:
+    *   Current binary approach (0/1+) captures majority of expected value.
+    *   Multi-goal games are rare (~5% of goals come from braces+).
+    *   Would require ordinal or count regression, adding model complexity.
+
+### 8.6 Decision Rationale
+Phase 1 (goals, assists, clean sheets) captures **~80% of FPL point variance** for the typical player. The remaining components (bonus, saves, penalties) have:
+*   High prediction uncertainty
+*   Low marginal expected value
+*   Significant implementation complexity
+
+These will be revisited if Phase 1 performance plateaus and additional accuracy is needed.

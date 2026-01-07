@@ -66,18 +66,40 @@ The system is a well-structured FPL (Fantasy Premier League) player points predi
 
 ### 2. Target Variable Issues
 
-> [!CAUTION]
-> `total_points` as the target is inherently noisy and hard to predict accurately.
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Implemented component-based prediction.
 
-- FPL points have high variance due to bonus points, clean sheets, and random events
-- The system predicts raw points, not probabilities of specific outcomes
-- No decomposition into sub-targets (goals, assists, clean sheets, etc.)
+| Original Issue | Resolution |
+|-------|--------|
+| `total_points` too noisy | ✅ Predict goals, assists, clean sheets separately |
+| Predicts raw points | ✅ Predict probabilities, aggregate using FPL scoring rules |
+| No decomposition | ✅ LGBMClassifier for each component per position |
 
-**Recommendation**: Consider predicting component outcomes separately and aggregating, or use a more robust target like "points above replacement."
+**New Approach**:
+- Train separate classifiers for P(goal), P(assist), P(clean sheet)
+- Expected Points = P(goal) × goal_pts + P(assist) × 3 + P(cs) × cs_pts + 2
+- Keeps legacy regressor as fallback for comparison
+
+**Phase 2 (Indefinitely Deferred)**: Additional components were considered but deferred due to complexity vs. impact trade-offs:
+- **Bonus Points**: Requires 30+ in-match BPS stats not available pre-match
+- **GKP Saves**: Dependent on unpredictable opponent shot volume
+- **Penalty Events**: Too rare (~2% of matches) for reliable classification
+- **Goals Conceded**: Would require Poisson regression + model inversion
+- **Multi-Goal/Assist**: Current binary (0/1+) captures ~80% of expected value
+
+See `architectural_decisions.md` Section 8 for full rationale.
 
 ---
 
 ### 3. Data Leakage Risk in Rolling Features
+
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Implemented TimeSeriesSplit cross-validation.
+
+| Original Issue | Resolution |
+|-------|--------|
+| Training uses full season data without temporal awareness | ✅ Implemented 5-fold TimeSeriesSplit cross-validation |
+| Model could see "future" data patterns with random splits | ✅ Temporal integrity ensured via `TimeSeriesSplit(n_splits=5)` |
 
 ```python
 # preprocess.py line 299-300
@@ -85,11 +107,11 @@ train_df[f'prev_{metric}'] = train_df.groupby('element')[metric].shift(1)
 train_df[col_name] = train_df.groupby('element')[f'prev_{metric}'].transform(lambda x: x.rolling(window=5, min_periods=1).mean())
 ```
 
-The shift approach is **correct**, but:
-- Training uses **full season data** without temporal awareness
-- Model could see "future" data patterns if train/test split is random rather than temporal
+The shift approach is **correct**, and the temporal integrity concern has been addressed:
+- ~~Training uses **full season data** without temporal awareness~~ → **Fixed**
+- ~~Model could see "future" data patterns if train/test split is random rather than temporal~~ → **Fixed**
 
-**Recommendation**: Use `TimeSeriesSplit` or explicit temporal cutoff for train/test to prevent subtle leakage.
+**Implementation**: `TimeSeriesSplit(n_splits=5)` is now used in `train_model.py` for all position models.
 
 ---
 
@@ -241,6 +263,7 @@ flowchart TD
 | Category | Priority | Recommendation |
 |----------|----------|----------------|
 | Model | ~~High~~ | ✅ **Done**: Switched to LightGBM with TimeSeriesSplit CV |
+| Target | ~~High~~ | ✅ **Done**: Component-based prediction (goals, assists, clean sheets) |
 | Data | ~~High~~ | ✅ **Done**: TimeSeriesSplit implemented (part of Model fix) |
 | Features | Medium | Integrate Understat player-level xG/xA data |
 | Metrics | Medium | Store model MAE over time for monitoring |

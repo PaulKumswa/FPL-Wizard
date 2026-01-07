@@ -150,12 +150,13 @@ def get_predictions():
     # Load models only if calculation is needed (Slow)
     print("History not found or failed, loading models for inference...")
     models = inference.load_models()
+    component_models = inference.load_component_models()
 
     if not models:
         return jsonify({'error': 'Models not found'}), 500
 
-    # Predict
-    df = inference.predict_points(df, models)
+    # Predict (uses component models if available, falls back to legacy)
+    df = inference.predict_points(df, models, component_models)
     
     # Select Best Team
     # app.py previously had manual "Advanced Underdog Logic" hardcoded here.

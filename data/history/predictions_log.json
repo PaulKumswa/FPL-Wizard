@@ -257,41 +257,82 @@
   },
   {
     "gameweek": 21,
-    "timestamp": "2026-01-06T01:20:53.969433",
+    "timestamp": "2026-01-07T02:12:51.424376",
     "picks": [
       {
-        "player_id": 253,
-        "web_name": "Henderson",
+        "player_id": 67,
+        "web_name": "Petrovi\u0107",
         "position": "GKP",
-        "predicted_points": 4.861058426201423,
+        "predicted_points": 5.574117781175063,
+        "actual_points": 0.0
+      },
+      {
+        "player_id": 295,
+        "web_name": "Keane",
+        "position": "DEF",
+        "predicted_points": 8.628765731513246,
+        "actual_points": 0.0
+      },
+      {
+        "player_id": 485,
+        "web_name": "Gordon",
+        "position": "MID",
+        "predicted_points": 5.867122787393295,
+        "actual_points": 0.0
+      },
+      {
+        "player_id": 749,
+        "web_name": "Man\u00e9",
+        "position": "FWD",
+        "predicted_points": 4.944469944624356,
+        "actual_points": 0.0
+      },
+      {
+        "player_id": 258,
+        "web_name": "Mitchell",
+        "position": "DEF",
+        "predicted_points": 7.578485764250341,
+        "actual_points": 0.0
+      }
+    ]
+  },
+  {
+    "gameweek": 22,
+    "timestamp": "2026-01-07T02:16:57.027066",
+    "picks": [
+      {
+        "player_id": 565,
+        "web_name": "Vicario",
+        "position": "GKP",
+        "predicted_points": 3.3948516805155915,
         "actual_points": null
       },
       {
         "player_id": 257,
         "web_name": "Lacroix",
         "position": "DEF",
-        "predicted_points": 6.952523581495135,
+        "predicted_points": 4.480386555546895,
+        "actual_points": null
+      },
+      {
+        "player_id": 84,
+        "web_name": "Tavernier",
+        "position": "MID",
+        "predicted_points": 4.620522042018431,
+        "actual_points": null
+      },
+      {
+        "player_id": 597,
+        "web_name": "Richarlison",
+        "position": "FWD",
+        "predicted_points": 3.3309533600249,
         "actual_points": null
       },
       {
         "player_id": 485,
         "web_name": "Gordon",
         "position": "MID",
-        "predicted_points": 5.456882353639665,
-        "actual_points": null
-      },
-      {
-        "player_id": 624,
-        "web_name": "Bowen",
-        "position": "FWD",
-        "predicted_points": 5.312245879120879,
-        "actual_points": null
-      },
-      {
-        "player_id": 295,
-        "web_name": "Keane",
-        "position": "DEF",
-        "predicted_points": 6.805728420805731,
+        "predicted_points": 4.61404421100782,
         "actual_points": null
       }
     ]

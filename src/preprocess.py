@@ -309,6 +309,12 @@ def preprocess_data(players, teams, events, histories, fixtures, understat_match
     # Rename recent_total_points to recent_form for consistency with existing code
     train_df.rename(columns={'recent_total_points': 'recent_form'}, inplace=True)
 
+    # --- Binary Target Columns for Component-Based Prediction ---
+    # These are used by the component classifiers to predict individual outcomes
+    train_df['target_goal'] = (train_df['goals_scored'] > 0).astype(int)
+    train_df['target_assist'] = (train_df['assists'] > 0).astype(int)
+    train_df['target_clean_sheet'] = (train_df['clean_sheets'] > 0).astype(int)
+
     # Clean up
     train_df.rename(columns={'was_home': 'is_home'}, inplace=True)
     train_df['is_home'] = train_df['is_home'].astype(int)
