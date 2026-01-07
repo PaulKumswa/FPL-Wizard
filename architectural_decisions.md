@@ -24,17 +24,24 @@ The pipeline follows a strict extraction-transformation-loading (ETL) pattern:
 ## 2. Model Architecture
 
 ### 2.1 Algorithm
-*   **Type**: Random Forest Regressor (`sklearn.ensemble.RandomForestRegressor`).
-*   *Rationale*: Robust against outliers, handles non-linear relationships well, and requires minimal feature scaling compared to Neural Networks.
+*   **Type**: LightGBM Gradient Boosting (`lightgbm.LGBMRegressor`).
+*   *Rationale*: LightGBM was chosen over RandomForest (Jan 2026) because:
+    *   **Better for weak signals**: FPL points are noisy and composed of many small additive factors. Gradient boosting's sequential error correction captures these subtle patterns better than RF's parallel averaging.
+    *   **Faster training**: 5-10x faster than RandomForest, important for CI/CD pipeline efficiency.
+    *   **Smaller models**: ~100KB vs ~10MB per position, reducing storage and load times.
+    *   **Proven performance**: Gradient boosting dominates tabular data regression tasks.
 
-### 2.2 Model Configuration (Updated Dec 2025)
-To accommodate high-precision continuous variables (xG/xGA), the following parameters were enforced to prevent overfitting and "memorization" of specific floating-point values:
+### 2.2 Model Configuration (Updated Jan 2026)
+LightGBM hyperparameters are tuned for generalization on noisy FPL data:
 
 | Parameter | Value | Rationale |
 | :--- | :--- | :--- |
-| **n_estimators** | `200` | Increased from 100 to reduce variance introduced by new noisy features. |
-| **max_depth** | `15` | Capped (prev. Unlimited) to force generalization and prevent isolating single player-matches. |
-| **min_samples_leaf** | `3` | Increased (prev. 1) for DEF/MID to ensure rules apply to clusters of players, not individuals. |
+| **n_estimators** | `200` | Sufficient trees for convergence with low learning rate. |
+| **max_depth** | `10` | Shallower trees work better with LightGBM's leaf-wise growth strategy. |
+| **learning_rate** | `0.05` | Slow learning for better generalization; prevents overfitting. |
+| **subsample** | `0.8` | Row sampling adds stochasticity to reduce variance. |
+| **colsample_bytree** | `0.8` | Feature sampling per tree for regularization. |
+| **min_child_samples** | `3-5` | Position-specific (from config); ensures leaf nodes represent player clusters, not individuals. |
 
 ### 2.3 Feature Selection
 Models are trained independently for each position (`element_type`) to capture unique positional requirements.
@@ -55,7 +62,16 @@ Models are trained independently for each position (`element_type`) to capture u
     *   `recent_form`: Generic FPL form.
 
 ## 3. Training & Inference
-*   **Training Split**: 80% Train / 20% Test.
+
+### 3.1 Validation Strategy (Updated Jan 2026)
+*   **Method**: TimeSeriesSplit with 5 folds (replaces random 80/20 split).
+*   *Rationale*: FPL data is inherently temporal. Random splits can leak future data patterns into training, giving overly optimistic metrics. TimeSeriesSplit ensures each validation fold only contains data *after* the training period.
+*   **Process**:
+    1. Data is sorted by `round` (gameweek) for proper chronological order.
+    2. 5 rolling splits are made: train on early data, validate on later data.
+    3. CV MAE is reported with standard deviation for stability assessment.
+    4. Final production model is trained on ALL data after CV metrics are computed.
+
 *   **Target Variable**: `total_points` (Actual FPL points for the specific gameweek).
 *   **Inference**:
     *   Generates predictions for the **Next Gameweek** only.

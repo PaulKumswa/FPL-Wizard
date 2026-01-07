@@ -422,9 +422,9 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
             </div>
             <div class="arch-card">
                 <h3>Machine Learning</h3>
-                <p><strong>MODELS:</strong> 4 separate Random Forest models (GKP, DEF, MID, FWD)</p>
-                <p><strong>STRATEGY:</strong> Position-specific training & Tiered Regularization</p>
-                <p><strong>FEATURES:</strong> Cost, Ownership, Recent Form, Opponent Strength</p>
+                <p><strong>MODELS:</strong> 4 LightGBM gradient boosting models (GKP, DEF, MID, FWD)</p>
+                <p><strong>STRATEGY:</strong> Position-specific training with sequential error correction</p>
+                <p><strong>FEATURES:</strong> Cost, Ownership, Recent Form, xG/xA, Opponent Strength</p>
             </div>
             <div class="arch-card">
                 <h3>Inference Engine</h3>

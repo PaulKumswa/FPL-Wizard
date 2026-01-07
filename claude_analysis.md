@@ -53,16 +53,14 @@ The system is a well-structured FPL (Fantasy Premier League) player points predi
 
 ### 1. Model Choice Limitations
 
-> [!WARNING]
-> RandomForest may underperform compared to gradient boosting methods for this task.
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Switched to LightGBM with TimeSeriesSplit cross-validation.
 
-| Issue | Impact |
+| Original Issue | Resolution |
 |-------|--------|
-| RandomForest with 200 trees | Moderate training time, potentially suboptimal accuracy |
-| No hyperparameter tuning | Default `max_depth=15` may not be optimal per position |
-| No cross-validation | Single train/test split (80/20) gives unstable MAE estimates |
-
-**Recommendation**: Consider XGBoost or LightGBM with proper cross-validation (e.g., TimeSeriesSplit for temporal data).
+| RandomForest with 200 trees | ✅ Replaced with LightGBM gradient boosting |
+| No hyperparameter tuning | ✅ Added `learning_rate`, `subsample`, `colsample_bytree` |
+| No cross-validation | ✅ Implemented 5-fold TimeSeriesSplit for temporal integrity |
 
 ---
 
@@ -242,8 +240,8 @@ flowchart TD
 
 | Category | Priority | Recommendation |
 |----------|----------|----------------|
-| Model | High | Switch to gradient boosting (XGBoost/LightGBM) with cross-validation |
-| Data | High | Use TimeSeriesSplit for train/test to prevent leakage |
+| Model | ~~High~~ | ✅ **Done**: Switched to LightGBM with TimeSeriesSplit CV |
+| Data | ~~High~~ | ✅ **Done**: TimeSeriesSplit implemented (part of Model fix) |
 | Features | Medium | Integrate Understat player-level xG/xA data |
 | Metrics | Medium | Store model MAE over time for monitoring |
 | Code | Low | Remove dead code in `app.py` |
