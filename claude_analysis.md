@@ -143,11 +143,11 @@ See `architectural_decisions.md` Section 1.3 for full details.
 
 | Original Issue | Resolution |
 |-------|--------|
-| `MAX_COST = 80` (static £8.0m) | ✅ Now computed as 60th percentile of current week's costs |
-| `MAX_OWNERSHIP = 10` (static 10%) | ✅ Now computed as 25th percentile of current week's ownership |
+| `MAX_COST = 80` (static £8.0m) | ✅ Now computed as 75th percentile (floor £7.0m) |
+| `MAX_OWNERSHIP = 10` (static 10%) | ✅ Now computed as 50th percentile (floor 10%) |
 | `MIN_FORM = 2.0` (static) | ✅ Now computed as 30th percentile of current week's form |
 | `MIN_ICT = 3.0` (static) | ✅ Now computed as 30th percentile of current week's ICT |
-| Values may not adapt to season dynamics | ✅ Thresholds now recalculated each inference run |
+| Static logic implies strict cutoff | ✅ Implemented "Fail Upward" logic: Prioritize points over constraints |
 
 **Implementation**:
 - `config.py` now defines `OWNERSHIP_PERCENTILE`, `COST_PERCENTILE`, `FORM_PERCENTILE`, `ICT_PERCENTILE`

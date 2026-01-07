@@ -59,15 +59,14 @@ POSITION_MAP = {1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD'}
 POSITION_MAP_REV = {'GKP': 1, 'DEF': 2, 'MID': 3, 'FWD': 4}
 
 # Selection Criteria - Percentile-Based (Dynamic)
-# These percentiles are applied to the current week's player pool at inference time
-# to compute data-driven thresholds that adapt to season dynamics.
-#
-# OWNERSHIP_PERCENTILE: Select from bottom X% of ownership (lower = more differential)
-# COST_PERCENTILE: Select from below X% of cost (higher = more budget options)
-# FORM_PERCENTILE: Exclude bottom X% by form (lower = less restrictive)
-# ICT_PERCENTILE: Exclude bottom X% by ICT index (lower = less restrictive)
-#
-OWNERSHIP_PERCENTILE = 25   # Bottom 25% of ownership = true differentials
-COST_PERCENTILE = 60        # Below 60th percentile cost = budget-friendly
-FORM_PERCENTILE = 30        # Above 30th percentile form = exclude poor form
-ICT_PERCENTILE = 30         # Above 30th percentile ICT = exclude inactive players
+# ... (comments)
+OWNERSHIP_PERCENTILE = 50   # Broaden search, floor will handle "underdog"
+COST_PERCENTILE = 75        # Higher budget (~£7.0m+)
+FORM_PERCENTILE = 30
+ICT_PERCENTILE = 30
+
+# Default Fallbacks (Static)
+MAX_COST = 80       # £8.0m
+MAX_OWNERSHIP = 10  # 10%
+MIN_FORM = 2.0
+MIN_ICT = 3.0

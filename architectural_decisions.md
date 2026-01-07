@@ -203,22 +203,28 @@ Thresholds are now computed at inference time based on the current week's player
 
 | Metric | Percentile | Interpretation |
 | :--- | :--- | :--- |
-| **Ownership** | 25th percentile | Select from bottom 25% of ownership (true differentials) |
-| **Cost** | 60th percentile | Select from below 60th percentile cost (budget-friendly) |
-| **Form** | 30th percentile | Exclude bottom 30% by form (avoid poor performers) |
-| **ICT Index** | 30th percentile | Exclude bottom 30% by ICT (avoid inactive players) |
+| **Ownership** | 50th percentile (Floor 10%) | Select from bottom ~50% (but allow at least 10% ownership) |
+| **Cost** | 75th percentile (Floor £7.0m) | Select from below ~75th percentile cost (budget-friendly) |
+| **Predicted Points** | 92nd percentile (Range 5.5-8.0) | Target high scorers (approx > 6.0 pts) |
+| **Form/ICT** | 30th percentile | Exclude bottom 30% by form/activity |
 
 ### 9.3 Implementation
 *   **Config** (`src/config.py`): Defines `OWNERSHIP_PERCENTILE`, `COST_PERCENTILE`, `FORM_PERCENTILE`, `ICT_PERCENTILE`
 *   **Inference** (`src/inference.py`): 
-    *   Added `calculate_dynamic_thresholds(df)` function
-    *   Uses `numpy.percentile()` on current week's player data
-    *   Returns computed thresholds for use in selection
+    *   Added `calculate_dynamic_thresholds(df)` function which computes thresholds.
+    *   Added `select_best_team(df)` with robust fallback logic.
 *   **Logging**: Computed thresholds are printed each inference run for transparency
 
-### 9.4 Rationale
-*   **Adaptive**: Thresholds automatically adjust to season dynamics without code changes
-*   **Consistent**: "Bottom 25% ownership" always means differential picks, regardless of absolute ownership levels
-*   **Configurable**: Percentiles can be tuned without changing selection logic
-*   **Debuggable**: Logged thresholds allow verification of selection criteria
+### 9.4 'Fail Upward' Strategy
+If no "perfect underdog" (Low Ownership + Low Cost + High Points) matches the criteria:
+
+1.  **Prioritize Points**: The system looks for high-scoring players who might be slightly more expensive or popular.
+2.  **Fallback Levels**:
+    *   **Level 1 (Ideal)**: Meets all strict criteria.
+    *   **Level 2 (Value Pick)**: Relax Ownership constraint.
+    *   **Level 3 (Premium Differential)**: Relax Cost constraint.
+    *   **Level 4 (Points Only)**: Ignore Ownership/Cost, just find a scorer.
+    *   **Level 5 (Last Resort)**: Lower the predicted points expectation.
+
+This ensures the system always returns the best available players rather than forcing low-scoring underdogs.
 

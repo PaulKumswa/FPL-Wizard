@@ -298,27 +298,41 @@
   },
   {
     "gameweek": 22,
-    "timestamp": "2026-01-07T06:00:45.392753",
+    "timestamp": "2026-01-07T06:52:48.092705",
     "picks": [
       {
-        "player_id": 695,
-        "web_name": "Tchatchoua",
-        "position": "DEF",
-        "predicted_points": 1.262595659870115,
+        "player_id": 565,
+        "web_name": "Vicario",
+        "position": "GKP",
+        "predicted_points": 4.106761638202251,
         "actual_points": null
       },
       {
-        "player_id": 209,
-        "web_name": "Laurent",
+        "player_id": 228,
+        "web_name": "Gusto",
+        "position": "DEF",
+        "predicted_points": 7.491350208868809,
+        "actual_points": null
+      },
+      {
+        "player_id": 84,
+        "web_name": "Tavernier",
         "position": "MID",
-        "predicted_points": 1.7315842945846818,
+        "predicted_points": 6.842405314530021,
         "actual_points": null
       },
       {
-        "player_id": 229,
-        "web_name": "B.Badiashile",
+        "player_id": 249,
+        "web_name": "Jo\u00e3o Pedro",
+        "position": "FWD",
+        "predicted_points": 6.2770010688447115,
+        "actual_points": null
+      },
+      {
+        "player_id": 5,
+        "web_name": "Gabriel",
         "position": "DEF",
-        "predicted_points": 1.2482777429971323,
+        "predicted_points": 8.45426211568816,
         "actual_points": null
       }
     ]

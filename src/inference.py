@@ -20,6 +20,7 @@ import json
 import numpy as np
 from src.config import (
     FEATURE_CONFIGS, POSITION_MAP_REV, POSITION_MAP,
+    MAX_COST, MAX_OWNERSHIP, MIN_FORM, MIN_ICT,
     OWNERSHIP_PERCENTILE, COST_PERCENTILE, FORM_PERCENTILE, ICT_PERCENTILE
 )
 from src.scoring_constants import (
@@ -170,49 +171,68 @@ def calculate_dynamic_thresholds(df):
     """
     thresholds = {}
     
-    # Ownership: Bottom X percentile (e.g., 25th percentile = pick from bottom 25%)
+    # Ownership: Bottom X percentile
+    # SAFETY: Ensure at least 10% ownership is allowed (User feedback)
     if 'selected_by_percent' in df.columns:
         ownership_vals = pd.to_numeric(df['selected_by_percent'], errors='coerce').dropna()
         if len(ownership_vals) > 0:
-            thresholds['max_ownership'] = np.percentile(ownership_vals, OWNERSHIP_PERCENTILE)
+            p_val = np.percentile(ownership_vals, OWNERSHIP_PERCENTILE)
+            thresholds['max_ownership'] = max(p_val, 10.0) 
         else:
-            thresholds['max_ownership'] = 10.0  # Fallback
+            thresholds['max_ownership'] = 10.0
     else:
         thresholds['max_ownership'] = 10.0
     
-    # Cost: Below X percentile (e.g., 60th percentile = exclude top 40% expensive players)
+    # Cost: Below X percentile
+    # SAFETY: Ensure at least £7.0m is allowed (User feedback)
     if 'now_cost' in df.columns:
         cost_vals = pd.to_numeric(df['now_cost'], errors='coerce').dropna()
         if len(cost_vals) > 0:
-            thresholds['max_cost'] = np.percentile(cost_vals, COST_PERCENTILE)
+            c_val = np.percentile(cost_vals, COST_PERCENTILE)
+            thresholds['max_cost'] = max(c_val, 70.0) 
         else:
-            thresholds['max_cost'] = 80.0  # Fallback
+            thresholds['max_cost'] = 80.0
     else:
         thresholds['max_cost'] = 80.0
     
-    # Form: Above X percentile (e.g., 30th percentile = exclude bottom 30%)
+    # Form: Above X percentile
     if 'recent_form' in df.columns:
         form_vals = pd.to_numeric(df['recent_form'], errors='coerce').dropna()
         if len(form_vals) > 0:
             thresholds['min_form'] = np.percentile(form_vals, FORM_PERCENTILE)
         else:
-            thresholds['min_form'] = 2.0  # Fallback
+            thresholds['min_form'] = 2.0
     else:
         thresholds['min_form'] = 2.0
     
-    # ICT: Above X percentile (e.g., 30th percentile = exclude bottom 30%)
+    # ICT: Above X percentile
     if 'ict_index' in df.columns:
         ict_vals = pd.to_numeric(df['ict_index'], errors='coerce').dropna()
         if len(ict_vals) > 0:
             thresholds['min_ict'] = np.percentile(ict_vals, ICT_PERCENTILE)
         else:
-            thresholds['min_ict'] = 3.0  # Fallback
+            thresholds['min_ict'] = 3.0
     else:
         thresholds['min_ict'] = 3.0
-    
+        
+    # Predicted Points: Ensure "worthwhile" picks
+    # User feedback: Target ~6pts, but allow higher cap
+    if 'predicted_points' in df.columns:
+        pred_vals = pd.to_numeric(df['predicted_points'], errors='coerce').dropna()
+        if len(pred_vals) > 0:
+            # P92 should be closer to 6.0 pts based on analysis
+            p92 = np.percentile(pred_vals, 92)
+            # Floor 5.5, Cap 8.0 (raised from 6.0)
+            thresholds['min_predicted'] = min(max(p92, 5.5), 8.0)
+        else:
+            thresholds['min_predicted'] = 4.0
+    else:
+        thresholds['min_predicted'] = 4.0
+
     print(f"[Dynamic Thresholds] Ownership < {thresholds['max_ownership']:.1f}%, "
           f"Cost < £{thresholds['max_cost']/10:.1f}m, "
-          f"Form > {thresholds['min_form']:.2f}, ICT > {thresholds['min_ict']:.2f}")
+          f"Form > {thresholds['min_form']:.2f}, ICT > {thresholds['min_ict']:.2f}, "
+          f"Pred > {thresholds['min_predicted']:.1f}")
     
     return thresholds
 
@@ -221,72 +241,142 @@ def select_best_team(df):
     """
     Select the top candidate for each position + 1 wildcard.
     Uses data-driven thresholds computed from current week's player pool.
-    Applies filters (Cost, Ownership, Status) dynamically.
+    Ensures a valid pick for every position by relaxing filters locally if needed.
     """
     
-    # 1. Apply Filtering Logic (if not pre-filtered)
-    # Ensure numeric
-    cols_to_numeric = ['selected_by_percent', 'now_cost', 'recent_form', 'ict_index']
+    # 1. Ensure numeric columns
+    cols_to_numeric = ['selected_by_percent', 'now_cost', 'recent_form', 'ict_index', 'predicted_points']
     for col in cols_to_numeric:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors='coerce')
     
-    # Availability Filter
+    # 2. Availability Filter (Hard Constraint)
+    # We never want to pick injured players, even if we have to fallback
     if 'status' in df.columns:
          df = df[~df['status'].isin(['s', 'u', 'n', 'i', 'd'])]
     if 'chance_of_playing_next_round' in df.columns:
         df['chance_of_playing_next_round'] = pd.to_numeric(df['chance_of_playing_next_round'], errors='coerce').fillna(100)
         df = df[df['chance_of_playing_next_round'] >= 75]
 
-    # Calculate dynamic thresholds from current week's player pool
+    # 3. Calculate Global Dynamic Thresholds
     thresholds = calculate_dynamic_thresholds(df)
-    max_ownership = thresholds['max_ownership']
-    max_cost = thresholds['max_cost']
-    min_form = thresholds['min_form']
-    min_ict = thresholds['min_ict']
+    max_own_global = thresholds['max_ownership']
+    max_cost_global = thresholds['max_cost']
+    min_form_global = thresholds['min_form']
+    min_ict_global = thresholds['min_ict']
+    min_pred_global = thresholds['min_predicted']
 
-    # Criteria Filter (using dynamic thresholds)
-    df_filtered = df[
-        (df['selected_by_percent'] < max_ownership) & 
-        (df['now_cost'] < max_cost) & 
-        ((df['recent_form'] > min_form) | (df['ict_index'] > min_ict))
-    ].copy()
-    
-    # Fallback if empty: Just ownership filter
-    if df_filtered.empty:
-        print("[Warning] Primary filters too restrictive, relaxing to ownership-only.")
-        df_filtered = df[df['selected_by_percent'] < max_ownership].copy()
-        
-    if df_filtered.empty:
-        return pd.DataFrame() # No valid candidates
-
-    # 2. Selection Logic
     final_picks = []
-    df_sorted = df_filtered.sort_values('predicted_points', ascending=False)
-    selected_combinations = set()
+    selected_ids = set()
+    selected_team_pos = set() # Track (team, pos) to avoid duplicates
 
-    # Select Top 1 for each position
+    # 4. Select Top 1 for each position (1:GKP, 2:DEF, 3:MID, 4:FWD)
     for pos_id in [1, 2, 3, 4]:
-        pos_candidates = df_sorted[df_sorted['element_type'] == pos_id]
-        if not pos_candidates.empty:
-            pick = pos_candidates.iloc[0]
-            final_picks.append(pick)
-            selected_combinations.add((pick['team'], pick['element_type']))
-            df_sorted = df_sorted[df_sorted['element'] != pick['element']]
-            
-    # Select Wildcard (Best Remaining who is NOT same Team+Position as existing pick)
-    if len(final_picks) < 5 and not df_sorted.empty:
-        wildcard = None
-        for _, row in df_sorted.iterrows():
-            if (row['team'], row['element_type']) not in selected_combinations:
-                wildcard = row
-                break
+        # Get all available players for this position
+        pos_pool = df[df['element_type'] == pos_id].copy()
         
-        # Absolute Fallback
-        if wildcard is None and not df_sorted.empty:
-            wildcard = df_sorted.iloc[0]
+        if pos_pool.empty:
+            print(f"[Warning] No players found for Position {pos_id}")
+            continue
 
-        if wildcard is not None:
-            final_picks.append(wildcard)
+        # Level 1: Strict Filters (The Perfect Underdog)
+        # Meets all criteria: Low Ownership, Low Cost, High Points
+        candidates = pos_pool[
+            (pos_pool['selected_by_percent'] < max_own_global) & 
+            (pos_pool['now_cost'] < max_cost_global) & 
+            ((pos_pool['recent_form'] > min_form_global) | (pos_pool['ict_index'] > min_ict_global)) &
+            (pos_pool['predicted_points'] >= min_pred_global)
+        ]
+
+        # Level 2: Relax Ownership (Value Pick) - FAIL UPWARD
+        # Prioritize points + budget over ownership
+        if candidates.empty:
+            candidates = pos_pool[
+                (pos_pool['now_cost'] < max_cost_global) & 
+                (pos_pool['predicted_points'] >= min_pred_global)
+            ]
+            if not candidates.empty:
+                # Still prefer lower ownership if possible among these
+                candidates = candidates.sort_values(['predicted_points', 'selected_by_percent'], ascending=[False, True])
+
+        # Level 3: Relax Cost (Premium Differential) - FAIL UPWARD
+        # Prioritize points + differential status over budget
+        if candidates.empty:
+            candidates = pos_pool[
+                (pos_pool['selected_by_percent'] < max_own_global) & 
+                (pos_pool['predicted_points'] >= min_pred_global)
+            ]
+        
+        # Level 4: Relax Both (Just Points) - FAIL UPWARD
+        # Prioritize points above all else
+        if candidates.empty:
+            candidates = pos_pool[
+                (pos_pool['predicted_points'] >= min_pred_global)
+            ]
+
+        # Level 5: Fail Downward (Last Resort)
+        # If no one meets the high points target, allow lower scores
+        if candidates.empty:
+             # Try 4.0 pts floor, then 3.0
+            fallback_pred = 4.0
+            candidates = pos_pool[
+                (pos_pool['selected_by_percent'] < 15.0) & 
+                (pos_pool['predicted_points'] >= fallback_pred)
+            ]
             
+            if candidates.empty:
+                 candidates = pos_pool[(pos_pool['predicted_points'] >= 3.0)]
+
+        # Pick Best
+        if not candidates.empty:
+            # Sort by Predicted Points descending
+            # If tie, use ownership (ascending) as tiebreaker if possible, or cost
+            best_pick = candidates.sort_values('predicted_points', ascending=False).iloc[0]
+            final_picks.append(best_pick)
+            selected_ids.add(best_pick['element'])
+            selected_team_pos.add((best_pick['team'], best_pick['element_type']))
+            
+    # 5. Wildcard Selection
+    # Pick best remaining player from ANY position who fits strict filters
+    # If none, relax filters logic essentially matches above but simpler
+    
+    # Exclude already selected
+    remaining_pool = df[~df['element'].isin(selected_ids)].copy()
+    
+    # Filter Remaining Pool (Strict)
+    wildcard_candidates = remaining_pool[
+        (remaining_pool['selected_by_percent'] < max_own_global) & 
+        (remaining_pool['now_cost'] < max_cost_global) & 
+        (remaining_pool['predicted_points'] >= min_pred_global)
+    ]
+    
+    # Relax if needed (Jump straight to Points priority for wildcard)
+    if wildcard_candidates.empty:
+        wildcard_candidates = remaining_pool[
+            (remaining_pool['predicted_points'] >= min_pred_global)
+        ]
+        
+    # Final Fallback
+    if wildcard_candidates.empty:
+        wildcard_candidates = remaining_pool[
+             (remaining_pool['predicted_points'] >= 4.0)
+        ]
+        
+    # Sort by points
+    wildcard_candidates = wildcard_candidates.sort_values('predicted_points', ascending=False)
+    
+    # Try to find one with different Team+Pos to add variety (optional but good)
+    wildcard_pick = None
+    for _, row in wildcard_candidates.iterrows():
+        if (row['team'], row['element_type']) not in selected_team_pos:
+            wildcard_pick = row
+            break
+            
+    # Fallback if variation impossible
+    if wildcard_pick is None and not wildcard_candidates.empty:
+        wildcard_pick = wildcard_candidates.iloc[0]
+        
+    if wildcard_pick is not None:
+        final_picks.append(wildcard_pick)
+
     return pd.DataFrame(final_picks)
