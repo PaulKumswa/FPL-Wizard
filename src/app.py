@@ -102,6 +102,36 @@ def index():
     log_visit('index')
     return render_template('index.html')
 
+@app.route('/feature-importance')
+def feature_importance():
+    log_visit('feature_importance')
+    
+    # Load feature importance data
+    file_path = 'data/history/feature_importance.json'
+    data = {}
+    timestamp = None
+    
+    if os.path.exists(file_path):
+        try:
+            with open(file_path, 'r') as f:
+                data = json.load(f)
+                timestamp = data.get('timestamp')
+                # Format timestamp if present
+                if timestamp:
+                    try:
+                        dt = datetime.fromisoformat(timestamp)
+                        timestamp = dt.strftime('%Y-%m-%d %H:%M')
+                    except ValueError:
+                        pass
+        except Exception as e:
+            print(f"Error loading feature importance: {e}")
+            
+    return render_template(
+        'feature_importance.html', 
+        models=data.get('models', {}),
+        timestamp=timestamp
+    )
+
 @app.route('/api/predictions')
 def get_predictions():
     log_visit('predictions')
@@ -168,10 +198,7 @@ def get_predictions():
 
     return format_predictions_response(final_picks_df, metadata)
         
-    # Convert back to DataFrame for easier handling
-    result_df = pd.DataFrame(final_picks)
-    
-    return format_predictions_response(result_df, metadata)
+
 
 def format_predictions_response(result_df, metadata):
     # Sort by predicted points for display

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Feature Importance - FPL Underdog</title>
+    <style>
+        :root {
+            --primary-bg: #1a1a1a;
+            --secondary-bg: #2d2d2d;
+            --text-color: #ffffff;
+            --accent-purple: #37003c;
+            --accent-green: #00ff85;
+            --border-color: #404040;
+        }
+
+        body {
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--secondary-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--accent-green);
+            margin: 0;
+        }
+
+        .home-link {
+            color: var(--text-color);
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .home-link:hover {
+            background-color: var(--accent-purple);
+            border-color: var(--accent-green);
+        }
+
+        .timestamp {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+
+        .position-section {
+            background-color: #222;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .position-header {
+            color: var(--accent-green);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .component-card {
+            background-color: var(--secondary-bg);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        h4 {
+            margin-top: 0;
+            color: #ccc;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        .feature-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .feature-name {
+            width: 180px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 10px;
+        }
+
+        .bar-container {
+            flex-grow: 1;
+            background-color: #444;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background-color: var(--accent-green);
+        }
+
+        .feature-value {
+            width: 45px;
+            text-align: right;
+            font-family: monospace;
+            color: #aaa;
+            font-size: 0.85em;
+        }
+
+        .no-data {
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Feature Importance</h1>
+            <a href="/" class="home-link">← Back to Dashboard</a>
+        </header>
+
+        {% if timestamp %}
+        <div class="timestamp">
+            Last Updated: {{ timestamp }}
+        </div>
+        {% endif %}
+
+        {% if not models %}
+        <div class="no-data">No feature importance data found. Try training the models.</div>
+        {% else %}
+        {% for pos, components in models.items() %}
+        <div class="position-section">
+            <h2 class="position-header">{{ pos }} Models</h2>
+            <div class="component-grid">
+                {% for comp_name, features in components.items() %}
+                <div class="component-card">
+                    <h4>{{ comp_name|upper }} Prediction</h4>
+                    {% if features %}
+                    {% for feature, score in features.items() %}
+                    {% if loop.index <= 10 %} <div class="feature-row">
+                        <div class="feature-name" title="{{ feature }}">{{ feature }}</div>
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: {{ score }}%"></div>
+                        </div>
+                        <div class="feature-value">{{ score|round(1) }}%</div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <div class="no-data">No features logged</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    </div>
+</body>
+
+</html>

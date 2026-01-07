@@ -160,26 +160,39 @@ See `architectural_decisions.md` Section 9 for full rationale.
 
 ### 6. No Model Validation Metrics Stored
 
-```python
-# train_model.py - MAE is printed but not persisted
-print(f"{config['name']} Model MAE: {mae:.4f}")
-```
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Implemented persistent metrics logging.
 
-- No historical record of model performance over time
-- Cannot track if model is improving or degrading
-- No automated alerting for performance drops
+| Original Issue | Resolution |
+|-------|--------|
+| No model history | ✅ Metrics (AUC/MAE) now logged to `data/history/model_metrics.json` |
+| No performance tracking | ✅ JSON store enables longitudinal analysis of model accuracy |
 
-**Recommendation**: Log metrics to JSON/CSV file and add monitoring.
+**Implementation**:
+- `src/train_model.py` now logs validation metrics after every run
+- JSON format captures component-level performance (goals, assists, cleansheets)
+
+See `architectural_decisions.md` Section 3.4 for details.
 
 ---
 
 ### 7. Feature Importance Not Analyzed
 
-- No SHAP values or feature importance extraction
-- Unclear which features actually drive predictions
-- Makes it hard to debug poor predictions
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Implemented feature importance logging and UI.
 
-**Recommendation**: Add feature importance logging and optionally expose in the UI.
+| Original Issue | Resolution |
+|-------|--------|
+| No SHAP values or feature importance | ✅ Logged LightGBM `feature_importances_` to JSON |
+| Unclear which features drive predictions | ✅ Added `/feature-importance` dashboard to UI |
+| Hard to debug poor predictions | ✅ Visualized top contributing features per component |
+
+**Implementation**:
+- `train_model.py` saves importance to `data/history/feature_importance.json`
+- `app.py` exposes `/feature-importance` route
+- New visualization page shows contribution of features like `recent_team_xga`, `recent_form`, etc.
+
+See `architectural_decisions.md` Section 3.5 for details.
 
 ---
 
@@ -279,7 +292,7 @@ flowchart TD
 | Target | ~~High~~ | ✅ **Done**: Component-based prediction (goals, assists, clean sheets) |
 | Data | ~~High~~ | ✅ **Done**: TimeSeriesSplit implemented (part of Model fix) |
 | Features | ~~Medium~~ | ✅ **Done**: Integrated Understat player-level xG/xA data |
-| Metrics | Medium | Store model MAE over time for monitoring |
+| Metrics | ~~Medium~~ | ✅ **Done**: Store model MAE/AUC in `model_metrics.json` |
 | Code | Low | Remove dead code in `app.py` |
 | UX | Medium | Add prediction confidence intervals |
 | Config | ~~Low~~ | ✅ **Done**: Dynamic percentile-based selection thresholds |

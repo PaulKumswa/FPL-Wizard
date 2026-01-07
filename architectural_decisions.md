@@ -101,6 +101,31 @@ Models are trained independently for each position (`element_type`) to capture u
     Where `GOAL_PTS = {GKP: 10, DEF: 6, MID: 5, FWD: 4}` and `CS_PTS = {GKP: 4, DEF: 4, MID: 1, FWD: 0}`.
 *   **Phase 2 (Deferred)**: See Section 8.
 
+### 3.4 Model Metrics Storage (Added Jan 2026)
+*   **File**: `data/history/model_metrics.json`
+*   **Content**: Logs validation performance (AUC, Accuracy, MAE) for every training run.
+*   **Schema**:
+    ```json
+    {
+      "timestamp": "ISO8601",
+      "model_type": "component|legacy",
+      "position": "GKP|DEF|MID|FWD",
+      "component": "goal|assist|cleansheet|null",
+      "metrics": { ... },
+      "samples": 1234
+    }
+    ```
+*   **Rationale**: Enables longitudinal tracking of model performance to detect degradation or improvements over time. Replaces ephemeral console output.
+
+### 3.5 Feature Importance Logging & Visualization (Added Jan 2026)
+*   **File**: `data/history/feature_importance.json`
+*   **Content**: Captures the LightGBM `feature_importances_` (normalized to 0-100%) for every component model.
+*   **Visualization**: Exposed via `/feature-importance` UI route.
+*   **Rationale**: 
+    1.  **Explainability**: Helps users and developers understand *why* the model makes certain predictions (e.g., "GKP prediction driven by Team xGA").
+    2.  **Debugging**: Catch data issues (e.g., if `now_cost` becomes the #1 predictor for everything, something might be wrong).
+    3.  **Trust**: Transparently showing model logic increases user confidence in the "black box".
+
 ### 3.3 Inference
 *   Generates predictions for the **Next Gameweek** only.
 *   Filters: `status != 'u'` (injured), `chance_of_playing >= 75%`.
