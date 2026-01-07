@@ -180,3 +180,45 @@ Phase 1 (goals, assists, clean sheets) captures **~80% of FPL point variance** f
 *   Significant implementation complexity
 
 These will be revisited if Phase 1 performance plateaus and additional accuracy is needed.
+
+## 9. Dynamic Selection Thresholds (Added Jan 2026)
+
+### 9.1 Problem with Static Thresholds
+Previously, underdog selection used hardcoded thresholds:
+```python
+MAX_COST = 80       # £8.0m
+MAX_OWNERSHIP = 10  # 10%
+MIN_FORM = 2.0
+MIN_ICT = 3.0
+```
+
+These static values had several issues:
+*   **Early Season**: Many quality players still under 10% ownership → thresholds too lenient
+*   **Mid-Season**: Template teams form, only 10-15 players above 10% → thresholds too restrictive
+*   **Late Season**: Ownership distributions shift as managers wildcard
+*   **No Rationale**: Values were arbitrary with no documented justification
+
+### 9.2 Solution: Percentile-Based Dynamic Calculation
+Thresholds are now computed at inference time based on the current week's player pool:
+
+| Metric | Percentile | Interpretation |
+| :--- | :--- | :--- |
+| **Ownership** | 25th percentile | Select from bottom 25% of ownership (true differentials) |
+| **Cost** | 60th percentile | Select from below 60th percentile cost (budget-friendly) |
+| **Form** | 30th percentile | Exclude bottom 30% by form (avoid poor performers) |
+| **ICT Index** | 30th percentile | Exclude bottom 30% by ICT (avoid inactive players) |
+
+### 9.3 Implementation
+*   **Config** (`src/config.py`): Defines `OWNERSHIP_PERCENTILE`, `COST_PERCENTILE`, `FORM_PERCENTILE`, `ICT_PERCENTILE`
+*   **Inference** (`src/inference.py`): 
+    *   Added `calculate_dynamic_thresholds(df)` function
+    *   Uses `numpy.percentile()` on current week's player data
+    *   Returns computed thresholds for use in selection
+*   **Logging**: Computed thresholds are printed each inference run for transparency
+
+### 9.4 Rationale
+*   **Adaptive**: Thresholds automatically adjust to season dynamics without code changes
+*   **Consistent**: "Bottom 25% ownership" always means differential picks, regardless of absolute ownership levels
+*   **Configurable**: Percentiles can be tuned without changing selection logic
+*   **Debuggable**: Logged thresholds allow verification of selection criteria
+

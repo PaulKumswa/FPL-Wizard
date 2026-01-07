@@ -17,7 +17,11 @@ import pandas as pd
 import pickle
 import os
 import json
-from src.config import FEATURE_CONFIGS, POSITION_MAP_REV, POSITION_MAP, MAX_COST, MAX_OWNERSHIP, MIN_FORM, MIN_ICT
+import numpy as np
+from src.config import (
+    FEATURE_CONFIGS, POSITION_MAP_REV, POSITION_MAP,
+    OWNERSHIP_PERCENTILE, COST_PERCENTILE, FORM_PERCENTILE, ICT_PERCENTILE
+)
 from src.scoring_constants import (
     GOAL_POINTS, ASSIST_POINTS, CLEAN_SHEET_POINTS, 
     APPEARANCE_POINTS, CLEAN_SHEET_POSITIONS, COMPONENT_TARGETS
@@ -152,10 +156,72 @@ def predict_points(df, models, component_models=None):
     return df
 
 
+def calculate_dynamic_thresholds(df):
+    """
+    Calculate data-driven selection thresholds based on current week's player pool.
+    
+    Uses percentile-based approach to adapt to season dynamics:
+    - OWNERSHIP: Bottom X percentile (true differentials)
+    - COST: Below X percentile (budget-friendly)
+    - FORM: Above X percentile (exclude poor form)
+    - ICT: Above X percentile (exclude inactive players)
+    
+    Returns dict with computed threshold values.
+    """
+    thresholds = {}
+    
+    # Ownership: Bottom X percentile (e.g., 25th percentile = pick from bottom 25%)
+    if 'selected_by_percent' in df.columns:
+        ownership_vals = pd.to_numeric(df['selected_by_percent'], errors='coerce').dropna()
+        if len(ownership_vals) > 0:
+            thresholds['max_ownership'] = np.percentile(ownership_vals, OWNERSHIP_PERCENTILE)
+        else:
+            thresholds['max_ownership'] = 10.0  # Fallback
+    else:
+        thresholds['max_ownership'] = 10.0
+    
+    # Cost: Below X percentile (e.g., 60th percentile = exclude top 40% expensive players)
+    if 'now_cost' in df.columns:
+        cost_vals = pd.to_numeric(df['now_cost'], errors='coerce').dropna()
+        if len(cost_vals) > 0:
+            thresholds['max_cost'] = np.percentile(cost_vals, COST_PERCENTILE)
+        else:
+            thresholds['max_cost'] = 80.0  # Fallback
+    else:
+        thresholds['max_cost'] = 80.0
+    
+    # Form: Above X percentile (e.g., 30th percentile = exclude bottom 30%)
+    if 'recent_form' in df.columns:
+        form_vals = pd.to_numeric(df['recent_form'], errors='coerce').dropna()
+        if len(form_vals) > 0:
+            thresholds['min_form'] = np.percentile(form_vals, FORM_PERCENTILE)
+        else:
+            thresholds['min_form'] = 2.0  # Fallback
+    else:
+        thresholds['min_form'] = 2.0
+    
+    # ICT: Above X percentile (e.g., 30th percentile = exclude bottom 30%)
+    if 'ict_index' in df.columns:
+        ict_vals = pd.to_numeric(df['ict_index'], errors='coerce').dropna()
+        if len(ict_vals) > 0:
+            thresholds['min_ict'] = np.percentile(ict_vals, ICT_PERCENTILE)
+        else:
+            thresholds['min_ict'] = 3.0  # Fallback
+    else:
+        thresholds['min_ict'] = 3.0
+    
+    print(f"[Dynamic Thresholds] Ownership < {thresholds['max_ownership']:.1f}%, "
+          f"Cost < £{thresholds['max_cost']/10:.1f}m, "
+          f"Form > {thresholds['min_form']:.2f}, ICT > {thresholds['min_ict']:.2f}")
+    
+    return thresholds
+
+
 def select_best_team(df):
     """
     Select the top candidate for each position + 1 wildcard.
-    Applies filters (Cost, Ownership, Status) if they haven't been applied already.
+    Uses data-driven thresholds computed from current week's player pool.
+    Applies filters (Cost, Ownership, Status) dynamically.
     """
     
     # 1. Apply Filtering Logic (if not pre-filtered)
@@ -172,16 +238,24 @@ def select_best_team(df):
         df['chance_of_playing_next_round'] = pd.to_numeric(df['chance_of_playing_next_round'], errors='coerce').fillna(100)
         df = df[df['chance_of_playing_next_round'] >= 75]
 
-    # Criteria Filter
+    # Calculate dynamic thresholds from current week's player pool
+    thresholds = calculate_dynamic_thresholds(df)
+    max_ownership = thresholds['max_ownership']
+    max_cost = thresholds['max_cost']
+    min_form = thresholds['min_form']
+    min_ict = thresholds['min_ict']
+
+    # Criteria Filter (using dynamic thresholds)
     df_filtered = df[
-        (df['selected_by_percent'] < MAX_OWNERSHIP) & 
-        (df['now_cost'] < MAX_COST) & 
-        ((df['recent_form'] > MIN_FORM) | (df['ict_index'] > MIN_ICT))
+        (df['selected_by_percent'] < max_ownership) & 
+        (df['now_cost'] < max_cost) & 
+        ((df['recent_form'] > min_form) | (df['ict_index'] > min_ict))
     ].copy()
     
-    # Fallback if empty: Just ownership
+    # Fallback if empty: Just ownership filter
     if df_filtered.empty:
-        df_filtered = df[df['selected_by_percent'] < MAX_OWNERSHIP].copy()
+        print("[Warning] Primary filters too restrictive, relaxing to ownership-only.")
+        df_filtered = df[df['selected_by_percent'] < max_ownership].copy()
         
     if df_filtered.empty:
         return pd.DataFrame() # No valid candidates

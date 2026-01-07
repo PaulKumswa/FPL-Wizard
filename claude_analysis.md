@@ -138,19 +138,23 @@ See `architectural_decisions.md` Section 1.3 for full details.
 
 ### 5. Hardcoded Selection Thresholds
 
-```python
-# src/config.py
-MAX_COST = 80       # £8.0m
-MAX_OWNERSHIP = 10  # 10%
-MIN_FORM = 2.0
-MIN_ICT = 3.0
-```
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Replaced static thresholds with percentile-based dynamic calculation.
 
-- These are static and may not adapt to season dynamics
-- No explanation of how these values were chosen
-- Could filter out good picks early/late in season
+| Original Issue | Resolution |
+|-------|--------|
+| `MAX_COST = 80` (static £8.0m) | ✅ Now computed as 60th percentile of current week's costs |
+| `MAX_OWNERSHIP = 10` (static 10%) | ✅ Now computed as 25th percentile of current week's ownership |
+| `MIN_FORM = 2.0` (static) | ✅ Now computed as 30th percentile of current week's form |
+| `MIN_ICT = 3.0` (static) | ✅ Now computed as 30th percentile of current week's ICT |
+| Values may not adapt to season dynamics | ✅ Thresholds now recalculated each inference run |
 
-**Recommendation**: Make thresholds configurable or data-driven (e.g., percentile-based).
+**Implementation**:
+- `config.py` now defines `OWNERSHIP_PERCENTILE`, `COST_PERCENTILE`, `FORM_PERCENTILE`, `ICT_PERCENTILE`
+- `inference.py` added `calculate_dynamic_thresholds(df)` function
+- Thresholds are logged at inference time for transparency
+
+See `architectural_decisions.md` Section 9 for full rationale.
 
 ---
 
@@ -274,11 +278,11 @@ flowchart TD
 | Model | ~~High~~ | ✅ **Done**: Switched to LightGBM with TimeSeriesSplit CV |
 | Target | ~~High~~ | ✅ **Done**: Component-based prediction (goals, assists, clean sheets) |
 | Data | ~~High~~ | ✅ **Done**: TimeSeriesSplit implemented (part of Model fix) |
-| Features | Medium | Integrate Understat player-level xG/xA data |
+| Features | ~~Medium~~ | ✅ **Done**: Integrated Understat player-level xG/xA data |
 | Metrics | Medium | Store model MAE over time for monitoring |
 | Code | Low | Remove dead code in `app.py` |
 | UX | Medium | Add prediction confidence intervals |
-| Config | Low | Make selection thresholds data-driven |
+| Config | ~~Low~~ | ✅ **Done**: Dynamic percentile-based selection thresholds |
 
 ---
 

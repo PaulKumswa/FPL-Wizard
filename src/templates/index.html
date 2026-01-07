@@ -429,9 +429,8 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
             <div class="arch-card">
                 <h3>Inference Engine</h3>
                 <p><strong>SELECTION:</strong> Top 1 per position + 1 Wildcard</p>
-                <p><strong>FILTERS:</strong> Ownership < 10% (Underdog criteria). Also, likeliness to play> 75% </10>
-                </p>
-                <p><strong>OUTPUT:</strong> One underdog per position + next overall highest predicted points
+                <p><strong>FILTERS:</strong> Dynamic thresholds (25th %ile ownership, 30th %ile form/ICT)</p>
+                <p><strong>OUTPUT:</strong> Data-driven underdogs that adapt to season dynamics
                 </p>
             </div>
         </div>
