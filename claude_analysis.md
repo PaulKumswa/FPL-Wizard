@@ -117,16 +117,22 @@ The shift approach is **correct**, and the temporal integrity concern has been a
 
 ### 4. Limited Use of Understat Player-Level Data
 
-Current implementation:
-- Fetches team-level xG/xGA from Understat matches
-- Uses `recent_expected_goals`, `recent_expected_assists` from FPL API (not Understat)
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Integrated Understat player-level xG/xA data.
 
-Missing opportunities:
-- Player-specific xG, xA, key passes from Understat
-- Match-by-match player shots data
-- NPxG (non-penalty xG) which is more predictive
+| Original Issue | Resolution |
+|-------|--------|
+| Only team-level xG/xGA from Understat | ✅ Now uses player-level stats via `id_map.py` mapping |
+| Missing player-specific xG, xA | ✅ Added `us_npxG_per90`, `us_xA_per90` per-90 metrics |
+| NPxG (non-penalty xG) not used | ✅ Integrated `npxG` from Understat player data |
 
-**Recommendation**: Integrate Understat player-level data via the `id_map.py` mapping for richer features.
+**Implementation**:
+- `preprocess.py` loads `understat_players_{season}.json` and `id_mapping.csv`
+- Calculates per-90 metrics: `us_npxG_per90 = (npxG / time) * 90`
+- Merges to training/inference data via FPL↔Understat ID mapping
+- `config.py` updated: MID/FWD positions now use `recent_us_npxG_per90`, `recent_us_xA_per90`
+
+See `architectural_decisions.md` Section 1.3 for full details.
 
 ---
 
@@ -189,16 +195,19 @@ This code is never executed due to the earlier `return` on line 168.
 
 ### 9. Fuzzy Matching for Team Names
 
-```python
-# preprocess.py line 91
-match = process.extractOne(us_name, fpl_names)
-```
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Replaced fuzzy matching with persistent JSON mapping.
 
-- Fuzzy matching (fuzzywuzzy) can produce incorrect mappings
-- Already improved with `id_map.py` persistent JSON approach
-- But `map_understat_teams()` in preprocess still uses fuzzy matching
+| Original Issue | Resolution |
+|-------|--------|
+| `map_understat_teams()` uses fuzzy matching | ✅ Now uses `known_team_mapping.json` lookup |
+| Can produce incorrect mappings | ✅ Explicit mapping of 6 mismatched team names |
+| Inconsistent with `id_map.py` approach | ✅ Both now use persistent JSON files |
 
-**Recommendation**: Ensure `id_map.py` mappings are used consistently everywhere.
+**Implementation**:
+- Created `data/config/known_team_mapping.json` with Understat→FPL team name mappings
+- Refactored `map_understat_teams()` to use JSON lookup with exact match fallback
+- Removed dependency on fuzzy matching for team name resolution
 
 ---
 

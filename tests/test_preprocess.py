@@ -73,18 +73,25 @@ def mock_data():
         'saves': [0]*5, 'bonus': [0]*5, 'bps': [0]*5, 'influence': [0]*5,
         'creativity': [0]*5, 'threat': [0]*5, 'ict_index': [0]*5,
         'expected_goals': [0.1]*5, 'expected_assists': [0.1]*5,
-        'team_xg': [1.0]*5, 'team_xga': [1.0]*5
+        'team_xg': [1.0]*5, 'team_xga': [1.0]*5,
+        'us_npxG_per90': [0.0]*5, 'us_xA_per90': [0.0]*5  # New Understat features
     })
     
-    # Understat (Empty for basic test)
-    understat = pd.DataFrame()
+    # Understat Matches (Empty for basic test)
+    understat_matches = pd.DataFrame()
     
-    return players, teams, events, histories, fixtures, understat
+    # Understat Players (Empty for basic test)
+    understat_players = pd.DataFrame()
+    
+    # ID Mapping (Empty for basic test)
+    id_mapping = pd.DataFrame()
+    
+    return players, teams, events, histories, fixtures, understat_matches, understat_players, id_mapping
 
 def test_rolling_averages(mock_data):
-    players, teams, events, histories, fixtures, understat = mock_data
+    players, teams, events, histories, fixtures, understat_matches, understat_players, id_mapping = mock_data
     
-    train_df, inference_df, _, _ = preprocess_data(players, teams, events, histories, fixtures, understat)
+    train_df, inference_df, _, _ = preprocess_data(players, teams, events, histories, fixtures, understat_matches, understat_players, id_mapping)
     
     # Check Player 1
     p1 = train_df[train_df['element'] == 1].sort_values('round')
@@ -112,9 +119,9 @@ def test_rolling_averages(mock_data):
 
 def test_inference_features(mock_data):
     # Verify that INFERENCE rows get the rolling average of the last 5 ACTUAL rounds
-    players, teams, events, histories, fixtures, understat = mock_data
+    players, teams, events, histories, fixtures, understat_matches, understat_players, id_mapping = mock_data
     
-    train_df, inference_df, _, _ = preprocess_data(players, teams, events, histories, fixtures, understat)
+    train_df, inference_df, _, _ = preprocess_data(players, teams, events, histories, fixtures, understat_matches, understat_players, id_mapping)
     
     # Inference is for Next GW (which we need to set in events)
     # Mock data sets GW 6 as current. So logic looks for GW 6? Or 7?
@@ -124,7 +131,7 @@ def test_inference_features(mock_data):
     events.loc[5, 'is_next'] = True # GW 6 is next
     
     # Re-run
-    train_df, inference_df, _, _ = preprocess_data(players, teams, events, histories, fixtures, understat)
+    train_df, inference_df, _, _ = preprocess_data(players, teams, events, histories, fixtures, understat_matches, understat_players, id_mapping)
     
     assert not inference_df.empty
     

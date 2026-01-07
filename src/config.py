@@ -36,7 +36,8 @@ FEATURE_CONFIGS = {
             'now_cost', 'selected_by_percent', 'recent_form', 'opponent_strength', 'is_home',
             'recent_goals_scored', 'recent_assists', 'recent_clean_sheets', 
             'recent_creativity', 'recent_threat', 'recent_influence',
-            'recent_team_xg', 'recent_expected_goals', 'recent_expected_assists'
+            'recent_team_xg', 'recent_expected_goals', 'recent_expected_assists',
+            'recent_us_npxG_per90', 'recent_us_xA_per90'
         ],
         'min_samples_leaf': 3
     },
@@ -46,7 +47,8 @@ FEATURE_CONFIGS = {
             'now_cost', 'selected_by_percent', 'recent_form', 'opponent_strength', 'is_home',
             'recent_goals_scored', 'recent_assists', 
             'recent_threat', 'recent_influence',
-            'recent_team_xg', 'recent_expected_goals', 'recent_expected_assists'
+            'recent_team_xg', 'recent_expected_goals', 'recent_expected_assists',
+            'recent_us_npxG_per90', 'recent_us_xA_per90'
         ],
         'min_samples_leaf': 3
     }

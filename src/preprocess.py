@@ -44,8 +44,25 @@ def load_data():
         understat_matches_df = pd.json_normalize(understat_matches)
     else:
         understat_matches_df = pd.DataFrame()
+    
+    # Load Understat Player Data (for player-level xG/xA)
+    player_files = list(raw_dir.glob('understat_players_*.json'))
+    if player_files:
+        latest_player_file = sorted(player_files, key=lambda f: int(re.search(r'\d+', f.name).group()))[-1]
+        with open(latest_player_file, 'r', encoding='utf-8') as f:
+            understat_players = json.load(f)
+        understat_players_df = pd.DataFrame(understat_players)
+    else:
+        understat_players_df = pd.DataFrame()
+    
+    # Load FPL-to-Understat ID Mapping
+    id_mapping_path = Path('data/processed/id_mapping.csv')
+    if id_mapping_path.exists():
+        id_mapping_df = pd.read_csv(id_mapping_path)
+    else:
+        id_mapping_df = pd.DataFrame()
         
-    return players, teams, events, histories, fixtures_df, understat_matches_df
+    return players, teams, events, histories, fixtures_df, understat_matches_df, understat_players_df, id_mapping_df
 
 
 def get_gameweek_info(events):
@@ -70,35 +87,50 @@ def get_gameweek_info(events):
     return current_gw_id, next_gw_id
 
 def map_understat_teams(fpl_teams, us_matches):
-    """Map Understat team names to FPL team IDs."""
+    """Map Understat team names to FPL team IDs using persistent JSON mapping."""
     if us_matches.empty:
         return {}
-        
+    
+    TEAM_MAPPING_FILE = Path('data/config/known_team_mapping.json')
+    
+    # Load known mappings (Understat name → FPL name)
+    known_mappings = {}
+    if TEAM_MAPPING_FILE.exists():
+        with open(TEAM_MAPPING_FILE, 'r', encoding='utf-8') as f:
+            known_mappings = json.load(f)
+    
+    # Build FPL name → ID lookup
+    fpl_name_to_id = fpl_teams.set_index('name')['id'].to_dict()
+    
     # Get unique Understat team names (from home and away columns)
-    # json_normalize produces 'h.title' and 'a.title'
     us_teams = pd.concat([us_matches['h.title'], us_matches['a.title']]).unique()
     
     mapping = {}
-    fpl_names = fpl_teams['name'].tolist()
+    unmapped = []
     
     for us_name in us_teams:
-        # Exact match?
-        if us_name in fpl_names:
-            f_id = fpl_teams[fpl_teams['name'] == us_name]['id'].iloc[0]
-            mapping[us_name] = f_id
+        # Use known mapping or assume exact match
+        fpl_name = known_mappings.get(us_name, us_name)
+        if fpl_name in fpl_name_to_id:
+            mapping[us_name] = fpl_name_to_id[fpl_name]
         else:
-            # Fuzzy match
-            match = process.extractOne(us_name, fpl_names)
-            if match and match[1] > 80:
-                f_name = match[0]
-                f_id = fpl_teams[fpl_teams['name'] == f_name]['id'].iloc[0]
-                mapping[us_name] = f_id
-                
+            unmapped.append(us_name)
+    
+    if unmapped:
+        print(f"Warning: Could not map Understat teams: {unmapped}")
+        print("Add mappings to data/config/known_team_mapping.json")
+    
     return mapping
 
-def preprocess_data(players, teams, events, histories, fixtures, understat_matches):
+def preprocess_data(players, teams, events, histories, fixtures, understat_matches, understat_players=None, id_mapping=None):
     current_gw_id, next_gw_id = get_gameweek_info(events)
     print(f"Current GW: {current_gw_id}, Next GW: {next_gw_id}")
+    
+    # Handle optional parameters
+    if understat_players is None:
+        understat_players = pd.DataFrame()
+    if id_mapping is None:
+        id_mapping = pd.DataFrame()
     
     # --- Prepare Team Strength Map ---
     team_strength = teams[['id', 'name', 'short_name', 'strength', 'code']].set_index('id')
@@ -252,6 +284,54 @@ def preprocess_data(players, teams, events, histories, fixtures, understat_match
     train_df = train_df.merge(team_strength[['strength']], left_on='opponent_team', right_index=True)
     train_df.rename(columns={'strength': 'opponent_strength'}, inplace=True)
     
+    # --- Merge Understat Player-Level Data ---
+    # Uses ID mapping from id_map.py to link FPL players to Understat stats
+    if not understat_players.empty and not id_mapping.empty:
+        print("Merging Understat player-level data...")
+        
+        # Prepare Understat player stats: calculate per-90 metrics
+        us_cols = ['id', 'xG', 'xA', 'npxG', 'time']
+        us_available = [c for c in us_cols if c in understat_players.columns]
+        us_subset = understat_players[us_available].copy()
+        
+        # Convert to numeric
+        for col in ['xG', 'xA', 'npxG', 'time']:
+            if col in us_subset.columns:
+                us_subset[col] = pd.to_numeric(us_subset[col], errors='coerce').fillna(0)
+        
+        # Calculate per-90 metrics (avoid division by zero)
+        if 'time' in us_subset.columns:
+            us_subset['minutes_played'] = us_subset['time'].clip(lower=1)  # At least 1 minute
+            if 'npxG' in us_subset.columns:
+                us_subset['us_npxG_per90'] = (us_subset['npxG'] / us_subset['minutes_played']) * 90
+            if 'xA' in us_subset.columns:
+                us_subset['us_xA_per90'] = (us_subset['xA'] / us_subset['minutes_played']) * 90
+        
+        # Merge via ID mapping: fpl_id -> understat_id
+        id_map_subset = id_mapping[['fpl_id', 'understat_id']].drop_duplicates()
+        us_subset = us_subset.rename(columns={'id': 'understat_id'})
+        us_subset['understat_id'] = pd.to_numeric(us_subset['understat_id'], errors='coerce')
+        
+        # Join: id_mapping -> understat_players
+        player_us_stats = id_map_subset.merge(us_subset, on='understat_id', how='left')
+        
+        # Join to train_df via fpl_id (element)
+        train_df = train_df.merge(
+            player_us_stats[['fpl_id', 'us_npxG_per90', 'us_xA_per90']].drop_duplicates(),
+            left_on='element', right_on='fpl_id', how='left'
+        )
+        train_df.drop(columns=['fpl_id'], inplace=True, errors='ignore')
+        
+        # Fill NaN for players without Understat mapping
+        train_df['us_npxG_per90'] = train_df['us_npxG_per90'].fillna(0)
+        train_df['us_xA_per90'] = train_df['us_xA_per90'].fillna(0)
+        
+        print(f"Understat player data merged. Players with stats: {(train_df['us_npxG_per90'] > 0).sum()}")
+    else:
+        train_df['us_npxG_per90'] = 0.0
+        train_df['us_xA_per90'] = 0.0
+        print("No Understat player data available. Using defaults.")
+    
     # --- Feature Engineering: Rolling Averages ---
     # Ensure sorted by element and round
     train_df = train_df.sort_values(['element', 'round'])
@@ -271,7 +351,9 @@ def preprocess_data(players, teams, events, histories, fixtures, understat_match
         'team_xg',
         'team_xga',
         'expected_goals',
-        'expected_assists'
+        'expected_assists',
+        'us_npxG_per90',
+        'us_xA_per90'
     ]
     
     # Calculate rolling averages (lagged by 1 to represent "form entering the match")
@@ -325,6 +407,28 @@ def preprocess_data(players, teams, events, histories, fixtures, understat_match
         # Get fixtures for next GW
         next_fixtures = fixtures[fixtures['event'] == next_gw_id]
         
+        # Prepare Understat player stats lookup for inference
+        us_player_lookup = {}
+        if not understat_players.empty and not id_mapping.empty:
+            us_cols = ['id', 'npxG', 'xA', 'time']
+            us_available = [c for c in us_cols if c in understat_players.columns]
+            us_data = understat_players[us_available].copy()
+            for col in ['npxG', 'xA', 'time']:
+                if col in us_data.columns:
+                    us_data[col] = pd.to_numeric(us_data[col], errors='coerce').fillna(0)
+            if 'time' in us_data.columns:
+                us_data['minutes_played'] = us_data['time'].clip(lower=1)
+                if 'npxG' in us_data.columns:
+                    us_data['us_npxG_per90'] = (us_data['npxG'] / us_data['minutes_played']) * 90
+                if 'xA' in us_data.columns:
+                    us_data['us_xA_per90'] = (us_data['xA'] / us_data['minutes_played']) * 90
+            us_data['understat_id'] = pd.to_numeric(us_data['id'], errors='coerce')
+            id_map_dict = id_mapping.set_index('fpl_id')['understat_id'].to_dict()
+            us_id_to_stats = us_data.set_index('understat_id')[['us_npxG_per90', 'us_xA_per90']].to_dict('index')
+            for fpl_id, us_id in id_map_dict.items():
+                if us_id in us_id_to_stats:
+                    us_player_lookup[fpl_id] = us_id_to_stats[us_id]
+        
         inference_rows = []
         
         for _, fixture in next_fixtures.iterrows():
@@ -338,16 +442,22 @@ def preprocess_data(players, teams, events, histories, fixtures, understat_match
                 # Get recent stats from history
                 p_hist = histories[histories['element'] == p['id']]
                 
+                # Metrics that come from histories (not Understat player data)
+                history_metrics = [m for m in metrics if m not in ['us_npxG_per90', 'us_xA_per90']]
+                
                 stats = {}
                 if not p_hist.empty:
                     p_hist = p_hist.sort_values('round')
                     # Calculate rolling mean of last 5 actual matches
-                    for metric in metrics:
-                        val = p_hist[metric].tail(5).mean()
+                    for metric in history_metrics:
+                        if metric in p_hist.columns:
+                            val = p_hist[metric].tail(5).mean()
+                        else:
+                            val = 0.0
                         key = 'recent_form' if metric == 'total_points' else f'recent_{metric}'
                         stats[key] = val
                 else:
-                    for metric in metrics:
+                    for metric in history_metrics:
                         key = 'recent_form' if metric == 'total_points' else f'recent_{metric}'
                         stats[key] = 0.0
 
@@ -371,8 +481,14 @@ def preprocess_data(players, teams, events, histories, fixtures, understat_match
                     'chance_of_playing_next_round': p['chance_of_playing_next_round'],
                     'news': p['news']
                 }
-                # Add stats
+                # Add rolling stats
                 row.update(stats)
+                
+                # Add Understat player-level stats (season aggregate per-90)
+                us_stats = us_player_lookup.get(p['id'], {'us_npxG_per90': 0.0, 'us_xA_per90': 0.0})
+                row['recent_us_npxG_per90'] = us_stats.get('us_npxG_per90', 0.0)
+                row['recent_us_xA_per90'] = us_stats.get('us_xA_per90', 0.0)
+                
                 return row
 
             # Home Players
@@ -394,10 +510,13 @@ def preprocess_data(players, teams, events, histories, fixtures, understat_match
 
 def main():
     try:
-        players, teams, events, histories, fixtures, understat_matches = load_data()
+        players, teams, events, histories, fixtures, understat_matches, understat_players, id_mapping = load_data()
         print("Data loaded.")
         
-        train_df, inference_df, current_gw, next_gw = preprocess_data(players, teams, events, histories, fixtures, understat_matches)
+        train_df, inference_df, current_gw, next_gw = preprocess_data(
+            players, teams, events, histories, fixtures, understat_matches, 
+            understat_players, id_mapping
+        )
         
         os.makedirs('data/processed', exist_ok=True)
         

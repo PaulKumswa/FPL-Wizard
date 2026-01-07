@@ -21,6 +21,20 @@ The pipeline follows a strict extraction-transformation-loading (ETL) pattern:
     *   **Rolling Averages**: Calculated over a **5-Gameweek Window**.
     *   **Lagging**: Metrics are lagged by 1 gameweek (e.g., using GW1-5 stats to predict GW6). This prevents data leakage.
 
+### 1.3 Understat Player-Level Data (Added Jan 2026)
+*   **Source**: `understat_players_{season}.json` fetched via `understatapi`.
+*   **Mapping**: Uses `id_mapping.csv` from `id_map.py` to link FPL player IDs → Understat player IDs.
+*   **Features Added**:
+    *   `us_npxG_per90`: Non-penalty Expected Goals per 90 minutes (more predictive than raw xG).
+    *   `us_xA_per90`: Expected Assists per 90 minutes.
+*   *Rationale*: FPL API's `expected_goals` field is less accurate and detailed than Understat's xG model. Using per-90 metrics normalizes for playing time differences.
+*   **Position Usage**: MID and FWD positions use `recent_us_npxG_per90` and `recent_us_xA_per90` as features. GKP/DEF do not use these attacking metrics.
+
+### 1.4 Team Name Mapping (Added Jan 2026)
+*   **File**: `data/config/known_team_mapping.json`
+*   **Purpose**: Maps Understat team names to FPL team names (e.g., "Manchester City" → "Man City").
+*   *Rationale*: Replaces unreliable fuzzy matching with explicit, maintainable mappings.
+
 ## 2. Model Architecture
 
 ### 2.1 Algorithm
