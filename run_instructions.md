@@ -12,14 +12,22 @@
    python update_pipeline.py
    ```
 
-   **Quick Launch (App Only)**:
-   If you already have data and just want to launch the website:
-   ```bash
-   python -m src.app
+    python update_pipeline.py
+    ```
 
-   uses the below to rerun the models and update the predictions without fetching more data
-   python update_pipeline.py --quick
-   ```
+    **Run without Data Fetch**:
+    To skip the data fetching step (useful for iterating on models with existing data) but still run training and the app:
+    ```bash
+    python update_pipeline.py --no-fetch
+    ```
+
+    **Quick Launch (App Only)**:
+    If you already have data and just want to launch the website:
+    ```bash
+    python -m src.app
+    # OR
+    python update_pipeline.py --quick
+    ```
 
    *Note: The full pipeline fetches data from the FPL API and Understat. The first run may take a few minutes.*
 
