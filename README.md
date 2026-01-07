@@ -1,7 +1,7 @@
 ﻿# FPL ML (weekly team picker)
 Built with ChatGPT Codex and Google Antigravity
 
-It provides predictions based on custom-trained machine learning models, updated weekly. The model identifies high-potential "underdog" players (less than 10% ownership, under £8.0m) with strong form or underlying stats.
+It provides predictions based on custom-trained machine learning models, updated weekly. The model identifies high-potential "underdog" players ((10% Own, £7m Cost) with 'Fail-Upward' logic) with strong form or underlying stats.
 
 This repository pulls its raw data from a few sources:
 
