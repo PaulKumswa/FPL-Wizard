@@ -1202,28 +1202,8 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 </div>
             </div>
 
-            <!-- System Architecture Section -->
-            <h3 style="color: var(--accent-green); margin-top: 30px;">System Architecture</h3>
-            <div class="architecture-grid" style="display: grid;">
-                <div class="arch-card">
-                    <h3>Data Pipeline</h3>
-                    <p><strong>SOURCE:</strong> Official FPL API (Bootstrap) + Understat (xG/xA)</p>
-                    <p><strong>PROCESS:</strong> 5-week rolling averages for Form, xG, xA, and Team xGA</p>
-                    <p><strong>UPDATE:</strong> Weekly (Before gameweek)</p>
-                </div>
-                <div class="arch-card">
-                    <h3>Machine Learning</h3>
-                    <p><strong>APPROACH:</strong> Component-based prediction (Goals, Assists, Clean Sheets)</p>
-                    <p><strong>MODELS:</strong> ~10 LightGBM classifiers (per position × per outcome)</p>
-                    <p><strong>OUTPUT:</strong> P(goal) × pts + P(assist) × 3 + P(cs) × pts + 2</p>
-                </div>
-                <div class="arch-card">
-                    <h3>Inference Engine</h3>
-                    <p><strong>SELECTION:</strong> Top 1 per position + 1 Wildcard</p>
-                    <p><strong>CONFIDENCE FIRST:</strong> Prioritizes high-confidence (≥60%) 6+ pt picks</p>
-                    <p><strong>FAIL-UPWARD:</strong> Relaxes confidence → ownership → cost → points threshold</p>
-                </div>
-            </div>
+
+
 
             <!-- Feature Importance Section -->
             <div class="info-section info-section-desktop">

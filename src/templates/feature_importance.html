@@ -257,7 +257,7 @@
                     {% if loop.index <= 10 %} <div class="feature-row">
                         <div class="feature-name" title="{{ feature }}">{{ feature }}</div>
                         <div class="bar-container">
-                            <div class="bar-fill" style="width: {{ score }}%"></div>
+                            <div class="bar-fill" style="--width: {{ score }}%; width: var(--width);"></div>
                         </div>
                         <div class="feature-value">{{ score|round(1) }}%</div>
                 </div>
