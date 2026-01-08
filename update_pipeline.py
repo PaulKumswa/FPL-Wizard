@@ -129,9 +129,10 @@ def main():
         
         # Load models
         models = inference.load_models()
+        component_models = inference.load_component_models()
         
-        # Predict
-        df = inference.predict_points(df, models)
+        # Predict (uses component models for confidence calculation)
+        df = inference.predict_points(df, models, component_models)
         
         # Select Best Team
         top_5 = inference.select_best_team(df)

@@ -61,6 +61,7 @@ def log_predictions(predictions_df, gameweek_info):
             'web_name': row['web_name'],
             'position': row.get('position', 'UNK'),
             'predicted_points': float(row['predicted_points']),
+            'confidence_score': float(row.get('confidence_score', 50.0)),
             'actual_points': None  # To be filled later
         })
 

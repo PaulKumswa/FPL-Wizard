@@ -144,6 +144,88 @@
             color: #666;
             font-style: italic;
         }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 12px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .home-link {
+                padding: 10px 20px;
+            }
+
+            .timestamp {
+                font-size: 0.8em;
+                margin-bottom: 20px;
+            }
+
+            .position-section {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .position-header {
+                font-size: 1.1em;
+                margin-bottom: 15px;
+            }
+
+            .component-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .component-card {
+                padding: 12px;
+            }
+
+            h4 {
+                font-size: 0.95em;
+                margin-bottom: 12px;
+            }
+
+            .feature-row {
+                flex-wrap: wrap;
+                margin-bottom: 12px;
+                gap: 6px;
+            }
+
+            .feature-name {
+                width: 100%;
+                font-size: 0.85em;
+                padding-right: 0;
+                margin-bottom: 4px;
+            }
+
+            .bar-container {
+                flex-grow: 1;
+                min-width: 0;
+                height: 10px;
+            }
+
+            .feature-value {
+                width: 50px;
+                font-size: 0.8em;
+                flex-shrink: 0;
+            }
+        }
     </style>
 </head>
 
@@ -190,6 +272,11 @@
     </div>
     {% endfor %}
     {% endif %}
+
+    <!-- Bottom Navigation -->
+    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+        <a href="/" class="home-link">← Back to Dashboard</a>
+    </div>
     </div>
 </body>
 

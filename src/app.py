@@ -168,7 +168,9 @@ def get_predictions():
                 # but using the re-calculated ones from model is fine too as they should be identical.
                 # Let's map strict points from history to be 100% sure.
                 id_to_points = {p['player_id']: p['predicted_points'] for p in gw_entry['picks']}
+                id_to_confidence = {p['player_id']: p.get('confidence_score', 50.0) for p in gw_entry['picks']}
                 final_df['predicted_points'] = final_df['element'].map(id_to_points)
+                final_df['confidence_score'] = final_df['element'].map(id_to_confidence)
                 
                 # Prepare result immediately
                 return format_predictions_response(final_df, metadata)

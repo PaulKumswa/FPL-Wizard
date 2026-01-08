@@ -328,44 +328,417 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
             .container {
-                padding: 20px;
+                padding: 15px;
+                padding-bottom: 80px;
+                /* Space for bottom nav */
+                border-radius: 0;
+                box-shadow: none;
+                background-color: var(--primary-bg);
+            }
+
+            /* Hide desktop-only elements on mobile */
+            .desktop-only {
+                display: none !important;
+            }
+
+            /* Mobile header */
+            header {
+                margin-bottom: 20px;
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 1.8em;
             }
 
             .subtitle {
-                font-size: 1em;
+                font-size: 0.9em;
+                display: none;
             }
 
+            h2 {
+                font-size: 1.3em;
+                margin-top: 25px;
+            }
+
+            /* Mobile Dashboard Pills */
             .dashboard-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                margin-bottom: 25px;
             }
 
-            th,
-            td {
-                padding: 12px 8px;
+            .dashboard-card {
+                padding: 15px;
+                border-radius: 10px;
+            }
+
+            .dashboard-card h3 {
+                font-size: 0.7em;
+                margin-bottom: 5px;
+            }
+
+            .card-value {
+                font-size: 2em;
+                margin: 5px 0;
+            }
+
+            .card-desc {
+                display: none;
+            }
+
+            /* Hide desktop table, show mobile cards */
+            .table-responsive {
+                display: none !important;
+            }
+
+            /* Mobile Player Cards */
+            .mobile-cards-container {
+                display: flex !important;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .player-card {
+                background: linear-gradient(135deg, #2d2d2d, #252525);
+                border-radius: 12px;
+                overflow: hidden;
+                border: 1px solid var(--border-color);
+            }
+
+            .player-card-header {
+                display: flex;
+                align-items: center;
+                padding: 15px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
+
+            .player-card-header:active {
+                background-color: #3a3a3a;
+            }
+
+            .player-card-photo {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-color: #444;
+                margin-right: 12px;
+                flex-shrink: 0;
+            }
+
+            .player-card-info {
+                flex-grow: 1;
+                min-width: 0;
+            }
+
+            .player-card-name {
+                font-weight: bold;
+                font-size: 1.1em;
+                color: var(--text-color);
+                margin-bottom: 2px;
+            }
+
+            .player-card-team {
+                font-size: 0.85em;
+                color: #888;
+                margin-bottom: 4px;
+            }
+
+            .player-card-pos {
+                display: inline-block;
+                background-color: var(--accent-purple);
+                color: var(--accent-green);
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-size: 0.7em;
+                font-weight: bold;
+            }
+
+            .player-card-points {
+                text-align: right;
+                margin-right: 10px;
+            }
+
+            .player-card-points-label {
+                font-size: 0.7em;
+                color: #888;
+                text-transform: uppercase;
+            }
+
+            .player-card-points-value {
+                font-size: 1.8em;
+                font-weight: bold;
+                color: var(--accent-green);
+                line-height: 1;
+            }
+
+            .player-card-confidence {
+                font-size: 0.75em;
+                color: #888;
+                margin-top: 2px;
+            }
+
+            .player-card-chevron {
+                color: #666;
+                font-size: 1.2em;
+                transition: transform 0.3s;
+            }
+
+            .player-card.expanded .player-card-chevron {
+                transform: rotate(180deg);
+            }
+
+            .player-card-body {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+                background-color: #1f1f1f;
+            }
+
+            .player-card.expanded .player-card-body {
+                max-height: 300px;
+            }
+
+            .player-card-details {
+                padding: 15px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .player-card-stat {
                 font-size: 0.9em;
             }
 
-            .player-img {
-                width: 30px;
-                height: 40px;
+            .player-card-stat-label {
+                color: #888;
+                font-size: 0.8em;
             }
 
-            .team-logo {
-                width: 25px;
-                height: 25px;
+            .player-card-stat-value {
+                color: var(--text-color);
+                font-weight: bold;
             }
 
-            .player-cell,
-            .team-cell {
-                gap: 8px;
+            .player-card-link {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding-top: 10px;
+                border-top: 1px solid var(--border-color);
+                margin-top: 5px;
             }
 
-            .points-cell {
+            .player-card-link a {
+                color: var(--accent-green);
+                text-decoration: none;
+                font-size: 0.9em;
+            }
+
+            /* Page Sections for Tab Navigation */
+            .page-section {
+                display: none;
+            }
+
+            .page-section.active {
+                display: block;
+            }
+
+            /* History Section Mobile Styles */
+            #history-section details {
+                margin-bottom: 10px;
+            }
+
+            #history-section summary {
+                padding: 12px;
+                font-size: 0.95em;
+            }
+
+            #history-section .gw-summary-stats {
+                font-size: 0.8em;
+            }
+
+            /* Info Page Mobile Styles */
+            .info-section {
+                background-color: #222;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 15px;
+                border: 1px solid var(--border-color);
+            }
+
+            .info-section h3 {
+                color: var(--accent-green);
+                margin: 0 0 15px 0;
+                font-size: 1.1em;
+            }
+
+            .info-accuracy-value {
+                font-size: 3em;
+                font-weight: bold;
+                color: var(--accent-green);
+            }
+
+            .info-accuracy-label {
+                color: #888;
+                font-size: 0.9em;
+            }
+
+            .info-accuracy-desc {
+                color: #666;
+                font-size: 0.8em;
+                margin-top: 10px;
+                line-height: 1.4;
+            }
+
+            .info-how-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .info-how-chevron {
+                color: #666;
+                transition: transform 0.3s;
+            }
+
+            .info-how-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+            }
+
+            .info-section.expanded .info-how-chevron {
+                transform: rotate(180deg);
+            }
+
+            .info-section.expanded .info-how-content {
+                max-height: 500px;
+            }
+
+            .info-step {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 15px;
+                padding-top: 15px;
+            }
+
+            .info-step:first-child {
+                padding-top: 0;
+            }
+
+            .info-step-icon {
+                width: 32px;
+                height: 32px;
+                background-color: var(--accent-purple);
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 12px;
+                flex-shrink: 0;
                 font-size: 1em;
+            }
+
+            .info-step-content h4 {
+                margin: 0 0 4px 0;
+                color: var(--text-color);
+                font-size: 0.95em;
+            }
+
+            .info-step-content p {
+                margin: 0;
+                color: #888;
+                font-size: 0.85em;
+                line-height: 1.4;
+            }
+
+            .info-credits {
+                text-align: center;
+                color: #888;
+                font-size: 0.9em;
+            }
+
+            .info-credits a {
+                color: var(--accent-green);
+                text-decoration: none;
+            }
+
+            /* Architecture Cards (desktop only) */
+            .architecture-grid {
+                display: none;
+            }
+
+            /* Footer (hidden on mobile, content moved to Info) */
+            footer {
+                display: none;
+            }
+
+            /* Bottom Tab Navigation */
+            .mobile-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background-color: #1a1a1a;
+                border-top: 1px solid var(--border-color);
+                display: flex;
+                justify-content: space-around;
+                padding: 10px 0;
+                z-index: 1000;
+            }
+
+            .mobile-nav-tab {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background: none;
+                border: none;
+                color: #666;
+                font-size: 0.75em;
+                cursor: pointer;
+                padding: 5px 20px;
+                transition: color 0.2s;
+            }
+
+            .mobile-nav-tab.active {
+                color: var(--accent-green);
+            }
+
+            .mobile-nav-tab-icon {
+                font-size: 1.5em;
+                margin-bottom: 3px;
+            }
+
+            /* Confidence Legend Mobile */
+            .confidence-legend {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px !important;
+                padding: 15px;
+                background-color: #222;
+                border-radius: 8px;
+                margin-top: 15px;
+            }
+        }
+
+        /* Desktop: hide mobile-only elements */
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none !important;
+            }
+
+            .mobile-nav {
+                display: none !important;
+            }
+
+            .mobile-cards-container {
+                display: none !important;
+            }
+
+            .page-section {
+                display: block !important;
             }
         }
     </style>
@@ -374,67 +747,149 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
 <body>
     <div class="container">
         <header>
-            <h1>FPL Underdog Predictor</h1>
+            <h1>FPL Underdog</h1>
             <p class="subtitle">
                 Data-driven predictions identifying high-potential "underdogs" for the upcoming gameweek.
             </p>
         </header>
 
-        <!-- Dashboard Cards -->
-        <div class="dashboard-grid">
-            <!-- Next GW Card -->
-            <div id="next-gw-card" class="dashboard-card">
-                <h3>Next Gameweek</h3>
-                <div class="card-value" id="next-gw-display">-</div>
+        <!-- ========== PICKS PAGE ========== -->
+        <section id="picks-page" class="page-section active">
+            <!-- Dashboard Cards -->
+            <div class="dashboard-grid">
+                <!-- Next GW Card -->
+                <div id="next-gw-card" class="dashboard-card">
+                    <h3>Gameweek</h3>
+                    <div class="card-value" id="next-gw-display">-</div>
+                </div>
+
+                <!-- Hit % Card (Clickable on mobile to go to Info) -->
+                <div class="dashboard-card" id="hit-rate-card"
+                    onclick="if(window.innerWidth <= 768) switchPage('info');" style="cursor: pointer;">
+                    <h3>Hit Rate <span class="mobile-only" style="font-size: 0.8em;">ℹ️</span></h3>
+                    <div class="card-value" id="hit-rate-display">-</div>
+                    <p class="card-desc desktop-only">
+                        Rolling percentage of picks over last 5 active weeks where <strong>Actual ≥ 0.9 ×
+                            Predicted</strong>.
+                    </p>
+                    <p class="mobile-only" style="font-size: 0.7em; color: #666; margin: 5px 0 0 0;">Tap for details</p>
+                </div>
             </div>
 
-            <!-- Hit % Card -->
-            <div class="dashboard-card">
-                <h3>5-GW Hit Rate</h3>
-                <div class="card-value" id="hit-rate-display">-</div>
-                <p class="card-desc">
-                    Rolling percentage of picks over last 5 active weeks where <strong>Actual ≥ 0.9 ×
-                        Predicted</strong>.
+            <!-- Section Header -->
+            <h2 class="mobile-only">This Week's Picks</h2>
+            <h2 class="desktop-only">Predictions: Watch these players this week</h2>
+
+            <!-- Predictions Container -->
+            <div id="predictions">
+                <p class="loading">Loading predictions...</p>
+            </div>
+        </section>
+
+        <!-- ========== HISTORY PAGE ========== -->
+        <section id="history-page" class="page-section">
+            <h2>Performance History</h2>
+            <div id="history-section">
+                <p class="loading">Loading history...</p>
+            </div>
+        </section>
+
+        <!-- ========== INFO PAGE ========== -->
+        <section id="info-page" class="page-section">
+            <h2 class="mobile-only">About</h2>
+
+            <!-- Model Accuracy Section -->
+            <div class="info-section mobile-only">
+                <h3>Model Accuracy</h3>
+                <div class="info-accuracy-value" id="info-hit-rate">-</div>
+                <div class="info-accuracy-label">5-Week Rolling Hit Rate</div>
+                <p class="info-accuracy-desc">
+                    Percentage of picks where Actual ≥ 90% of Predicted points over the last 5 gameweeks.
                 </p>
             </div>
-        </div>
 
-        <!-- Upcoming Gameweek Predictions -->
-        <h2>Predictions: Watch these players this week</h2>
-        <div id="predictions">
-            <p class="loading">Loading predictions...</p>
-        </div>
-
-        <!-- Performance History Section -->
-        <h2>Performance History</h2>
-        <div id="history-section">
-            <p class="loading">Loading history...</p>
-        </div>
-
-        <!-- System Architecture Section -->
-        <h2>System Architecture</h2>
-        <div class="architecture-grid">
-            <div class="arch-card">
-                <h3>Data Pipeline</h3>
-                <p><strong>SOURCE:</strong> Official FPL API (Bootstrap) + Understat (xG/xA)</p>
-                <p><strong>PROCESS:</strong> 5-week rolling averages for Form, xG, xA, and Team xGA</p>
-                <p><strong>UPDATE:</strong> Weekly (Before gameweek)</p>
+            <!-- How It Works Section (Expandable) -->
+            <div class="info-section mobile-only" id="how-it-works-section">
+                <div class="info-how-header" onclick="toggleHowItWorks()">
+                    <h3 style="margin: 0;">How It Works</h3>
+                    <span class="info-how-chevron">▼</span>
+                </div>
+                <div class="info-how-content">
+                    <div class="info-step">
+                        <div class="info-step-icon">📊</div>
+                        <div class="info-step-content">
+                            <h4>Data Pipeline</h4>
+                            <p><strong>Source:</strong> Official FPL API + Understat (xG/xA)</p>
+                            <p><strong>Process:</strong> 5-week rolling averages for Form, xG, xA, Team xGA</p>
+                            <p><strong>Update:</strong> Weekly (before gameweek)</p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-step-icon">🧠</div>
+                        <div class="info-step-content">
+                            <h4>Machine Learning</h4>
+                            <p><strong>Approach:</strong> Component-based prediction (Goals, Assists, Clean Sheets)</p>
+                            <p><strong>Models:</strong> ~10 LightGBM classifiers (per position × per outcome)</p>
+                            <p><strong>Output:</strong> P(goal) × pts + P(assist) × 3 + P(cs) × pts + 2</p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-step-icon">🎯</div>
+                        <div class="info-step-content">
+                            <h4>Inference Engine</h4>
+                            <p><strong>Selection:</strong> Top 1 per position + 1 Wildcard</p>
+                            <p><strong>Filters:</strong> Dynamic thresholds (10% Own, £7m Cost) with 'Fail-Upward' logic
+                            </p>
+                            <p><strong>Output:</strong> Data-driven underdogs that prioritize points over constraints
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="arch-card">
-                <h3>Machine Learning</h3>
-                <p><strong>APPROACH:</strong> Component-based prediction (Goals, Assists, Clean Sheets)</p>
-                <p><strong>MODELS:</strong> ~10 LightGBM classifiers (per position × per outcome)</p>
-                <p><strong>OUTPUT:</strong> P(goal) × pts + P(assist) × 3 + P(cs) × pts + 2</p>
-            </div>
-            <div class="arch-card">
-                <h3>Inference Engine</h3>
-                <p><strong>SELECTION:</strong> Top 1 per position + 1 Wildcard</p>
-                <p><strong>FILTERS:</strong> Dynamic thresholds (10% Own, £7m Cost) with 'Fail-Upward' logic</p>
-                <p><strong>OUTPUT:</strong> Data-driven underdogs that prioritize points over constraints</p>
-            </div>
-        </div>
 
-        <footer>
+            <!-- Feature Importance Section -->
+            <div class="info-section mobile-only">
+                <h3>Feature Importance</h3>
+                <p style="color: #888; font-size: 0.9em; margin: 0;">
+                    See which features the model considers most important for predictions.
+                </p>
+                <a href="/feature-importance"
+                    style="display: block; margin-top: 15px; color: var(--accent-green); text-decoration: none;">
+                    View All Features →
+                </a>
+            </div>
+
+            <!-- Credits Section -->
+            <div class="info-section mobile-only info-credits">
+                <p style="margin: 0 0 10px 0;">Built by Dalen with Antigravity and Codex</p>
+                <a href="https://github.com/PaulKumswa" target="_blank">GitHub</a>
+            </div>
+
+            <!-- Desktop: System Architecture Section -->
+            <h2 class="desktop-only">System Architecture</h2>
+            <div class="architecture-grid desktop-only">
+                <div class="arch-card">
+                    <h3>Data Pipeline</h3>
+                    <p><strong>SOURCE:</strong> Official FPL API (Bootstrap) + Understat (xG/xA)</p>
+                    <p><strong>PROCESS:</strong> 5-week rolling averages for Form, xG, xA, and Team xGA</p>
+                    <p><strong>UPDATE:</strong> Weekly (Before gameweek)</p>
+                </div>
+                <div class="arch-card">
+                    <h3>Machine Learning</h3>
+                    <p><strong>APPROACH:</strong> Component-based prediction (Goals, Assists, Clean Sheets)</p>
+                    <p><strong>MODELS:</strong> ~10 LightGBM classifiers (per position × per outcome)</p>
+                    <p><strong>OUTPUT:</strong> P(goal) × pts + P(assist) × 3 + P(cs) × pts + 2</p>
+                </div>
+                <div class="arch-card">
+                    <h3>Inference Engine</h3>
+                    <p><strong>SELECTION:</strong> Top 1 per position + 1 Wildcard</p>
+                    <p><strong>FILTERS:</strong> Dynamic thresholds (10% Own, £7m Cost) with 'Fail-Upward' logic</p>
+                    <p><strong>OUTPUT:</strong> Data-driven underdogs that prioritize points over constraints</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="desktop-only">
             <p>Built by Dalen with Antigravity and Codex</p>
             <p style="margin-top: 10px; font-size: 0.85em;">
                 <a href="/feature-importance" style="color: #666; text-decoration: none;">View Model Feature
@@ -443,7 +898,52 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
         </footer>
     </div>
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav mobile-only">
+        <button class="mobile-nav-tab active" data-page="picks" onclick="switchPage('picks')">
+            <span class="mobile-nav-tab-icon">⚽</span>
+            <span>Picks</span>
+        </button>
+        <button class="mobile-nav-tab" data-page="history" onclick="switchPage('history')">
+            <span class="mobile-nav-tab-icon">📅</span>
+            <span>History</span>
+        </button>
+        <button class="mobile-nav-tab" data-page="info" onclick="switchPage('info')">
+            <span class="mobile-nav-tab-icon">ℹ️</span>
+            <span>Info</span>
+        </button>
+    </nav>
+
     <script>
+        // ========== MOBILE NAVIGATION ==========
+        function switchPage(pageName) {
+            // Update page sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(pageName + '-page').classList.add('active');
+
+            // Update nav tabs
+            document.querySelectorAll('.mobile-nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Toggle How It Works expansion
+        function toggleHowItWorks() {
+            const section = document.getElementById('how-it-works-section');
+            section.classList.toggle('expanded');
+        }
+
+        // Toggle player card expansion
+        function togglePlayerCard(cardElement) {
+            cardElement.classList.toggle('expanded');
+        }
+
         // Helper function to get color based on confidence score
         function getConfidenceColor(confidence) {
             if (confidence >= 70) return '#00ff85'; // Green - High confidence
@@ -451,6 +951,13 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
             return '#ff9933'; // Orange - Low confidence
         }
 
+        // Get position name from element_type
+        function getPositionName(elementType) {
+            const positions = { 1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD' };
+            return positions[elementType] || 'N/A';
+        }
+
+        // ========== FETCH PREDICTIONS ==========
         fetch('/api/predictions')
             .then(response => response.json())
             .then(data => {
@@ -461,13 +968,13 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                     return;
                 }
 
-                // Update Gameweek Info (Next GW only)
+                // Update Gameweek Info
                 const gw = data.gameweek_info;
                 document.getElementById('next-gw-display').textContent = gw.next_gameweek || '-';
 
-                // Update Predictions Table
-                let html = `
-                    <div class="table-responsive">
+                // ===== DESKTOP TABLE =====
+                let desktopHtml = `
+                    <div class="table-responsive desktop-only">
                         <table>
                             <thead>
                                 <tr>
@@ -485,7 +992,7 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 `;
 
                 data.predictions.forEach(player => {
-                    html += `
+                    desktopHtml += `
                         <tr>
                             <td>
                                 <div class="player-cell">
@@ -519,20 +1026,77 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                     `;
                 });
 
-                html += `</tbody></table></div>`;
+                desktopHtml += `</tbody></table></div>`;
 
-                // Add confidence color key legend
-                html += `
-                    <div style="margin-top: 15px; display: flex; gap: 20px; font-size: 0.85em; color: #888; justify-content: center;">
+                // Desktop confidence legend
+                desktopHtml += `
+                    <div class="desktop-only" style="margin-top: 15px; display: flex; gap: 20px; font-size: 0.85em; color: #888; justify-content: center;">
                         <span><span style="display: inline-block; width: 12px; height: 12px; background: #00ff85; border-radius: 2px; margin-right: 5px;"></span>High Confidence (≥70%)</span>
                         <span><span style="display: inline-block; width: 12px; height: 12px; background: #ffcc00; border-radius: 2px; margin-right: 5px;"></span>Medium (40-69%)</span>
                         <span><span style="display: inline-block; width: 12px; height: 12px; background: #ff9933; border-radius: 2px; margin-right: 5px;"></span>Low Confidence (<40%)</span>
                     </div>
                 `;
 
-                predContainer.innerHTML = html;
+                // ===== MOBILE CARDS =====
+                let mobileHtml = `<div class="mobile-cards-container mobile-only">`;
 
-                // Trigger live updates with explicit next gameweek
+                data.predictions.forEach(player => {
+                    const statDisplay = (player.element_type === 3 || player.element_type === 4)
+                        ? `xG: ${(player.recent_expected_goals || 0).toFixed(2)} | xA: ${(player.recent_expected_assists || 0).toFixed(2)}`
+                        : `TxGA: ${(player.recent_team_xga || 0).toFixed(2)}`;
+
+                    mobileHtml += `
+                        <div class="player-card" onclick="togglePlayerCard(this)">
+                            <div class="player-card-header">
+                                <img src="${player.photo_url}" alt="${player.web_name}" class="player-card-photo">
+                                <div class="player-card-info">
+                                    <div class="player-card-name">${player.web_name}</div>
+                                    <div class="player-card-team">${player.team_name}</div>
+                                    <span class="player-card-pos">${player.position}</span>
+                                </div>
+                                <div class="player-card-points">
+                                    <div class="player-card-points-label">Min Pts</div>
+                                    <div class="player-card-points-value" style="color: ${getConfidenceColor(player.confidence_score)}">${player.predicted_points.toFixed(1)}</div>
+                                    <div class="player-card-confidence">${Math.round(player.confidence_score)}% confident</div>
+                                </div>
+                                <span class="player-card-chevron">▼</span>
+                            </div>
+                            <div class="player-card-body">
+                                <div class="player-card-details">
+                                    <div class="player-card-stat">
+                                        <div class="player-card-stat-label">Cost</div>
+                                        <div class="player-card-stat-value">£${(player.now_cost / 10).toFixed(1)}m</div>
+                                    </div>
+                                    <div class="player-card-stat">
+                                        <div class="player-card-stat-label">Ownership</div>
+                                        <div class="player-card-stat-value">${(player.selected_by_percent || 0)}%</div>
+                                    </div>
+                                    <div class="player-card-stat">
+                                        <div class="player-card-stat-label">Stats (5GW)</div>
+                                        <div class="player-card-stat-value">${statDisplay}</div>
+                                    </div>
+                                    <div class="player-card-stat">
+                                        <div class="player-card-stat-label">Opponent</div>
+                                        <div class="player-card-stat-value">${player.next_opponent_name}</div>
+                                    </div>
+                                    <div class="player-card-stat">
+                                        <div class="player-card-stat-label">Live Pts</div>
+                                        <div class="player-card-stat-value" id="mobile-live-${player.element}">-</div>
+                                    </div>
+                                    <div class="player-card-link">
+                                        <a href="${player.profile_url}" target="_blank" onclick="event.stopPropagation();">View Player Profile →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                mobileHtml += `</div>`;
+
+                predContainer.innerHTML = desktopHtml + mobileHtml;
+
+                // Trigger live updates
                 updateLiveScores(data.gameweek_info.next_gameweek);
             })
             .catch(error => {
@@ -584,6 +1148,11 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                     : '-';
 
                 document.getElementById('hit-rate-display').textContent = hitRate;
+                // Also update Info page hit rate for mobile
+                const infoHitRate = document.getElementById('info-hit-rate');
+                if (infoHitRate) {
+                    infoHitRate.textContent = hitRate;
+                }
 
                 // Render Dropdowns (Show all history, not just 5 weeks)
                 let html = '';
@@ -700,6 +1269,7 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                     if (data.error || !data) return;
 
                     for (const [pid, stats] of Object.entries(data)) {
+                        // Update desktop table cell
                         const cell = document.getElementById(`live-${pid}`);
                         if (cell) {
                             cell.textContent = stats.points;
@@ -712,6 +1282,21 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                                 cell.style.fontWeight = 'bold';
                             } else {
                                 cell.style.color = '#888'; // Not started
+                            }
+                        }
+
+                        // Update mobile card cell
+                        const mobileCell = document.getElementById(`mobile-live-${pid}`);
+                        if (mobileCell) {
+                            mobileCell.textContent = stats.points;
+
+                            // Style Logic
+                            if (stats.finished) {
+                                mobileCell.style.color = 'var(--accent-green)';
+                            } else if (stats.minutes > 0) {
+                                mobileCell.style.color = '#ff4d4d';
+                            } else {
+                                mobileCell.style.color = '#888';
                             }
                         }
                     }

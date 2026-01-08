@@ -298,41 +298,46 @@
   },
   {
     "gameweek": 22,
-    "timestamp": "2026-01-07T19:00:34.540112",
+    "timestamp": "2026-01-08T00:19:48.140806",
     "picks": [
       {
-        "player_id": 565,
-        "web_name": "Vicario",
+        "player_id": 736,
+        "web_name": "Donnarumma",
         "position": "GKP",
-        "predicted_points": 4.106761638202251,
+        "predicted_points": 5.699825368968504,
+        "confidence_score": 94.9970894828084,
         "actual_points": null
       },
       {
         "player_id": 228,
         "web_name": "Gusto",
         "position": "DEF",
-        "predicted_points": 7.491350208868809,
+        "predicted_points": 10.45700319178584,
+        "confidence_score": 63.21065084093777,
         "actual_points": null
       },
       {
-        "player_id": 84,
-        "web_name": "Tavernier",
+        "player_id": 20,
+        "web_name": "Trossard",
         "position": "MID",
-        "predicted_points": 6.842405314530021,
+        "predicted_points": 8.52979860146381,
+        "confidence_score": 41.020172540629794,
         "actual_points": null
       },
       {
-        "player_id": 249,
-        "web_name": "Jo\u00e3o Pedro",
+        "player_id": 97,
+        "web_name": "Evanilson",
         "position": "FWD",
-        "predicted_points": 6.2770010688447115,
+        "predicted_points": 5.585342371105053,
+        "confidence_score": 45.626072191483594,
         "actual_points": null
       },
       {
-        "player_id": 5,
-        "web_name": "Gabriel",
+        "player_id": 151,
+        "web_name": "Van Hecke",
         "position": "DEF",
-        "predicted_points": 8.45426211568816,
+        "predicted_points": 8.927447058884514,
+        "confidence_score": 38.36996157725231,
         "actual_points": null
       }
     ]
