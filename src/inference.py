@@ -281,21 +281,30 @@ def select_best_team(df):
     """
     Select the top candidate for each position + 1 wildcard.
     Uses data-driven thresholds computed from current week's player pool.
+    
+    CONFIDENCE-BASED SELECTION (Jan 2026):
+    Prioritizes reliable predictions by filtering on confidence score first,
+    then relaxing confidence thresholds before ownership/cost constraints.
+    
     Ensures a valid pick for every position by relaxing filters locally if needed.
     """
     
     # 1. Ensure numeric columns
-    cols_to_numeric = ['selected_by_percent', 'now_cost', 'recent_form', 'ict_index', 'predicted_points']
+    cols_to_numeric = ['selected_by_percent', 'now_cost', 'recent_form', 'ict_index', 'predicted_points', 'confidence_score']
     for col in cols_to_numeric:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors='coerce')
+    
+    # Default confidence if not present
+    if 'confidence_score' not in df.columns:
+        df['confidence_score'] = 50.0
     
     # 2. Availability Filter (Hard Constraint)
     # We never want to pick injured players, even if we have to fallback
     if 'status' in df.columns:
          df = df[~df['status'].isin(['s', 'u', 'n', 'i', 'd'])]
     if 'chance_of_playing_next_round' in df.columns:
-        df['chance_of_playing_next_round'] = pd.to_numeric(df['chance_of_playing_next_round'], errors='coerce').fillna(100)
+        df.loc[:, 'chance_of_playing_next_round'] = pd.to_numeric(df['chance_of_playing_next_round'], errors='coerce').fillna(100)
         df = df[df['chance_of_playing_next_round'] >= 75]
 
     # 3. Calculate Global Dynamic Thresholds
@@ -305,6 +314,11 @@ def select_best_team(df):
     min_form_global = thresholds['min_form']
     min_ict_global = thresholds['min_ict']
     min_pred_global = thresholds['min_predicted']
+    
+    # Confidence thresholds for fail upward logic
+    HIGH_CONFIDENCE = 60.0    # Very reliable predictions
+    MEDIUM_CONFIDENCE = 40.0  # Acceptable uncertainty
+    MIN_POINTS_TARGET = 6.0   # Target "worthwhile" picks
 
     final_picks = []
     selected_ids = set()
@@ -319,91 +333,147 @@ def select_best_team(df):
             print(f"[Warning] No players found for Position {pos_id}")
             continue
 
-        # Level 1: Strict Filters (The Perfect Underdog)
-        # Meets all criteria: Low Ownership, Low Cost, High Points
+        # === CONFIDENCE-BASED FAIL UPWARD LOGIC ===
+        # Priority: High confidence + 6pts > Medium confidence + 6pts > Any confidence + 6pts
+        # Then relax ownership/cost constraints as before
+        
+        # Level 1A: Perfect Underdog with HIGH Confidence (≥60%)
+        # The ideal pick: reliable prediction, low ownership, affordable, high points
         candidates = pos_pool[
+            (pos_pool['confidence_score'] >= HIGH_CONFIDENCE) &
             (pos_pool['selected_by_percent'] < max_own_global) & 
             (pos_pool['now_cost'] < max_cost_global) & 
             ((pos_pool['recent_form'] > min_form_global) | (pos_pool['ict_index'] > min_ict_global)) &
-            (pos_pool['predicted_points'] >= min_pred_global)
+            (pos_pool['predicted_points'] >= MIN_POINTS_TARGET)
         ]
 
+        # Level 1B: Perfect Underdog with MEDIUM Confidence (≥40%)
+        if candidates.empty:
+            candidates = pos_pool[
+                (pos_pool['confidence_score'] >= MEDIUM_CONFIDENCE) &
+                (pos_pool['selected_by_percent'] < max_own_global) & 
+                (pos_pool['now_cost'] < max_cost_global) & 
+                ((pos_pool['recent_form'] > min_form_global) | (pos_pool['ict_index'] > min_ict_global)) &
+                (pos_pool['predicted_points'] >= MIN_POINTS_TARGET)
+            ]
+        
+        # Level 1C: Perfect Underdog ANY Confidence (relax confidence, keep all other filters)
+        if candidates.empty:
+            candidates = pos_pool[
+                (pos_pool['selected_by_percent'] < max_own_global) & 
+                (pos_pool['now_cost'] < max_cost_global) & 
+                ((pos_pool['recent_form'] > min_form_global) | (pos_pool['ict_index'] > min_ict_global)) &
+                (pos_pool['predicted_points'] >= MIN_POINTS_TARGET)
+            ]
+
         # Level 2: Relax Ownership (Value Pick) - FAIL UPWARD
-        # Prioritize points + budget over ownership
+        # Prioritize points + budget over ownership, prefer high confidence
         if candidates.empty:
             candidates = pos_pool[
                 (pos_pool['now_cost'] < max_cost_global) & 
-                (pos_pool['predicted_points'] >= min_pred_global)
+                (pos_pool['predicted_points'] >= MIN_POINTS_TARGET)
             ]
             if not candidates.empty:
-                # Still prefer lower ownership if possible among these
-                candidates = candidates.sort_values(['predicted_points', 'selected_by_percent'], ascending=[False, True])
+                # Sort by confidence (descending), then points, then ownership
+                candidates = candidates.sort_values(
+                    ['confidence_score', 'predicted_points', 'selected_by_percent'], 
+                    ascending=[False, False, True]
+                )
 
         # Level 3: Relax Cost (Premium Differential) - FAIL UPWARD
         # Prioritize points + differential status over budget
         if candidates.empty:
             candidates = pos_pool[
                 (pos_pool['selected_by_percent'] < max_own_global) & 
-                (pos_pool['predicted_points'] >= min_pred_global)
+                (pos_pool['predicted_points'] >= MIN_POINTS_TARGET)
             ]
         
-        # Level 4: Relax Both (Just Points) - FAIL UPWARD
-        # Prioritize points above all else
+        # Level 4: Relax Both Ownership & Cost (Just Points) - FAIL UPWARD
+        # Prioritize points above all else, prefer high confidence
         if candidates.empty:
             candidates = pos_pool[
-                (pos_pool['predicted_points'] >= min_pred_global)
+                (pos_pool['predicted_points'] >= MIN_POINTS_TARGET)
             ]
 
-        # Level 5: Fail Downward (Last Resort)
-        # If no one meets the high points target, allow lower scores
+        # Level 5: Relax Points Target (Last Resort) - FAIL DOWNWARD
+        # If no one meets the 6 point target, use dynamic threshold
         if candidates.empty:
-             # Try 4.0 pts floor, then 3.0
-            fallback_pred = 4.0
             candidates = pos_pool[
                 (pos_pool['selected_by_percent'] < 15.0) & 
-                (pos_pool['predicted_points'] >= fallback_pred)
+                (pos_pool['predicted_points'] >= min_pred_global)
             ]
             
             if candidates.empty:
-                 candidates = pos_pool[(pos_pool['predicted_points'] >= 3.0)]
+                # Try 4.0 pts floor, then 3.0
+                candidates = pos_pool[(pos_pool['predicted_points'] >= 4.0)]
+            
+            if candidates.empty:
+                candidates = pos_pool[(pos_pool['predicted_points'] >= 3.0)]
 
-        # Pick Best
+        # Pick Best: Sort by Confidence (desc), then Points (desc)
         if not candidates.empty:
-            # Sort by Predicted Points descending
-            # If tie, use ownership (ascending) as tiebreaker if possible, or cost
-            best_pick = candidates.sort_values('predicted_points', ascending=False).iloc[0]
+            best_pick = candidates.sort_values(
+                ['confidence_score', 'predicted_points'], 
+                ascending=[False, False]
+            ).iloc[0]
             final_picks.append(best_pick)
             selected_ids.add(best_pick['element'])
             selected_team_pos.add((best_pick['team'], best_pick['element_type']))
             
     # 5. Wildcard Selection
     # Pick best remaining player from ANY position who fits strict filters
-    # If none, relax filters logic essentially matches above but simpler
+    # Uses same confidence-based logic as position selection
     
     # Exclude already selected
     remaining_pool = df[~df['element'].isin(selected_ids)].copy()
     
-    # Filter Remaining Pool (Strict)
+    # Filter Remaining Pool (Strict): High Confidence + 6 pts + Underdog
     wildcard_candidates = remaining_pool[
+        (remaining_pool['confidence_score'] >= HIGH_CONFIDENCE) &
         (remaining_pool['selected_by_percent'] < max_own_global) & 
         (remaining_pool['now_cost'] < max_cost_global) & 
-        (remaining_pool['predicted_points'] >= min_pred_global)
+        (remaining_pool['predicted_points'] >= MIN_POINTS_TARGET)
     ]
     
-    # Relax if needed (Jump straight to Points priority for wildcard)
+    # Relax Confidence to Medium
     if wildcard_candidates.empty:
         wildcard_candidates = remaining_pool[
-            (remaining_pool['predicted_points'] >= min_pred_global)
+            (remaining_pool['confidence_score'] >= MEDIUM_CONFIDENCE) &
+            (remaining_pool['selected_by_percent'] < max_own_global) & 
+            (remaining_pool['now_cost'] < max_cost_global) & 
+            (remaining_pool['predicted_points'] >= MIN_POINTS_TARGET)
+        ]
+    
+    # Relax Confidence completely
+    if wildcard_candidates.empty:
+        wildcard_candidates = remaining_pool[
+            (remaining_pool['selected_by_percent'] < max_own_global) & 
+            (remaining_pool['now_cost'] < max_cost_global) & 
+            (remaining_pool['predicted_points'] >= MIN_POINTS_TARGET)
+        ]
+    
+    # Relax Ownership/Cost (Just high confidence + points)
+    if wildcard_candidates.empty:
+        wildcard_candidates = remaining_pool[
+            (remaining_pool['predicted_points'] >= MIN_POINTS_TARGET)
         ]
         
-    # Final Fallback
+    # Final Fallback (lower points threshold)
+    if wildcard_candidates.empty:
+        wildcard_candidates = remaining_pool[
+             (remaining_pool['predicted_points'] >= min_pred_global)
+        ]
+        
     if wildcard_candidates.empty:
         wildcard_candidates = remaining_pool[
              (remaining_pool['predicted_points'] >= 4.0)
         ]
         
-    # Sort by points
-    wildcard_candidates = wildcard_candidates.sort_values('predicted_points', ascending=False)
+    # Sort by confidence (desc), then points (desc)
+    wildcard_candidates = wildcard_candidates.sort_values(
+        ['confidence_score', 'predicted_points'], 
+        ascending=[False, False]
+    )
     
     # Try to find one with different Team+Pos to add variety (optional but good)
     wildcard_pick = None

@@ -246,6 +246,8 @@ See `architectural_decisions.md` Section 3.5 for details.
 - `app.py`: Exposed `confidence_score` in API response
 - `index.html`: Color-coded Min Points column with legend
 
+**Enhancement (Jan 2026)**: Confidence scores now also influence player selection via the "Confidence First" fail-upward cascade. See `architectural_decisions.md` Section 11.
+
 ---
 
 ## Architecture Diagram

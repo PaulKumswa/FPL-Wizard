@@ -278,3 +278,35 @@ confidence = mean(|p - 0.5| × 2) × 100
     *   **Yellow (40-69%)**: Medium confidence
     *   **Orange (<40%)**: Low confidence/risky
 
+## 11. Confidence-Based Selection Strategy (Added Jan 2026)
+
+### 11.1 Objective
+Maximize expected points **reliably** by prioritizing model confidence when selecting players. The goal is to find high-confidence predictions that meet the 6+ point target, relaxing confidence before other constraints.
+
+### 11.2 Selection Cascade (Fail Upward)
+The selection logic now uses a multi-level cascade. Constraints are relaxed in this order:
+
+1. **Confidence First**: Try to find reliable predictions before accepting uncertain ones
+2. **Ownership/Cost Second**: Only relax "underdog" constraints after confidence options exhausted
+3. **Points Target Last**: Only lower the 6pt target as final resort
+
+| Level | Confidence | Ownership | Cost | Points | Description |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1A** | ≥60% (High) | Low | Low | ≥6.0 | Perfect underdog, high reliability |
+| **1B** | ≥40% (Medium) | Low | Low | ≥6.0 | Perfect underdog, acceptable risk |
+| **1C** | Any | Low | Low | ≥6.0 | Perfect underdog, any confidence |
+| **2** | Any | Any | Low | ≥6.0 | Value pick (relax ownership) |
+| **3** | Any | Low | Any | ≥6.0 | Premium differential (relax cost) |
+| **4** | Any | Any | Any | ≥6.0 | Just find a 6pt scorer |
+| **5** | Any | Any | Any | Dynamic | Last resort (lower points floor) |
+
+### 11.3 Tiebreaker Logic
+When multiple players pass the same level's filters:
+1. **Primary Sort**: Confidence Score (descending) - prefer more certain predictions
+2. **Secondary Sort**: Predicted Points (descending) - higher returns
+
+### 11.4 Rationale
+*   **Reliability over Variance**: A 5.8 pt pick with 70% confidence is preferable to a 6.2 pt pick with 25% confidence
+*   **Points Preservation**: The 6.0 point floor is maintained through Levels 1-4 before relaxing
+*   **Underdog DNA**: The system still tries to find low-ownership/cost players first, but won't sacrifice prediction quality for it
+

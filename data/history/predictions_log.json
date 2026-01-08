@@ -298,7 +298,7 @@
   },
   {
     "gameweek": 22,
-    "timestamp": "2026-01-08T00:19:48.140806",
+    "timestamp": "2026-01-08T00:35:20.271211",
     "picks": [
       {
         "player_id": 736,
@@ -309,35 +309,35 @@
         "actual_points": null
       },
       {
+        "player_id": 257,
+        "web_name": "Lacroix",
+        "position": "DEF",
+        "predicted_points": 6.1905786076422125,
+        "confidence_score": 70.85749722973019,
+        "actual_points": null
+      },
+      {
+        "player_id": 585,
+        "web_name": "Bentancur",
+        "position": "MID",
+        "predicted_points": 7.082808765496591,
+        "confidence_score": 45.741874205643725,
+        "actual_points": null
+      },
+      {
+        "player_id": 64,
+        "web_name": "Watkins",
+        "position": "FWD",
+        "predicted_points": 5.450423989411657,
+        "confidence_score": 85.5979872335868,
+        "actual_points": null
+      },
+      {
         "player_id": 228,
         "web_name": "Gusto",
         "position": "DEF",
         "predicted_points": 10.45700319178584,
         "confidence_score": 63.21065084093777,
-        "actual_points": null
-      },
-      {
-        "player_id": 20,
-        "web_name": "Trossard",
-        "position": "MID",
-        "predicted_points": 8.52979860146381,
-        "confidence_score": 41.020172540629794,
-        "actual_points": null
-      },
-      {
-        "player_id": 97,
-        "web_name": "Evanilson",
-        "position": "FWD",
-        "predicted_points": 5.585342371105053,
-        "confidence_score": 45.626072191483594,
-        "actual_points": null
-      },
-      {
-        "player_id": 151,
-        "web_name": "Van Hecke",
-        "position": "DEF",
-        "predicted_points": 8.927447058884514,
-        "confidence_score": 38.36996157725231,
         "actual_points": null
       }
     ]

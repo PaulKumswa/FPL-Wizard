@@ -252,8 +252,8 @@ def preprocess_data(players, teams, events, histories, fixtures, understat_match
         us_cols = histories.apply(lookup_xg, axis=1, result_type='expand')
         histories = pd.concat([histories, us_cols], axis=1)
         
-        histories['team_xg'].fillna(0, inplace=True)
-        histories['team_xga'].fillna(0, inplace=True)
+        histories['team_xg'] = histories['team_xg'].fillna(0)
+        histories['team_xga'] = histories['team_xga'].fillna(0)
         
         # Cleanup temp columns
         histories.drop(columns=['team_h', 'team_a', 'id'], inplace=True, errors='ignore') # id from fixture merge

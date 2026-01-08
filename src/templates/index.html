@@ -838,9 +838,9 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                         <div class="info-step-content">
                             <h4>Inference Engine</h4>
                             <p><strong>Selection:</strong> Top 1 per position + 1 Wildcard</p>
-                            <p><strong>Filters:</strong> Dynamic thresholds (10% Own, £7m Cost) with 'Fail-Upward' logic
-                            </p>
-                            <p><strong>Output:</strong> Data-driven underdogs that prioritize points over constraints
+                            <p><strong>Confidence First:</strong> Prioritizes high-confidence (≥60%) 6+ pt picks before
+                                relaxing criteria</p>
+                            <p><strong>Fail-Upward:</strong> Relaxes confidence → ownership → cost → points threshold
                             </p>
                         </div>
                     </div>
@@ -883,8 +883,8 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 <div class="arch-card">
                     <h3>Inference Engine</h3>
                     <p><strong>SELECTION:</strong> Top 1 per position + 1 Wildcard</p>
-                    <p><strong>FILTERS:</strong> Dynamic thresholds (10% Own, £7m Cost) with 'Fail-Upward' logic</p>
-                    <p><strong>OUTPUT:</strong> Data-driven underdogs that prioritize points over constraints</p>
+                    <p><strong>CONFIDENCE FIRST:</strong> Prioritizes high-confidence (≥60%) 6+ pt picks</p>
+                    <p><strong>FAIL-UPWARD:</strong> Relaxes confidence → ownership → cost → points threshold</p>
                 </div>
             </div>
         </section>
