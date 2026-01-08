@@ -303,8 +303,13 @@ def get_live_scores():
     
     if requested_gw and LIVE_DATA_CACHE['gameweek'] != requested_gw:
         # If we asked for GW20 but cache has GW19, we must fetch fresh.
-        # We don't want to rely on the "window" optimization for the wrong week.
-        pass 
+        # Invalidate cache for the new gameweek
+        LIVE_DATA_CACHE['last_updated'] = 0
+        LIVE_DATA_CACHE['data'] = None
+        LIVE_DATA_CACHE['gameweek'] = requested_gw
+        LIVE_DATA_CACHE['window_start'] = None
+        LIVE_DATA_CACHE['window_end'] = None
+        print(f"Cache invalidated for GW{requested_gw} (was GW{LIVE_DATA_CACHE.get('gameweek', 'None')})")
     elif LIVE_DATA_CACHE['gameweek']:
         # Standard Cache Check (same GW)
         # Check Window optimizations
