@@ -204,9 +204,13 @@ def format_predictions_response(result_df, metadata):
     # Sort by predicted points for display
     result_df = result_df.sort_values('predicted_points', ascending=False)
     
-    # Select columns to display
-    # Select columns to display
-    display_cols = ['element', 'web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'code', 'team_code', 'opponent_team_code', 'element_type', 'recent_expected_goals', 'recent_expected_assists', 'recent_team_xga']
+    # Select columns to display (include confidence_score for frontend color coding)
+    display_cols = ['element', 'web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'confidence_score', 'code', 'team_code', 'opponent_team_code', 'element_type', 'recent_expected_goals', 'recent_expected_assists', 'recent_team_xga']
+    
+    # Ensure confidence_score exists (default if missing from history)
+    if 'confidence_score' not in result_df.columns:
+        result_df['confidence_score'] = 50.0
+    
     result = result_df[display_cols].to_dict(orient='records')
     
     # Position Mapping

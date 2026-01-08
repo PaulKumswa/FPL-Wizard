@@ -253,3 +253,28 @@ If no "perfect underdog" (Low Ownership + Low Cost + High Points) matches the cr
 
 This ensures the system always returns the best available players rather than forcing low-scoring underdogs.
 
+## 10. Prediction Confidence Scoring (Added Jan 2026)
+
+### 10.1 Problem
+Predictions were point estimates with no indication of model certainty. Users couldn't distinguish between confident picks and "coin flip" predictions.
+
+### 10.2 Solution: Probability Decisiveness
+Confidence is calculated from how "decisive" the component probabilities are:
+
+```python
+confidence = mean(|p - 0.5| × 2) × 100
+```
+
+*   **Intuition**: Probabilities near 0 or 1 mean the model is certain (either "yes" or "no"). Probabilities near 0.5 mean the model is uncertain.
+*   **Example**:
+    *   `p_goal=0.15, p_assist=0.10, p_cs=0.80` → Confidence = **70%** (all decisive)
+    *   `p_goal=0.45, p_assist=0.48, p_cs=0.52` → Confidence = **6%** (all uncertain)
+
+### 10.3 Implementation
+*   **Backend** (`inference.py`): `calculate_confidence()` computes the score.
+*   **API** (`app.py`): Exposes `confidence_score` in the predictions response.
+*   **Frontend** (`index.html`): Color-codes the Min Points column:
+    *   **Green (≥70%)**: High confidence
+    *   **Yellow (40-69%)**: Medium confidence
+    *   **Orange (<40%)**: Low confidence/risky
+

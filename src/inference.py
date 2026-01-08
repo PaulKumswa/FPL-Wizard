@@ -70,6 +70,40 @@ def load_component_models(model_dir='models'):
     return component_models
 
 
+def calculate_confidence(p_goal, p_assist, p_cs):
+    """
+    Calculate prediction confidence score (0-100) based on component probabilities.
+    
+    Confidence is based on how "decisive" probabilities are:
+    - Probabilities near 0 or 1 = high confidence (model is certain)
+    - Probabilities near 0.5 = low confidence (model is uncertain)
+    
+    Returns confidence as a percentage (0-100).
+    """
+    # Calculate decisiveness for each component: |p - 0.5| * 2
+    # This gives 0 when p=0.5 (uncertain) and 1 when p=0 or p=1 (certain)
+    decisiveness = []
+    
+    # Handle scalar and array inputs
+    if hasattr(p_goal, '__iter__'):
+        # Array input (vectorized)
+        decisiveness_goal = np.abs(np.array(p_goal) - 0.5) * 2
+        decisiveness_assist = np.abs(np.array(p_assist) - 0.5) * 2
+        decisiveness_cs = np.abs(np.array(p_cs) - 0.5) * 2
+        
+        # Average across components, multiply by 100 for percentage
+        confidence = (decisiveness_goal + decisiveness_assist + decisiveness_cs) / 3 * 100
+    else:
+        # Scalar input
+        d_goal = abs(p_goal - 0.5) * 2
+        d_assist = abs(p_assist - 0.5) * 2
+        d_cs = abs(p_cs - 0.5) * 2
+        
+        confidence = (d_goal + d_assist + d_cs) / 3 * 100
+    
+    return confidence
+
+
 def predict_points(df, models, component_models=None):
     """
     Apply models to the dataframe to generate 'predicted_points'.
@@ -83,6 +117,7 @@ def predict_points(df, models, component_models=None):
     - predicted_points: Final prediction (component-based if available)
     - predicted_points_legacy: Legacy regressor prediction
     - p_goal, p_assist, p_cleansheet: Component probabilities
+    - confidence_score: Model confidence (0-100%)
     """
     df = df.copy()
     df['predicted_points'] = 0.0
@@ -90,6 +125,7 @@ def predict_points(df, models, component_models=None):
     df['p_goal'] = 0.0
     df['p_assist'] = 0.0
     df['p_cleansheet'] = 0.0
+    df['confidence_score'] = 50.0  # Default moderate confidence
     
     use_components = component_models is not None and len(component_models) > 0
     
@@ -126,21 +162,25 @@ def predict_points(df, models, component_models=None):
                 p_goal = pos_components['goal'].predict_proba(X_features)[:, 1]
                 df.loc[pos_mask, 'p_goal'] = p_goal
             else:
-                p_goal = 0.0
+                p_goal = np.zeros(len(X_features))
             
             # Assist probability
             if 'assist' in pos_components:
                 p_assist = pos_components['assist'].predict_proba(X_features)[:, 1]
                 df.loc[pos_mask, 'p_assist'] = p_assist
             else:
-                p_assist = 0.0
+                p_assist = np.zeros(len(X_features))
             
             # Clean sheet probability
             if 'cleansheet' in pos_components and pos_id in CLEAN_SHEET_POSITIONS:
                 p_cs = pos_components['cleansheet'].predict_proba(X_features)[:, 1]
                 df.loc[pos_mask, 'p_cleansheet'] = p_cs
             else:
-                p_cs = 0.0
+                p_cs = np.zeros(len(X_features))
+            
+            # Calculate confidence score
+            confidence = calculate_confidence(p_goal, p_assist, p_cs)
+            df.loc[pos_mask, 'confidence_score'] = confidence
             
             # Aggregate into expected points
             expected_pts = (

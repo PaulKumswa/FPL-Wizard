@@ -198,15 +198,12 @@ See `architectural_decisions.md` Section 3.5 for details.
 
 ### 8. App.py Dead Code
 
-```python
-# app.py lines 170-173 (unreachable after return statement)
-result_df = pd.DataFrame(final_picks)
-return format_predictions_response(result_df, metadata)
-```
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Removed dead code block.
 
-This code is never executed due to the earlier `return` on line 168.
-
-**Recommendation**: Remove this dead code block.
+| Original Issue | Resolution |
+|-------|--------|
+| Unreachable code in `app.py` | ✅ Removed lines 201-204 (formerly 170-173) |
 
 ---
 
@@ -230,11 +227,24 @@ This code is never executed due to the earlier `return` on line 168.
 
 ### 10. No Uncertainty Quantification
 
-- Predictions are point estimates with no confidence intervals
-- Users have no sense of which predictions are "confident" vs "risky"
-- RandomForest can provide prediction intervals via tree variance
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Added prediction confidence scoring and visualization.
 
-**Recommendation**: Add prediction confidence/uncertainty to output.
+| Original Issue | Resolution |
+|-------|--------|
+| Predictions are point estimates | ✅ Added `confidence_score` (0-100%) based on probability decisiveness |
+| No sense of "confident" vs "risky" | ✅ Min Points column color-coded: Green (≥70%), Yellow (40-69%), Orange (<40%) |
+| RandomForest prediction intervals | ✅ Component probabilities provide natural uncertainty measure |
+
+**Approach**:
+- Confidence calculated as: `mean(|p - 0.5| × 2)` for each component probability
+- Probabilities near 0 or 1 indicate certainty → high confidence
+- Probabilities near 0.5 indicate uncertainty → low confidence
+
+**Implementation**:
+- `inference.py`: Added `calculate_confidence()` function
+- `app.py`: Exposed `confidence_score` in API response
+- `index.html`: Color-coded Min Points column with legend
 
 ---
 
@@ -293,8 +303,8 @@ flowchart TD
 | Data | ~~High~~ | ✅ **Done**: TimeSeriesSplit implemented (part of Model fix) |
 | Features | ~~Medium~~ | ✅ **Done**: Integrated Understat player-level xG/xA data |
 | Metrics | ~~Medium~~ | ✅ **Done**: Store model MAE/AUC in `model_metrics.json` |
-| Code | Low | Remove dead code in `app.py` |
-| UX | Medium | Add prediction confidence intervals |
+| Code | ~~Low~~ | ✅ **Done**: Removed dead code in `app.py` |
+| UX | ~~Medium~~ | ✅ **Done**: Confidence scoring with color-coded Min Points column |
 | Config | ~~Low~~ | ✅ **Done**: Dynamic percentile-based selection thresholds |
 
 ---

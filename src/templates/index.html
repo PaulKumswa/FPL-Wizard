@@ -444,6 +444,13 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
     </div>
 
     <script>
+        // Helper function to get color based on confidence score
+        function getConfidenceColor(confidence) {
+            if (confidence >= 70) return '#00ff85'; // Green - High confidence
+            if (confidence >= 40) return '#ffcc00'; // Yellow - Medium confidence
+            return '#ff9933'; // Orange - Low confidence
+        }
+
         fetch('/api/predictions')
             .then(response => response.json())
             .then(data => {
@@ -506,13 +513,23 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                             : `<span style="font-size:0.85em; color:#ccc;">TxGA: <strong style="color:#ff6b6b;">${(player.recent_team_xga || 0).toFixed(2)}</strong></span>`
                         }
                             </td>
-                            <td class="points-cell mono-font"> ${player.predicted_points.toFixed(1)} </td>
+                            <td class="points-cell mono-font" style="color: ${getConfidenceColor(player.confidence_score)}"> ${player.predicted_points.toFixed(1)} </td>
                             <td class="points-cell mono-font" id="live-${player.element}" style="color: #888;">-</td>
                         </tr>
                     `;
                 });
 
                 html += `</tbody></table></div>`;
+
+                // Add confidence color key legend
+                html += `
+                    <div style="margin-top: 15px; display: flex; gap: 20px; font-size: 0.85em; color: #888; justify-content: center;">
+                        <span><span style="display: inline-block; width: 12px; height: 12px; background: #00ff85; border-radius: 2px; margin-right: 5px;"></span>High Confidence (≥70%)</span>
+                        <span><span style="display: inline-block; width: 12px; height: 12px; background: #ffcc00; border-radius: 2px; margin-right: 5px;"></span>Medium (40-69%)</span>
+                        <span><span style="display: inline-block; width: 12px; height: 12px; background: #ff9933; border-radius: 2px; margin-right: 5px;"></span>Low Confidence (<40%)</span>
+                    </div>
+                `;
+
                 predContainer.innerHTML = html;
 
                 // Trigger live updates with explicit next gameweek
