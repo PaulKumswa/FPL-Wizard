@@ -535,6 +535,23 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 flex-shrink: 0;
             }
 
+            /* Fallback for missing player photos */
+            .player-photo-fallback {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 12px;
+                flex-shrink: 0;
+                font-weight: bold;
+                font-size: 1.1em;
+                color: white;
+                text-transform: uppercase;
+            }
+
             .player-card-info {
                 flex-grow: 1;
                 min-width: 0;
@@ -699,6 +716,63 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 line-height: 1.4;
             }
 
+            /* Model Version Styles */
+            .model-version-badge {
+                display: inline-block;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-size: 0.7em;
+                font-weight: bold;
+                margin-left: 8px;
+                vertical-align: middle;
+            }
+
+            .model-stat-card {
+                background: linear-gradient(135deg, #2d2d2d, #252525);
+                border-radius: 12px;
+                padding: 15px;
+                margin-bottom: 12px;
+                border: 1px solid var(--border-color);
+            }
+
+            .model-stat-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+
+            .model-stat-name {
+                font-weight: bold;
+                font-size: 1em;
+            }
+
+            .model-stat-hit-rate {
+                font-size: 1.8em;
+                font-weight: bold;
+            }
+
+            .model-stat-details {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                font-size: 0.85em;
+                color: #888;
+            }
+
+            .model-stat-desc {
+                margin-top: 10px;
+                font-size: 0.8em;
+                color: #666;
+                font-style: italic;
+            }
+
+            .model-stat-gws {
+                margin-top: 8px;
+                font-size: 0.75em;
+                color: #555;
+            }
+
             .info-how-header {
                 display: flex;
                 justify-content: space-between;
@@ -722,7 +796,7 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
             }
 
             .info-section.expanded .info-how-content {
-                max-height: 500px;
+                max-height: 800px;
             }
 
             .info-step {
@@ -940,6 +1014,23 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 flex-shrink: 0;
             }
 
+            /* Fallback for missing player photos - Desktop */
+            .player-photo-fallback {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 15px;
+                flex-shrink: 0;
+                font-weight: bold;
+                font-size: 1.3em;
+                color: white;
+                text-transform: uppercase;
+            }
+
             .player-card-info {
                 flex-grow: 1;
                 min-width: 0;
@@ -1144,6 +1235,24 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
         <!-- ========== HISTORY PAGE ========== -->
         <section id="history-page" class="page-section">
             <h2>Performance History</h2>
+
+            <!-- Model Evolution Section (Expandable) -->
+            <div id="model-evolution" class="info-section info-section-desktop" style="margin-bottom: 20px;">
+                <div class="info-how-header" onclick="toggleModelEvolution()">
+                    <h3 style="margin: 0;">📊 Model Evolution</h3>
+                    <span class="info-how-chevron" id="model-evolution-chevron">▼</span>
+                </div>
+                <div class="info-how-content" id="model-evolution-content">
+                    <p style="color: #888; font-size: 0.85em; margin: 15px 0;">
+                        Performance comparison across different prediction model versions.
+                    </p>
+                    <div id="model-stats-container">
+                        <p class="loading">Loading model stats...</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 15px; color: var(--text-color);">Gameweek Results</h3>
             <div id="history-section">
                 <p class="loading">Loading history...</p>
             </div>
@@ -1219,8 +1328,8 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
 
             <!-- Credits Section -->
             <div class="info-section info-section-desktop info-credits" style="text-align: center;">
-                <p style="margin: 0 0 10px 0;">Built by Dalen with Antigravity and Codex</p>
-                <a href="https://github.com/PaulKumswa" target="_blank">GitHub</a>
+                <p style="margin: 0 0 10px 0;">Built by Paul Kumswa with Antigravity, Opus, and time/p>
+                    <a href="https://github.com/PaulKumswa" target="_blank">GitHub</a>
             </div>
         </section>
     </div>
@@ -1275,6 +1384,12 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
             section.classList.toggle('expanded');
         }
 
+        // Toggle Model Evolution expansion
+        function toggleModelEvolution() {
+            const section = document.getElementById('model-evolution');
+            section.classList.toggle('expanded');
+        }
+
         // Toggle player card expansion
         function togglePlayerCard(cardElement) {
             cardElement.classList.toggle('expanded');
@@ -1291,6 +1406,26 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
         function getPositionName(elementType) {
             const positions = { 1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD' };
             return positions[elementType] || 'N/A';
+        }
+
+        // Get player initials from web_name
+        function getPlayerInitials(webName) {
+            if (!webName) return '?';
+            // Handle names like "De Bruyne" -> "DB", "Salah" -> "SA"
+            const parts = webName.split(/[\s-]+/);
+            if (parts.length >= 2) {
+                return (parts[0][0] + parts[1][0]).toUpperCase();
+            }
+            return webName.substring(0, 2).toUpperCase();
+        }
+
+        // Handle image load error - replace with initials fallback
+        function handleImgError(img, webName) {
+            const initials = getPlayerInitials(webName);
+            const fallback = document.createElement('div');
+            fallback.className = 'player-photo-fallback';
+            fallback.textContent = initials;
+            img.parentNode.replaceChild(fallback, img);
         }
 
         // ========== FETCH PREDICTIONS ==========
@@ -1332,7 +1467,7 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                         <tr>
                             <td>
                                 <div class="player-cell">
-                                    <img src="${player.photo_url}" alt="${player.web_name}" class="player-img">
+                                    <img src="${player.photo_url}" alt="${player.web_name}" class="player-img" onerror="handleImgError(this, '${player.web_name}')">
                                     <a href="${player.profile_url}" target="_blank" class="player-link">${player.web_name}</a>
                                 </div>
                             </td>
@@ -1384,7 +1519,7 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                     mobileHtml += `
                         <div class="player-card" onclick="togglePlayerCard(this)">
                             <div class="player-card-header">
-                                <img src="${player.photo_url}" alt="${player.web_name}" class="player-card-photo">
+                                <img src="${player.photo_url}" alt="${player.web_name}" class="player-card-photo" onerror="handleImgError(this, '${player.web_name}')">
                                 <div class="player-card-info">
                                     <div class="player-card-name">${player.web_name}</div>
                                     <div class="player-card-team">${player.team_name}</div>
@@ -1527,10 +1662,15 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                         ? `Actual: ${gwTotalActual} pts (Pred: ${gwTotalPred.toFixed(0)})`
                         : `Pred: ${gwTotalPred.toFixed(0)} pts (Pending)`;
 
+                    // Build version badge if available
+                    const versionBadge = entry.model_version
+                        ? `<span class="model-version-badge" style="background-color: ${getVersionColor(entry.model_version)}; color: #111;">${entry.model_version}</span>`
+                        : '';
+
                     html += `
                         <details>
                             <summary>
-                                <span>Gameweek ${entry.gameweek}</span>
+                                <span>Gameweek ${entry.gameweek} ${versionBadge}</span>
                                 <span class="gw-summary-stats">${summaryText}</span>
                             </summary>
                             <div class="table-responsive">
@@ -1587,6 +1727,71 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 console.error('Error fetching history:', error);
                 document.getElementById('history-section').innerHTML = '<p>Error loading history.</p>';
             });
+
+        // Fetch Model Evolution Stats
+        fetch('/api/model-stats')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('model-stats-container');
+
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p style="color: #888;">No model statistics available yet.</p>';
+                    return;
+                }
+
+                let html = '';
+                data.forEach(model => {
+                    const hitRateDisplay = model.hit_rate !== null ? `${model.hit_rate}%` : 'Pending';
+                    const avgPredDisplay = model.avg_predicted !== null ? model.avg_predicted : '-';
+                    const avgActualDisplay = model.avg_actual !== null ? model.avg_actual : '-';
+                    const picksDisplay = model.total_picks > 0 ? model.total_picks : 'No data';
+
+                    html += `
+                        <div class="model-stat-card">
+                            <div class="model-stat-header">
+                                <div>
+                                    <span class="model-stat-name">${model.name}</span>
+                                    <span class="model-version-badge" style="background-color: ${model.color}; color: #111;">
+                                        ${model.version}
+                                    </span>
+                                </div>
+                                <div class="model-stat-hit-rate" style="color: ${model.color}">
+                                    ${hitRateDisplay}
+                                </div>
+                            </div>
+                            <div class="model-stat-details">
+                                <div>
+                                    <div style="color: #666;">Picks</div>
+                                    <div style="color: #fff; font-weight: bold;">${picksDisplay}</div>
+                                </div>
+                                <div>
+                                    <div style="color: #666;">Avg Pred</div>
+                                    <div style="color: #fff; font-weight: bold;">${avgPredDisplay}</div>
+                                </div>
+                                <div>
+                                    <div style="color: #666;">Avg Actual</div>
+                                    <div style="color: #fff; font-weight: bold;">${avgActualDisplay}</div>
+                                </div>
+                            </div>
+                            <div class="model-stat-desc">${model.description || ''}</div>
+                            <div class="model-stat-gws">Gameweeks: ${model.gameweeks.sort((a, b) => a - b).join(', ') || 'N/A'}</div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Error fetching model stats:', err);
+                document.getElementById('model-stats-container').innerHTML =
+                    '<p style="color: #ff4d4d;">Error loading model statistics.</p>';
+            });
+
+        // Helper function to get version color
+        function getVersionColor(version) {
+            const colors = { 'v1': '#ff9933', 'v2': '#ffcc00', 'v3': '#00ff85' };
+            return colors[version] || '#888';
+        }
 
         // Update Live Scores
         // Parameter: gameweek (int, optional) - The gameweek to fetch. 

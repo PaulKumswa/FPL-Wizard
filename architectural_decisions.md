@@ -310,3 +310,149 @@ When multiple players pass the same level's filters:
 *   **Points Preservation**: The 6.0 point floor is maintained through Levels 1-4 before relaxing
 *   **Underdog DNA**: The system still tries to find low-ownership/cost players first, but won't sacrifice prediction quality for it
 
+## 12. User Interface & Navigation (Added Jan 2026)
+
+### 12.1 Mobile-First Design
+The frontend follows a mobile-first responsive design approach:
+*   **Primary Target**: Mobile devices (majority of FPL managers check on phones)
+*   **Progressive Enhancement**: Desktop view enhances mobile layout with additional details
+
+### 12.2 Tab-Based Navigation
+Both mobile and desktop views use a consistent three-tab navigation structure:
+
+| Tab | Content | Purpose |
+| :--- | :--- | :--- |
+| **Picks** | Player predictions table/cards | Primary use case: weekly picks |
+| **History** | Past gameweek predictions | Track accuracy and backfill points |
+| **Info** | How it works, accuracy, credits | System explanation and transparency |
+
+### 12.3 Mobile-Specific Features
+*   **Player Cards**: Swipeable cards replace tables for better touch interaction
+*   **Expandable Details**: Tap to reveal additional player stats (xG, xA, cost)
+*   **Bottom Navigation Bar**: Fixed navigation for easy thumb access
+*   **Confidence Indicators**: Color-coded points with confidence tooltip
+
+### 12.4 Desktop Enhancements
+*   **Full Table View**: All columns visible without scrolling
+*   **Hover Effects**: Interactive row highlighting
+*   **Architecture Diagram**: System overview visible on desktop Info tab
+*   **Player Links**: Direct links to Premier League player profiles
+
+### 12.5 Live Match Integration
+*   **Column Toggle**: "Selection %" becomes "Live Pts" during active matches
+*   **Status Indicators**:
+    *   🔴 Red text = Match in progress
+    *   🟢 Green text = Match finished
+*   **Cache Strategy**: 5-minute server-side cache to reduce FPL API calls
+
+## 13. Player Profile URLs (Added Jan 2026)
+
+### 13.1 URL Format
+Player profile links point to the official Premier League website:
+```
+https://www.premierleague.com/en/players/{code}/{name-slug}/overview
+```
+
+### 13.2 Implementation
+*   **Code**: Uses FPL's `code` field (not `element` ID) for stable URLs
+*   **Name Slug Generation** (in `app.py`):
+    1. Normalize Unicode characters (e.g., é → e)
+    2. Convert to lowercase
+    3. Replace spaces and apostrophes with hyphens
+    4. Example: "Salah" → `salah`, "De Bruyne" → `de-bruyne`
+
+### 13.3 Rationale
+*   **Stability**: The `code` remains constant even if player changes teams or FPL ID changes
+*   **SEO-Friendly**: Slugified names improve URL readability
+*   **Cross-Platform**: Links work on both desktop and mobile site
+
+## 14. Deployment & Infrastructure (Updated Jan 2026)
+
+### 14.1 Platform Migration
+*   **Previous**: Render (free tier)
+*   **Current**: Northflank with custom domain
+
+### 14.2 Northflank Configuration
+
+| Setting | Value | Notes |
+| :--- | :--- | :--- |
+| **Service Type** | Combined Service | Build + Run in one service |
+| **Build Type** | Buildpack | Auto-detects Python |
+| **Run Command** | `gunicorn src.app:app` | WSGI server |
+| **Port** | 8080 | Default Northflank port |
+| **Auto-Deploy** | Enabled | Deploys on push to main branch |
+
+### 14.3 Custom Domain (fplbangers.com)
+
+DNS configuration via Cloudflare:
+
+| Record Type | Name | Target |
+| :--- | :--- | :--- |
+| **CNAME** | `@` (root) | Northflank endpoint |
+| **CNAME** | `www` | Northflank endpoint |
+
+### 14.4 SSL/TLS Configuration
+*   **Cloudflare SSL Mode**: Full (Strict)
+*   **Certificate**: Auto-provisioned by Northflank
+*   **Initial Setup Note**: Disable Cloudflare proxy (orange cloud → grey) during initial SSL provisioning to allow Northflank to verify domain ownership
+
+### 14.5 Keep-Alive Strategy
+GitHub Actions workflow (`keep_alive.yml`) prevents platform spin-down:
+*   **Frequency**: Every 5 minutes
+*   **Randomization**: Random 0-10 minute delay before ping
+*   **Purpose**: Maintain warm instances for fast response times
+
+## 15. Model Evolution History (Added Jan 2026)
+
+This section documents the iterative development of the prediction system across multiple model versions.
+
+### 15.1 Version Tracking
+*   **Config**: `MODEL_VERSION` and `MODEL_ERAS` in `src/config.py`
+*   **Logging**: Each prediction entry in `predictions_log.json` includes `model_version`, `model_name`, and `model_type`
+*   **API**: `/api/model-stats` returns per-era performance statistics
+*   **UI**: History page shows Model Evolution cards and version badges on gameweek dropdowns
+
+### 15.2 Era Timeline
+
+| Era | Version | Dates | Gameweeks | Model Type |
+| :--- | :--- | :--- | :--- | :--- |
+| **Era 1** | v1 | Nov 28 - Dec 20 | GW 13, 15, 16, 17 | 4 Position Regressors |
+| **Era 2** | v2 | Dec 26 - Jan 6 | GW 19, 20, 21 | Regressors + Team Understat |
+| **Era 3** | v3 | Jan 11+ | GW 22+ | Component-Based |
+
+*Note: GW 14 and GW 18 were skipped due to active development.*
+
+### 15.3 Era Details
+
+#### v1: 4 Position Regressors (Nov 28, 2025)
+*   **Change**: Split single global regressor into 4 position-specific RandomForest models
+*   **Features**: FPL API stats only (form, cost, ownership, clean sheets, etc.)
+*   **Rationale**: Different positions have fundamentally different scoring patterns
+*   **Limitations**: No external data sources, regressor predicts noisy total_points directly
+
+#### v2: Regressors + Team Understat (Dec 26, 2025)
+*   **Change**: Added team-level Understat data (xG, xGA)
+*   **New Features**: `recent_team_xg`, `recent_team_xga`
+*   **Rationale**: Team attacking/defensive strength provides context for individual predictions
+*   **Data Pipeline**: Merged Understat team data on (Match Date, Team Name)
+*   **Limitations**: Still using regressor approach, no player-level advanced stats
+
+#### v3: Component-Based + Player Understat (Jan 11, 2026)
+*   **Major Refactor**: Decomposed prediction into probability components
+*   **Architecture**: 
+    *   ~10 LightGBM Classifiers (Goal/Assist/CS per position)
+    *   P(goal) × GOAL_PTS + P(assist) × 3 + P(cs) × CS_PTS + 2
+*   **New Features**: `us_npxG_per90`, `us_xA_per90` for MID/FWD
+*   **Confidence Scoring**: Added uncertainty quantification based on probability decisiveness
+*   **Selection Logic**: Confidence-first cascade prioritizes reliable predictions
+*   **Rationale**: 
+    *   Binary outcomes (goal: yes/no) are more stable to predict than noisy point totals
+    *   Player-level xG/xA more predictive than team aggregates for attacking players
+
+### 15.4 Performance Comparison
+Performance statistics are calculated and displayed in the UI via `/api/model-stats`:
+*   **Hit Rate**: % of picks where Actual ≥ 90% of floor(Predicted)
+*   **Avg Predicted**: Mean predicted points per pick
+*   **Avg Actual**: Mean actual points per pick
+
+This allows users to see how model improvements have affected prediction accuracy over time.

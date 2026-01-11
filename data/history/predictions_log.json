@@ -38,12 +38,18 @@
         "predicted_points": 3.7,
         "actual_points": 9.0
       }
-    ]
+    ],
+    "model_version": "v1",
+    "model_name": "4 Position Regressors",
+    "model_type": "regressor"
   },
   {
     "gameweek": 14,
     "timestamp": "2025-12-01T12:00:00.000000",
-    "picks": []
+    "picks": [],
+    "model_version": "v1",
+    "model_name": "4 Position Regressors",
+    "model_type": "regressor"
   },
   {
     "gameweek": 13,
@@ -84,7 +90,10 @@
         "predicted_points": 6.34,
         "actual_points": 0.0
       }
-    ]
+    ],
+    "model_version": "v1",
+    "model_name": "4 Position Regressors",
+    "model_type": "regressor"
   },
   {
     "gameweek": 17,
@@ -125,7 +134,10 @@
         "predicted_points": 5.9,
         "actual_points": 4.0
       }
-    ]
+    ],
+    "model_version": "v1",
+    "model_name": "4 Position Regressors",
+    "model_type": "regressor"
   },
   {
     "gameweek": 16,
@@ -166,12 +178,18 @@
         "predicted_points": 5.59,
         "actual_points": 0.0
       }
-    ]
+    ],
+    "model_version": "v1",
+    "model_name": "4 Position Regressors",
+    "model_type": "regressor"
   },
   {
     "gameweek": 18,
     "timestamp": "2025-12-25T13:47:06.937350",
-    "picks": []
+    "picks": [],
+    "model_version": "v1",
+    "model_name": "4 Position Regressors",
+    "model_type": "regressor"
   },
   {
     "gameweek": 19,
@@ -212,7 +230,10 @@
         "predicted_points": 5.160353182771529,
         "actual_points": 1.0
       }
-    ]
+    ],
+    "model_version": "v2",
+    "model_name": "Regressors + Team Understat",
+    "model_type": "regressor"
   },
   {
     "gameweek": 20,
@@ -253,52 +274,61 @@
         "predicted_points": 4.726935853460444,
         "actual_points": 3.0
       }
-    ]
+    ],
+    "model_version": "v2",
+    "model_name": "Regressors + Team Understat",
+    "model_type": "regressor"
   },
   {
     "gameweek": 21,
-    "timestamp": "2026-01-07T02:12:51.424376",
+    "timestamp": "2026-01-06T01:20:53.969433",
     "picks": [
       {
-        "player_id": 67,
-        "web_name": "Petrovi\u0107",
+        "player_id": 253,
+        "web_name": "Henderson",
         "position": "GKP",
-        "predicted_points": 5.574117781175063,
-        "actual_points": 0.0
+        "predicted_points": 4.861058426201423,
+        "actual_points": 7.0
       },
       {
-        "player_id": 295,
-        "web_name": "Keane",
+        "player_id": 257,
+        "web_name": "Lacroix",
         "position": "DEF",
-        "predicted_points": 8.628765731513246,
-        "actual_points": 0.0
+        "predicted_points": 6.952523581495135,
+        "actual_points": 8.0
       },
       {
         "player_id": 485,
         "web_name": "Gordon",
         "position": "MID",
-        "predicted_points": 5.867122787393295,
-        "actual_points": 0.0
+        "predicted_points": 5.456882353639665,
+        "actual_points": 1.0
       },
       {
-        "player_id": 749,
-        "web_name": "Man\u00e9",
+        "player_id": 624,
+        "web_name": "Bowen",
         "position": "FWD",
-        "predicted_points": 4.944469944624356,
-        "actual_points": 0.0
+        "predicted_points": 5.312245879120879,
+        "actual_points": 2.0
       },
       {
-        "player_id": 258,
-        "web_name": "Mitchell",
+        "player_id": 295,
+        "web_name": "Keane",
         "position": "DEF",
-        "predicted_points": 7.578485764250341,
-        "actual_points": 0.0
+        "predicted_points": 6.805728420805731,
+        "actual_points": 5.0
       }
-    ]
+    ],
+    "model_version": "v2",
+    "model_name": "Regressors + Team Understat",
+    "model_type": "regressor"
   },
   {
     "gameweek": 22,
-    "timestamp": "2026-01-11T11:47:48.218211",
+    "timestamp": "2026-01-11T12:47:09.418980",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
     "picks": [
       {
         "player_id": 736,

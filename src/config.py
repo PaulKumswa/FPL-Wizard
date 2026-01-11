@@ -70,3 +70,44 @@ MAX_COST = 80       # £8.0m
 MAX_OWNERSHIP = 10  # 10%
 MIN_FORM = 2.0
 MIN_ICT = 3.0
+
+# =============================================================================
+# Model Version Configuration
+# =============================================================================
+
+# Current model version (automatically logged with new predictions)
+MODEL_VERSION = {
+    'version': 'v3',
+    'name': 'Component-Based LightGBM',
+    'type': 'component',  # 'regressor' or 'component'
+    'description': 'Goal/Assist/CS classifiers with probability aggregation + Player Understat'
+}
+
+# Historical Model Eras (for performance comparison)
+# Gameweeks are assigned based on deployment dates
+MODEL_ERAS = [
+    {
+        'version': 'v1',
+        'name': '4 Position Regressors',
+        'type': 'regressor',
+        'gameweeks': [13, 15, 16, 17],  # Nov 28 - Dec 20 (GW14 skipped)
+        'color': '#ff9933',  # Orange
+        'description': 'Separate RandomForest regressor per position'
+    },
+    {
+        'version': 'v2',
+        'name': 'Regressors + Team Understat',
+        'type': 'regressor',
+        'gameweeks': [19, 20, 21],  # Dec 26+ (GW18 skipped)
+        'color': '#ffcc00',  # Yellow
+        'description': 'Added team-level xGA from Understat'
+    },
+    {
+        'version': 'v3',
+        'name': 'Component-Based',
+        'type': 'component',
+        'gameweeks': [],  # GW22+ (open-ended, filled dynamically)
+        'color': '#00ff85',  # Green
+        'description': 'LightGBM classifiers for Goals/Assists/CS + Player Understat xG/xA'
+    }
+]

@@ -253,6 +253,70 @@ def get_history():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+@app.route('/api/model-stats')
+def get_model_stats():
+    """Returns performance statistics grouped by model version."""
+    import math
+    from src.config import MODEL_ERAS
+    
+    try:
+        with open('data/history/predictions_log.json', 'r') as f:
+            history = json.load(f)
+    except FileNotFoundError:
+        return jsonify([])
+    
+    stats = {}
+    
+    for entry in history:
+        version = entry.get('model_version', 'unknown')
+        if version not in stats:
+            stats[version] = {
+                'version': version,
+                'name': entry.get('model_name', 'Unknown'),
+                'total_picks': 0,
+                'hits': 0,
+                'total_predicted': 0,
+                'total_actual': 0,
+                'gameweeks': []
+            }
+        
+        if entry['gameweek'] not in stats[version]['gameweeks']:
+            stats[version]['gameweeks'].append(entry['gameweek'])
+        
+        for pick in entry.get('picks', []):
+            if pick.get('actual_points') is not None:
+                stats[version]['total_picks'] += 1
+                stats[version]['total_predicted'] += pick['predicted_points']
+                stats[version]['total_actual'] += pick['actual_points']
+                
+                # Hit = Actual >= 90% of floor(Predicted)
+                if pick['actual_points'] >= (math.floor(pick['predicted_points']) * 0.9):
+                    stats[version]['hits'] += 1
+    
+    # Calculate hit rates and averages
+    result = []
+    for version, data in stats.items():
+        if data['total_picks'] > 0:
+            data['hit_rate'] = round((data['hits'] / data['total_picks']) * 100, 1)
+            data['avg_predicted'] = round(data['total_predicted'] / data['total_picks'], 2)
+            data['avg_actual'] = round(data['total_actual'] / data['total_picks'], 2)
+        else:
+            data['hit_rate'] = None  # No data yet
+            data['avg_predicted'] = None
+            data['avg_actual'] = None
+        
+        # Add color and description from MODEL_ERAS config
+        era = next((e for e in MODEL_ERAS if e['version'] == version), None)
+        data['color'] = era['color'] if era else '#888'
+        data['description'] = era['description'] if era else ''
+        
+        result.append(data)
+    
+    # Sort by version
+    result.sort(key=lambda x: x['version'])
+    return jsonify(result)
+
 @app.route('/api/stats')
 def get_stats():
     try:
