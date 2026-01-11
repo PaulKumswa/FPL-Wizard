@@ -5321,7 +5321,7 @@
   },
   {
     "id": "28972",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "71",
       "title": "Aston Villa",
@@ -5333,18 +5333,23 @@
       "short_title": "NOT"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "3",
+      "a": "1"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "1.42988",
+      "a": "0.8982"
     },
-    "datetime": "2026-01-03 12:30:00"
+    "datetime": "2026-01-03 12:30:00",
+    "forecast": {
+      "w": "0.5062",
+      "d": "0.2854",
+      "l": "0.2084"
+    }
   },
   {
     "id": "28970",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "229",
       "title": "Wolverhampton Wanderers",
@@ -5356,18 +5361,23 @@
       "short_title": "WHU"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "3",
+      "a": "0"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "2.23925",
+      "a": "0.235678"
     },
-    "datetime": "2026-01-03 15:00:00"
+    "datetime": "2026-01-03 15:00:00",
+    "forecast": {
+      "w": "0.9109",
+      "d": "0.0781",
+      "l": "0.011"
+    }
   },
   {
     "id": "28973",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "220",
       "title": "Brighton",
@@ -5379,18 +5389,23 @@
       "short_title": "BUR"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "2",
+      "a": "0"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "1.4717",
+      "a": "0.254551"
     },
-    "datetime": "2026-01-03 15:00:00"
+    "datetime": "2026-01-03 15:00:00",
+    "forecast": {
+      "w": "0.7247",
+      "d": "0.2236",
+      "l": "0.0517"
+    }
   },
   {
     "id": "28971",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "73",
       "title": "Bournemouth",
@@ -5402,18 +5417,23 @@
       "short_title": "ARS"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "2",
+      "a": "3"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "0.947846",
+      "a": "1.28"
     },
-    "datetime": "2026-01-03 17:30:00"
+    "datetime": "2026-01-03 17:30:00",
+    "forecast": {
+      "w": "0.2551",
+      "d": "0.2988",
+      "l": "0.4461"
+    }
   },
   {
     "id": "28976",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "245",
       "title": "Leeds",
@@ -5425,18 +5445,23 @@
       "short_title": "MUN"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "1",
+      "a": "1"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "0.970138",
+      "a": "1.94781"
     },
-    "datetime": "2026-01-04 12:30:00"
+    "datetime": "2026-01-04 12:30:00",
+    "forecast": {
+      "w": "0.1395",
+      "d": "0.2351",
+      "l": "0.6254"
+    }
   },
   {
     "id": "28968",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "86",
       "title": "Newcastle United",
@@ -5448,18 +5473,23 @@
       "short_title": "CRY"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "2",
+      "a": "0"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "2.72764",
+      "a": "1.27825"
     },
-    "datetime": "2026-01-04 15:00:00"
+    "datetime": "2026-01-04 15:00:00",
+    "forecast": {
+      "w": "0.7489",
+      "d": "0.1653",
+      "l": "0.0858"
+    }
   },
   {
     "id": "28969",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "82",
       "title": "Tottenham",
@@ -5471,18 +5501,23 @@
       "short_title": "SUN"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "1",
+      "a": "1"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "1.4175",
+      "a": "0.467481"
     },
-    "datetime": "2026-01-04 15:00:00"
+    "datetime": "2026-01-04 15:00:00",
+    "forecast": {
+      "w": "0.6917",
+      "d": "0.2321",
+      "l": "0.0762"
+    }
   },
   {
     "id": "28974",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "72",
       "title": "Everton",
@@ -5494,18 +5529,23 @@
       "short_title": "BRE"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "2",
+      "a": "4"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "1.00566",
+      "a": "3.05179"
     },
-    "datetime": "2026-01-04 15:00:00"
+    "datetime": "2026-01-04 15:00:00",
+    "forecast": {
+      "w": "0.0586",
+      "d": "0.1135",
+      "l": "0.8279"
+    }
   },
   {
     "id": "28975",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "228",
       "title": "Fulham",
@@ -5517,18 +5557,23 @@
       "short_title": "LIV"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "2",
+      "a": "2"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "0.609182",
+      "a": "1.7188"
     },
-    "datetime": "2026-01-04 15:00:00"
+    "datetime": "2026-01-04 15:00:00",
+    "forecast": {
+      "w": "0.0957",
+      "d": "0.2177",
+      "l": "0.6866"
+    }
   },
   {
     "id": "28977",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "88",
       "title": "Manchester City",
@@ -5540,18 +5585,23 @@
       "short_title": "CHE"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "1",
+      "a": "1"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "1.03049",
+      "a": "2.03726"
     },
-    "datetime": "2026-01-04 17:30:00"
+    "datetime": "2026-01-04 17:30:00",
+    "forecast": {
+      "w": "0.1151",
+      "d": "0.2012",
+      "l": "0.6837"
+    }
   },
   {
     "id": "28987",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "81",
       "title": "West Ham",
@@ -5563,18 +5613,23 @@
       "short_title": "NOT"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "1",
+      "a": "2"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "1.73697",
+      "a": "1.26683"
     },
-    "datetime": "2026-01-06 20:00:00"
+    "datetime": "2026-01-06 20:00:00",
+    "forecast": {
+      "w": "0.4809",
+      "d": "0.2855",
+      "l": "0.2336"
+    }
   },
   {
     "id": "28978",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "72",
       "title": "Everton",
@@ -5586,18 +5641,23 @@
       "short_title": "WOL"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "1",
+      "a": "1"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "1.63321",
+      "a": "0.71329"
     },
-    "datetime": "2026-01-07 19:30:00"
+    "datetime": "2026-01-07 19:30:00",
+    "forecast": {
+      "w": "0.6437",
+      "d": "0.2323",
+      "l": "0.124"
+    }
   },
   {
     "id": "28979",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "73",
       "title": "Bournemouth",
@@ -5609,18 +5669,23 @@
       "short_title": "TOT"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "3",
+      "a": "2"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "1.19014",
+      "a": "1.6261"
     },
-    "datetime": "2026-01-07 19:30:00"
+    "datetime": "2026-01-07 19:30:00",
+    "forecast": {
+      "w": "0.2401",
+      "d": "0.2869",
+      "l": "0.473"
+    }
   },
   {
     "id": "28981",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "244",
       "title": "Brentford",
@@ -5632,18 +5697,23 @@
       "short_title": "SUN"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "3",
+      "a": "0"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "3.86096",
+      "a": "1.50644"
     },
-    "datetime": "2026-01-07 19:30:00"
+    "datetime": "2026-01-07 19:30:00",
+    "forecast": {
+      "w": "0.8769",
+      "d": "0.0866",
+      "l": "0.0365"
+    }
   },
   {
     "id": "28983",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "78",
       "title": "Crystal Palace",
@@ -5655,18 +5725,23 @@
       "short_title": "AVL"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "0",
+      "a": "0"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "1.32505",
+      "a": "2.07015"
     },
-    "datetime": "2026-01-07 19:30:00"
+    "datetime": "2026-01-07 19:30:00",
+    "forecast": {
+      "w": "0.193",
+      "d": "0.2327",
+      "l": "0.5743"
+    }
   },
   {
     "id": "28984",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "228",
       "title": "Fulham",
@@ -5678,18 +5753,23 @@
       "short_title": "CHE"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "2",
+      "a": "1"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "1.06013",
+      "a": "2.45107"
     },
-    "datetime": "2026-01-07 19:30:00"
+    "datetime": "2026-01-07 19:30:00",
+    "forecast": {
+      "w": "0.1032",
+      "d": "0.1646",
+      "l": "0.7322"
+    }
   },
   {
     "id": "28985",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "88",
       "title": "Manchester City",
@@ -5701,18 +5781,23 @@
       "short_title": "BRI"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "1",
+      "a": "1"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "2.95904",
+      "a": "1.33162"
     },
-    "datetime": "2026-01-07 19:30:00"
+    "datetime": "2026-01-07 19:30:00",
+    "forecast": {
+      "w": "0.7562",
+      "d": "0.1607",
+      "l": "0.0831"
+    }
   },
   {
     "id": "28982",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "92",
       "title": "Burnley",
@@ -5724,18 +5809,23 @@
       "short_title": "MUN"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "2",
+      "a": "2"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "0.31971",
+      "a": "2.52488"
     },
-    "datetime": "2026-01-07 20:15:00"
+    "datetime": "2026-01-07 20:15:00",
+    "forecast": {
+      "w": "0.0234",
+      "d": "0.1025",
+      "l": "0.8741"
+    }
   },
   {
     "id": "28986",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "86",
       "title": "Newcastle United",
@@ -5747,18 +5837,23 @@
       "short_title": "LED"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "4",
+      "a": "3"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "2.43495",
+      "a": "2.35318"
     },
-    "datetime": "2026-01-07 20:15:00"
+    "datetime": "2026-01-07 20:15:00",
+    "forecast": {
+      "w": "0.401",
+      "d": "0.2529",
+      "l": "0.3461"
+    }
   },
   {
     "id": "28980",
-    "isResult": false,
+    "isResult": true,
     "h": {
       "id": "83",
       "title": "Arsenal",
@@ -5770,14 +5865,19 @@
       "short_title": "LIV"
     },
     "goals": {
-      "h": null,
-      "a": null
+      "h": "0",
+      "a": "0"
     },
     "xG": {
-      "h": null,
-      "a": null
+      "h": "0.701832",
+      "a": "0.318642"
     },
-    "datetime": "2026-01-08 20:00:00"
+    "datetime": "2026-01-08 20:00:00",
+    "forecast": {
+      "w": "0.4144",
+      "d": "0.4412",
+      "l": "0.1444"
+    }
   },
   {
     "id": "28993",

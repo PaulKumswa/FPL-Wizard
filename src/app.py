@@ -170,8 +170,11 @@ def get_predictions():
                 # Let's map strict points from history to be 100% sure.
                 id_to_points = {p['player_id']: p['predicted_points'] for p in gw_entry['picks']}
                 id_to_confidence = {p['player_id']: p.get('confidence_score', 50.0) for p in gw_entry['picks']}
+                id_to_wildcard = {p['player_id']: p.get('is_wildcard', False) for p in gw_entry['picks']}
+                
                 final_df['predicted_points'] = final_df['element'].map(id_to_points)
                 final_df['confidence_score'] = final_df['element'].map(id_to_confidence)
+                final_df['is_wildcard'] = final_df['element'].map(id_to_wildcard)
                 
                 # Prepare result immediately
                 return format_predictions_response(final_df, metadata)
@@ -208,11 +211,14 @@ def format_predictions_response(result_df, metadata):
     result_df = result_df.sort_values('predicted_points', ascending=False)
     
     # Select columns to display (include confidence_score for frontend color coding)
-    display_cols = ['element', 'web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'confidence_score', 'code', 'team_code', 'opponent_team_code', 'element_type', 'recent_expected_goals', 'recent_expected_assists', 'recent_team_xga']
+    display_cols = ['element', 'web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'confidence_score', 'is_wildcard', 'code', 'team_code', 'opponent_team_code', 'element_type', 'recent_expected_goals', 'recent_expected_assists', 'recent_team_xga']
     
     # Ensure confidence_score exists (default if missing from history)
     if 'confidence_score' not in result_df.columns:
         result_df['confidence_score'] = 50.0
+
+    if 'is_wildcard' not in result_df.columns:
+        result_df['is_wildcard'] = False
     
     result = result_df[display_cols].to_dict(orient='records')
     

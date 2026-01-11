@@ -325,49 +325,54 @@
   },
   {
     "gameweek": 22,
-    "timestamp": "2026-01-11T12:47:09.418980",
+    "timestamp": "2026-01-11T14:00:53.147555",
     "model_version": "v3",
     "model_name": "Component-Based LightGBM",
     "model_type": "component",
     "picks": [
       {
-        "player_id": 736,
-        "web_name": "Donnarumma",
+        "player_id": 253,
+        "web_name": "Henderson",
         "position": "GKP",
-        "predicted_points": 5.699825368968504,
-        "confidence_score": 94.9970894828084,
+        "predicted_points": 5.472802065972239,
+        "confidence_score": 78.91208263888956,
+        "is_wildcard": false,
         "actual_points": null
       },
       {
-        "player_id": 257,
-        "web_name": "Lacroix",
+        "player_id": 370,
+        "web_name": "Frimpong",
         "position": "DEF",
-        "predicted_points": 6.1905786076422125,
-        "confidence_score": 70.85749722973019,
+        "predicted_points": 6.248265463824675,
+        "confidence_score": 78.48659362849902,
+        "is_wildcard": false,
         "actual_points": null
       },
       {
-        "player_id": 585,
-        "web_name": "Bentancur",
+        "player_id": 83,
+        "web_name": "O.Dango",
         "position": "MID",
-        "predicted_points": 7.082808765496591,
-        "confidence_score": 45.741874205643725,
+        "predicted_points": 5.333434175876375,
+        "confidence_score": 64.03604481964875,
+        "is_wildcard": false,
         "actual_points": null
       },
       {
-        "player_id": 64,
-        "web_name": "Watkins",
+        "player_id": 100,
+        "web_name": "Kroupi.Jr",
         "position": "FWD",
-        "predicted_points": 5.450423989411657,
-        "confidence_score": 85.5979872335868,
+        "predicted_points": 5.0372673674043575,
+        "confidence_score": 62.58302862054429,
+        "is_wildcard": false,
         "actual_points": null
       },
       {
-        "player_id": 228,
-        "web_name": "Gusto",
-        "position": "DEF",
-        "predicted_points": 10.45700319178584,
-        "confidence_score": 63.21065084093777,
+        "player_id": 47,
+        "web_name": "Rogers",
+        "position": "MID",
+        "predicted_points": 9.486026567720206,
+        "confidence_score": 67.57082557441862,
+        "is_wildcard": true,
         "actual_points": null
       }
     ]

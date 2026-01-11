@@ -63,6 +63,7 @@ def log_predictions(predictions_df, gameweek_info):
             'position': row.get('position', 'UNK'),
             'predicted_points': float(row['predicted_points']),
             'confidence_score': float(row.get('confidence_score', 50.0)),
+            'is_wildcard': bool(row.get('is_wildcard', False)),
             'actual_points': None  # To be filled later
         })
 
@@ -201,4 +202,3 @@ def backfill_model_versions():
         print("Backfilled model versions for historical entries.")
     else:
         print("All entries already have correct model versions.")
-

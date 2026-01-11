@@ -258,17 +258,18 @@ This ensures the system always returns the best available players rather than fo
 ### 10.1 Problem
 Predictions were point estimates with no indication of model certainty. Users couldn't distinguish between confident picks and "coin flip" predictions.
 
-### 10.2 Solution: Probability Decisiveness
-Confidence is calculated from how "decisive" the component probabilities are:
+### 10.2 Solution: Weighted Probability Decisiveness
+Confidence is calculated from how "decisive" the component probabilities are, **weighted by their importance to the player's position**:
 
 ```python
-confidence = mean(|p - 0.5| × 2) × 100
+confidence = sum(|p_comp - 0.5| × 2 × weight_comp) × 100
 ```
 
-*   **Intuition**: Probabilities near 0 or 1 mean the model is certain (either "yes" or "no"). Probabilities near 0.5 mean the model is uncertain.
-*   **Example**:
-    *   `p_goal=0.15, p_assist=0.10, p_cs=0.80` → Confidence = **70%** (all decisive)
-    *   `p_goal=0.45, p_assist=0.48, p_cs=0.52` → Confidence = **6%** (all uncertain)
+*   **Position Weights**:
+    *   **GKP/DEF**: Heavy weight on Clean Sheet probability (70-80%).
+    *   **MID/FWD**: Heavy weight on Goal/Assist probabilities (80-100%).
+*   **Intuition**: A Defender with 90% Clean Sheet probability is "High Confidence" even if their Goal probability is uncertain (50%), whereas a Forward needs high certainty in attacking returns to be reliable.
+*   **Example**: Casemiro (MID) might have high points but low confidence if his underlying attacking probabilities are "coin flips" (0.5), effectively penalizing him in the selection logic.
 
 ### 10.3 Implementation
 *   **Backend** (`inference.py`): `calculate_confidence()` computes the score.
@@ -284,21 +285,23 @@ confidence = mean(|p - 0.5| × 2) × 100
 Maximize expected points **reliably** by prioritizing model confidence when selecting players. The goal is to find high-confidence predictions that meet the 6+ point target, relaxing confidence before other constraints.
 
 ### 11.2 Selection Cascade (Fail Upward)
-The selection logic now uses a multi-level cascade. Constraints are relaxed in this order:
-
-1. **Confidence First**: Try to find reliable predictions before accepting uncertain ones
-2. **Ownership/Cost Second**: Only relax "underdog" constraints after confidence options exhausted
-3. **Points Target Last**: Only lower the 6pt target as final resort
+### 11.2 Selection Cascade (Strict Reliability)
+The selection logic uses a multi-level cascade to ensure quality. Crucially, **Level 1 and Level 2 now enforce a strict Confidence Threshold (≥60%)** to prevent efficient but uncertain "coin flip" players from being selected as the main pick.
 
 | Level | Confidence | Ownership | Cost | Points | Description |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1A** | ≥60% (High) | Low | Low | ≥6.0 | Perfect underdog, high reliability |
-| **1B** | ≥40% (Medium) | Low | Low | ≥6.0 | Perfect underdog, acceptable risk |
-| **1C** | Any | Low | Low | ≥6.0 | Perfect underdog, any confidence |
-| **2** | Any | Any | Low | ≥6.0 | Value pick (relax ownership) |
-| **3** | Any | Low | Any | ≥6.0 | Premium differential (relax cost) |
-| **4** | Any | Any | Any | ≥6.0 | Just find a 6pt scorer |
-| **5** | Any | Any | Any | Dynamic | Last resort (lower points floor) |
+| **1A (Main)** | **≥60%** (Strict) | Low | Low | ≥6.0 | Reliable underdog (The Gold Standard) |
+| **1B (Safe)** | **≥60%** (Strict) | Low | Low | ≥4.0 | Safe reliable underdog (>4 pts) |
+| **2** | ≥40% (Medium) | Low | Low | ≥6.0 | High upside, medium reliability |
+| **3** | Any | Any | Low | ≥6.0 | Value pick (relax ownership) |
+| **4** | Any | Low | Any | ≥6.0 | Premium differential (relax cost) |
+| **5** | Any | Any | Any | Any | Last resort (highest reliability score remaining) |
+
+### 11.3 Wildcard Selection
+The 5th player is a designated **Wildcard**:
+*   **Criteria**: The unpicked player with the highest **Predicted Points** (Upside) who has at least **60% Confidence**.
+*   **Fallback**: If no high-confidence upside players exist, pick the highest Reliability Score remaining.
+*   **Badge**: Labeled with a Purple "WILDCARD" badge in the UI.
 
 ### 11.3 Tiebreaker Logic
 When multiple players pass the same level's filters:

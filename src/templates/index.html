@@ -1477,7 +1477,10 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                                     <span>${player.team_name}</span>
                                 </div>
                             </td>
-                            <td><span class="pos-badge">${player.position}</span></td>
+                            <td>
+                                <span class="pos-badge">${player.position}</span>
+                                ${player.is_wildcard ? '<span class="model-version-badge" style="background-color: #9c27b0; color: white;">W/C</span>' : ''}
+                            </td>
                             <td>
                                 <div class="team-cell">
                                     <img src="${player.opponent_logo_url}" alt="${player.next_opponent_name}" class="team-logo">
@@ -1524,6 +1527,7 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                                     <div class="player-card-name">${player.web_name}</div>
                                     <div class="player-card-team">${player.team_name}</div>
                                     <span class="player-card-pos">${player.position}</span>
+                                    ${player.is_wildcard ? '<span class="model-version-badge" style="background-color: #9c27b0; color: white; margin-left: 5px;">WILDCARD</span>' : ''}
                                 </div>
                                 <div class="player-card-points">
                                     <div class="player-card-points-label">Min Pts</div>
