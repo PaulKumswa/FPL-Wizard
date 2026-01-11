@@ -9,8 +9,36 @@ It verifies:
 import pytest
 import pandas as pd
 import numpy as np
-from src.inference import select_best_team, predict_points
+from src.inference import select_best_team, predict_points, calculate_confidence
 from src.config import MAX_COST, MAX_OWNERSHIP
+
+
+def test_calculate_confidence_high():
+    """Test that decisive probabilities (near 0 or 1) produce high confidence."""
+    # p=0.15 (d=0.7), p=0.10 (d=0.8), p=0.80 (d=0.6) -> mean = 0.7 -> 70%
+    confidence = calculate_confidence(0.15, 0.10, 0.80)
+    assert confidence >= 65 and confidence <= 75, f"Expected ~70, got {confidence}"
+
+
+def test_calculate_confidence_low():
+    """Test that uncertain probabilities (near 0.5) produce low confidence."""
+    # p=0.45 (d=0.1), p=0.48 (d=0.04), p=0.52 (d=0.04) -> mean = 0.06 -> 6%
+    confidence = calculate_confidence(0.45, 0.48, 0.52)
+    assert confidence < 15, f"Expected <15%, got {confidence}"
+
+
+def test_calculate_confidence_arrays():
+    """Test that calculate_confidence works with numpy arrays."""
+    p_goal = np.array([0.1, 0.5, 0.9])
+    p_assist = np.array([0.1, 0.5, 0.9])
+    p_cs = np.array([0.1, 0.5, 0.9])
+    
+    confidence = calculate_confidence(p_goal, p_assist, p_cs)
+    
+    assert len(confidence) == 3
+    assert confidence[0] > 70  # All decisive (near 0)
+    assert confidence[1] < 10  # All uncertain (at 0.5)
+    assert confidence[2] > 70  # All decisive (near 1)
 
 # Mock Model
 class MockModel:

@@ -65,6 +65,7 @@ def main():
     parser = argparse.ArgumentParser(description='FPL Update Pipeline')
     parser.add_argument('--no-serve', action='store_true', help='Run pipeline only, do not launch the app (for CI/CD)')
     parser.add_argument('--quick', action='store_true', help='Skip data fetching and training, just launch the app')
+    parser.add_argument('--no-fetch', action='store_true', help='Skip data fetching, but run training and app')
     args = parser.parse_args()
 
     print("Starting FPL Pipeline...\n")
@@ -72,37 +73,40 @@ def main():
     
     if not args.quick:
         # 1. Fetch Data
-        # Fetch Bootstrap
-        run_command(
-            [sys.executable, '-m', 'src.data_fetch', '--resource', 'fpl_bootstrap', '--out', 'data/raw/fpl_bootstrap.json'],
-            "Fetching FPL Bootstrap Data"
-        )
-        
-        # Fetch Fixtures
-        run_command(
-            [sys.executable, '-m', 'src.data_fetch', '--resource', 'fpl_fixtures', '--out', 'data/raw/fpl_fixtures.json'],
-            "Fetching FPL Fixtures"
-        )
-        
-        # Fetch Histories
-        run_command(
-            [sys.executable, '-m', 'src.data_fetch', '--resource', 'fpl_histories', '--out', 'data/raw/fpl_histories.parquet'],
-            "Fetching FPL Histories"
-        )
-
-        # Fetch Understat (All) - using new consolidated resource
-        run_command(
-            [sys.executable, '-m', 'src.data_fetch', '--resource', 'understat_all', '--season', '2025'],
-            "Fetching Understat Data"
-        )
-        
-        # Update Actuals for past predictions
-        print("--- Updating History Actuals ---")
-        try:
-            history.update_actuals()
-        except Exception as e:
-            print(f"Warning: Failed to update history actuals: {e}")
-        print("--- History Update Complete ---\n")
+        if not args.no_fetch:
+            # Fetch Bootstrap
+            run_command(
+                [sys.executable, '-m', 'src.data_fetch', '--resource', 'fpl_bootstrap', '--out', 'data/raw/fpl_bootstrap.json'],
+                "Fetching FPL Bootstrap Data"
+            )
+            
+            # Fetch Fixtures
+            run_command(
+                [sys.executable, '-m', 'src.data_fetch', '--resource', 'fpl_fixtures', '--out', 'data/raw/fpl_fixtures.json'],
+                "Fetching FPL Fixtures"
+            )
+            
+            # Fetch Histories
+            run_command(
+                [sys.executable, '-m', 'src.data_fetch', '--resource', 'fpl_histories', '--out', 'data/raw/fpl_histories.parquet'],
+                "Fetching FPL Histories"
+            )
+    
+            # Fetch Understat (All) - using new consolidated resource
+            run_command(
+                [sys.executable, '-m', 'src.data_fetch', '--resource', 'understat_all', '--season', '2025'],
+                "Fetching Understat Data"
+            )
+            
+            # Update Actuals for past predictions
+            print("--- Updating History Actuals ---")
+            try:
+                history.update_actuals()
+            except Exception as e:
+                print(f"Warning: Failed to update history actuals: {e}")
+            print("--- History Update Complete ---\n")
+        else:
+            print("Skipping Data Fetch (--no-fetch enabled)\n")
         
         # 2. Preprocess
         run_command([sys.executable, '-m', 'src.preprocess'], "Preprocessing Data")
@@ -125,9 +129,10 @@ def main():
         
         # Load models
         models = inference.load_models()
+        component_models = inference.load_component_models()
         
-        # Predict
-        df = inference.predict_points(df, models)
+        # Predict (uses component models for confidence calculation)
+        df = inference.predict_points(df, models, component_models)
         
         # Select Best Team
         top_5 = inference.select_best_team(df)

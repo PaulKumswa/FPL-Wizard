@@ -53,33 +53,53 @@ The system is a well-structured FPL (Fantasy Premier League) player points predi
 
 ### 1. Model Choice Limitations
 
-> [!WARNING]
-> RandomForest may underperform compared to gradient boosting methods for this task.
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Switched to LightGBM with TimeSeriesSplit cross-validation.
 
-| Issue | Impact |
+| Original Issue | Resolution |
 |-------|--------|
-| RandomForest with 200 trees | Moderate training time, potentially suboptimal accuracy |
-| No hyperparameter tuning | Default `max_depth=15` may not be optimal per position |
-| No cross-validation | Single train/test split (80/20) gives unstable MAE estimates |
-
-**Recommendation**: Consider XGBoost or LightGBM with proper cross-validation (e.g., TimeSeriesSplit for temporal data).
+| RandomForest with 200 trees | ✅ Replaced with LightGBM gradient boosting |
+| No hyperparameter tuning | ✅ Added `learning_rate`, `subsample`, `colsample_bytree` |
+| No cross-validation | ✅ Implemented 5-fold TimeSeriesSplit for temporal integrity |
 
 ---
 
 ### 2. Target Variable Issues
 
-> [!CAUTION]
-> `total_points` as the target is inherently noisy and hard to predict accurately.
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Implemented component-based prediction.
 
-- FPL points have high variance due to bonus points, clean sheets, and random events
-- The system predicts raw points, not probabilities of specific outcomes
-- No decomposition into sub-targets (goals, assists, clean sheets, etc.)
+| Original Issue | Resolution |
+|-------|--------|
+| `total_points` too noisy | ✅ Predict goals, assists, clean sheets separately |
+| Predicts raw points | ✅ Predict probabilities, aggregate using FPL scoring rules |
+| No decomposition | ✅ LGBMClassifier for each component per position |
 
-**Recommendation**: Consider predicting component outcomes separately and aggregating, or use a more robust target like "points above replacement."
+**New Approach**:
+- Train separate classifiers for P(goal), P(assist), P(clean sheet)
+- Expected Points = P(goal) × goal_pts + P(assist) × 3 + P(cs) × cs_pts + 2
+- Keeps legacy regressor as fallback for comparison
+
+**Phase 2 (Indefinitely Deferred)**: Additional components were considered but deferred due to complexity vs. impact trade-offs:
+- **Bonus Points**: Requires 30+ in-match BPS stats not available pre-match
+- **GKP Saves**: Dependent on unpredictable opponent shot volume
+- **Penalty Events**: Too rare (~2% of matches) for reliable classification
+- **Goals Conceded**: Would require Poisson regression + model inversion
+- **Multi-Goal/Assist**: Current binary (0/1+) captures ~80% of expected value
+
+See `architectural_decisions.md` Section 8 for full rationale.
 
 ---
 
 ### 3. Data Leakage Risk in Rolling Features
+
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Implemented TimeSeriesSplit cross-validation.
+
+| Original Issue | Resolution |
+|-------|--------|
+| Training uses full season data without temporal awareness | ✅ Implemented 5-fold TimeSeriesSplit cross-validation |
+| Model could see "future" data patterns with random splits | ✅ Temporal integrity ensured via `TimeSeriesSplit(n_splits=5)` |
 
 ```python
 # preprocess.py line 299-300
@@ -87,108 +107,146 @@ train_df[f'prev_{metric}'] = train_df.groupby('element')[metric].shift(1)
 train_df[col_name] = train_df.groupby('element')[f'prev_{metric}'].transform(lambda x: x.rolling(window=5, min_periods=1).mean())
 ```
 
-The shift approach is **correct**, but:
-- Training uses **full season data** without temporal awareness
-- Model could see "future" data patterns if train/test split is random rather than temporal
+The shift approach is **correct**, and the temporal integrity concern has been addressed:
+- ~~Training uses **full season data** without temporal awareness~~ → **Fixed**
+- ~~Model could see "future" data patterns if train/test split is random rather than temporal~~ → **Fixed**
 
-**Recommendation**: Use `TimeSeriesSplit` or explicit temporal cutoff for train/test to prevent subtle leakage.
+**Implementation**: `TimeSeriesSplit(n_splits=5)` is now used in `train_model.py` for all position models.
 
 ---
 
 ### 4. Limited Use of Understat Player-Level Data
 
-Current implementation:
-- Fetches team-level xG/xGA from Understat matches
-- Uses `recent_expected_goals`, `recent_expected_assists` from FPL API (not Understat)
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Integrated Understat player-level xG/xA data.
 
-Missing opportunities:
-- Player-specific xG, xA, key passes from Understat
-- Match-by-match player shots data
-- NPxG (non-penalty xG) which is more predictive
+| Original Issue | Resolution |
+|-------|--------|
+| Only team-level xG/xGA from Understat | ✅ Now uses player-level stats via `id_map.py` mapping |
+| Missing player-specific xG, xA | ✅ Added `us_npxG_per90`, `us_xA_per90` per-90 metrics |
+| NPxG (non-penalty xG) not used | ✅ Integrated `npxG` from Understat player data |
 
-**Recommendation**: Integrate Understat player-level data via the `id_map.py` mapping for richer features.
+**Implementation**:
+- `preprocess.py` loads `understat_players_{season}.json` and `id_mapping.csv`
+- Calculates per-90 metrics: `us_npxG_per90 = (npxG / time) * 90`
+- Merges to training/inference data via FPL↔Understat ID mapping
+- `config.py` updated: MID/FWD positions now use `recent_us_npxG_per90`, `recent_us_xA_per90`
+
+See `architectural_decisions.md` Section 1.3 for full details.
 
 ---
 
 ### 5. Hardcoded Selection Thresholds
 
-```python
-# src/config.py
-MAX_COST = 80       # £8.0m
-MAX_OWNERSHIP = 10  # 10%
-MIN_FORM = 2.0
-MIN_ICT = 3.0
-```
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Replaced static thresholds with percentile-based dynamic calculation.
 
-- These are static and may not adapt to season dynamics
-- No explanation of how these values were chosen
-- Could filter out good picks early/late in season
+| Original Issue | Resolution |
+|-------|--------|
+| `MAX_COST = 80` (static £8.0m) | ✅ Now computed as 75th percentile (floor £7.0m) |
+| `MAX_OWNERSHIP = 10` (static 10%) | ✅ Now computed as 50th percentile (floor 10%) |
+| `MIN_FORM = 2.0` (static) | ✅ Now computed as 30th percentile of current week's form |
+| `MIN_ICT = 3.0` (static) | ✅ Now computed as 30th percentile of current week's ICT |
+| Static logic implies strict cutoff | ✅ Implemented "Fail Upward" logic: Prioritize points over constraints |
 
-**Recommendation**: Make thresholds configurable or data-driven (e.g., percentile-based).
+**Implementation**:
+- `config.py` now defines `OWNERSHIP_PERCENTILE`, `COST_PERCENTILE`, `FORM_PERCENTILE`, `ICT_PERCENTILE`
+- `inference.py` added `calculate_dynamic_thresholds(df)` function
+- Thresholds are logged at inference time for transparency
+
+See `architectural_decisions.md` Section 9 for full rationale.
 
 ---
 
 ### 6. No Model Validation Metrics Stored
 
-```python
-# train_model.py - MAE is printed but not persisted
-print(f"{config['name']} Model MAE: {mae:.4f}")
-```
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Implemented persistent metrics logging.
 
-- No historical record of model performance over time
-- Cannot track if model is improving or degrading
-- No automated alerting for performance drops
+| Original Issue | Resolution |
+|-------|--------|
+| No model history | ✅ Metrics (AUC/MAE) now logged to `data/history/model_metrics.json` |
+| No performance tracking | ✅ JSON store enables longitudinal analysis of model accuracy |
 
-**Recommendation**: Log metrics to JSON/CSV file and add monitoring.
+**Implementation**:
+- `src/train_model.py` now logs validation metrics after every run
+- JSON format captures component-level performance (goals, assists, cleansheets)
+
+See `architectural_decisions.md` Section 3.4 for details.
 
 ---
 
 ### 7. Feature Importance Not Analyzed
 
-- No SHAP values or feature importance extraction
-- Unclear which features actually drive predictions
-- Makes it hard to debug poor predictions
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Implemented feature importance logging and UI.
 
-**Recommendation**: Add feature importance logging and optionally expose in the UI.
+| Original Issue | Resolution |
+|-------|--------|
+| No SHAP values or feature importance | ✅ Logged LightGBM `feature_importances_` to JSON |
+| Unclear which features drive predictions | ✅ Added `/feature-importance` dashboard to UI |
+| Hard to debug poor predictions | ✅ Visualized top contributing features per component |
+
+**Implementation**:
+- `train_model.py` saves importance to `data/history/feature_importance.json`
+- `app.py` exposes `/feature-importance` route
+- New visualization page shows contribution of features like `recent_team_xga`, `recent_form`, etc.
+
+See `architectural_decisions.md` Section 3.5 for details.
 
 ---
 
 ### 8. App.py Dead Code
 
-```python
-# app.py lines 170-173 (unreachable after return statement)
-result_df = pd.DataFrame(final_picks)
-return format_predictions_response(result_df, metadata)
-```
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Removed dead code block.
 
-This code is never executed due to the earlier `return` on line 168.
-
-**Recommendation**: Remove this dead code block.
+| Original Issue | Resolution |
+|-------|--------|
+| Unreachable code in `app.py` | ✅ Removed lines 201-204 (formerly 170-173) |
 
 ---
 
 ### 9. Fuzzy Matching for Team Names
 
-```python
-# preprocess.py line 91
-match = process.extractOne(us_name, fpl_names)
-```
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Replaced fuzzy matching with persistent JSON mapping.
 
-- Fuzzy matching (fuzzywuzzy) can produce incorrect mappings
-- Already improved with `id_map.py` persistent JSON approach
-- But `map_understat_teams()` in preprocess still uses fuzzy matching
+| Original Issue | Resolution |
+|-------|--------|
+| `map_understat_teams()` uses fuzzy matching | ✅ Now uses `known_team_mapping.json` lookup |
+| Can produce incorrect mappings | ✅ Explicit mapping of 6 mismatched team names |
+| Inconsistent with `id_map.py` approach | ✅ Both now use persistent JSON files |
 
-**Recommendation**: Ensure `id_map.py` mappings are used consistently everywhere.
+**Implementation**:
+- Created `data/config/known_team_mapping.json` with Understat→FPL team name mappings
+- Refactored `map_understat_teams()` to use JSON lookup with exact match fallback
+- Removed dependency on fuzzy matching for team name resolution
 
 ---
 
 ### 10. No Uncertainty Quantification
 
-- Predictions are point estimates with no confidence intervals
-- Users have no sense of which predictions are "confident" vs "risky"
-- RandomForest can provide prediction intervals via tree variance
+> [!NOTE]
+> ✅ **RESOLVED (Jan 2026)**: Added prediction confidence scoring and visualization.
 
-**Recommendation**: Add prediction confidence/uncertainty to output.
+| Original Issue | Resolution |
+|-------|--------|
+| Predictions are point estimates | ✅ Added `confidence_score` (0-100%) based on probability decisiveness |
+| No sense of "confident" vs "risky" | ✅ Min Points column color-coded: Green (≥70%), Yellow (40-69%), Orange (<40%) |
+| RandomForest prediction intervals | ✅ Component probabilities provide natural uncertainty measure |
+
+**Approach**:
+- Confidence calculated as: `mean(|p - 0.5| × 2)` for each component probability
+- Probabilities near 0 or 1 indicate certainty → high confidence
+- Probabilities near 0.5 indicate uncertainty → low confidence
+
+**Implementation**:
+- `inference.py`: Added `calculate_confidence()` function
+- `app.py`: Exposed `confidence_score` in API response
+- `index.html`: Color-coded Min Points column with legend
+
+**Enhancement (Jan 2026)**: Confidence scores now also influence player selection via the "Confidence First" fail-upward cascade. See `architectural_decisions.md` Section 11.
 
 ---
 
@@ -242,13 +300,14 @@ flowchart TD
 
 | Category | Priority | Recommendation |
 |----------|----------|----------------|
-| Model | High | Switch to gradient boosting (XGBoost/LightGBM) with cross-validation |
-| Data | High | Use TimeSeriesSplit for train/test to prevent leakage |
-| Features | Medium | Integrate Understat player-level xG/xA data |
-| Metrics | Medium | Store model MAE over time for monitoring |
-| Code | Low | Remove dead code in `app.py` |
-| UX | Medium | Add prediction confidence intervals |
-| Config | Low | Make selection thresholds data-driven |
+| Model | ~~High~~ | ✅ **Done**: Switched to LightGBM with TimeSeriesSplit CV |
+| Target | ~~High~~ | ✅ **Done**: Component-based prediction (goals, assists, clean sheets) |
+| Data | ~~High~~ | ✅ **Done**: TimeSeriesSplit implemented (part of Model fix) |
+| Features | ~~Medium~~ | ✅ **Done**: Integrated Understat player-level xG/xA data |
+| Metrics | ~~Medium~~ | ✅ **Done**: Store model MAE/AUC in `model_metrics.json` |
+| Code | ~~Low~~ | ✅ **Done**: Removed dead code in `app.py` |
+| UX | ~~Medium~~ | ✅ **Done**: Confidence scoring with color-coded Min Points column |
+| Config | ~~Low~~ | ✅ **Done**: Dynamic percentile-based selection thresholds |
 
 ---
 

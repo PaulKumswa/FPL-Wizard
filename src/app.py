@@ -17,6 +17,7 @@ from datetime import datetime
 import src.inference as inference
 import src.data_fetch as data_fetch
 import time
+import unicodedata
 
 app = Flask(__name__)
 
@@ -102,6 +103,36 @@ def index():
     log_visit('index')
     return render_template('index.html')
 
+@app.route('/feature-importance')
+def feature_importance():
+    log_visit('feature_importance')
+    
+    # Load feature importance data
+    file_path = 'data/history/feature_importance.json'
+    data = {}
+    timestamp = None
+    
+    if os.path.exists(file_path):
+        try:
+            with open(file_path, 'r') as f:
+                data = json.load(f)
+                timestamp = data.get('timestamp')
+                # Format timestamp if present
+                if timestamp:
+                    try:
+                        dt = datetime.fromisoformat(timestamp)
+                        timestamp = dt.strftime('%Y-%m-%d %H:%M')
+                    except ValueError:
+                        pass
+        except Exception as e:
+            print(f"Error loading feature importance: {e}")
+            
+    return render_template(
+        'feature_importance.html', 
+        models=data.get('models', {}),
+        timestamp=timestamp
+    )
+
 @app.route('/api/predictions')
 def get_predictions():
     log_visit('predictions')
@@ -138,7 +169,9 @@ def get_predictions():
                 # but using the re-calculated ones from model is fine too as they should be identical.
                 # Let's map strict points from history to be 100% sure.
                 id_to_points = {p['player_id']: p['predicted_points'] for p in gw_entry['picks']}
+                id_to_confidence = {p['player_id']: p.get('confidence_score', 50.0) for p in gw_entry['picks']}
                 final_df['predicted_points'] = final_df['element'].map(id_to_points)
+                final_df['confidence_score'] = final_df['element'].map(id_to_confidence)
                 
                 # Prepare result immediately
                 return format_predictions_response(final_df, metadata)
@@ -150,12 +183,13 @@ def get_predictions():
     # Load models only if calculation is needed (Slow)
     print("History not found or failed, loading models for inference...")
     models = inference.load_models()
+    component_models = inference.load_component_models()
 
     if not models:
         return jsonify({'error': 'Models not found'}), 500
 
-    # Predict
-    df = inference.predict_points(df, models)
+    # Predict (uses component models if available, falls back to legacy)
+    df = inference.predict_points(df, models, component_models)
     
     # Select Best Team
     # app.py previously had manual "Advanced Underdog Logic" hardcoded here.
@@ -167,18 +201,19 @@ def get_predictions():
 
     return format_predictions_response(final_picks_df, metadata)
         
-    # Convert back to DataFrame for easier handling
-    result_df = pd.DataFrame(final_picks)
-    
-    return format_predictions_response(result_df, metadata)
+
 
 def format_predictions_response(result_df, metadata):
     # Sort by predicted points for display
     result_df = result_df.sort_values('predicted_points', ascending=False)
     
-    # Select columns to display
-    # Select columns to display
-    display_cols = ['element', 'web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'code', 'team_code', 'opponent_team_code', 'element_type', 'recent_expected_goals', 'recent_expected_assists', 'recent_team_xga']
+    # Select columns to display (include confidence_score for frontend color coding)
+    display_cols = ['element', 'web_name', 'team_name', 'next_opponent_name', 'now_cost', 'selected_by_percent', 'predicted_points', 'confidence_score', 'code', 'team_code', 'opponent_team_code', 'element_type', 'recent_expected_goals', 'recent_expected_assists', 'recent_team_xga']
+    
+    # Ensure confidence_score exists (default if missing from history)
+    if 'confidence_score' not in result_df.columns:
+        result_df['confidence_score'] = 50.0
+    
     result = result_df[display_cols].to_dict(orient='records')
     
     # Position Mapping
@@ -190,7 +225,10 @@ def format_predictions_response(result_df, metadata):
         player['team_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['team_code'])}.png"
         player['opponent_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['opponent_team_code'])}.png"
         player['position'] = pos_map.get(player['element_type'], 'UNK')
-        player['profile_url'] = f"https://www.premierleague.com/en/players/{int(player['code'])}/{player['web_name']}/overview"
+        # Convert web_name to URL slug (lowercase, spaces to hyphens, remove accents)
+        name_slug = unicodedata.normalize('NFKD', player['web_name']).encode('ascii', 'ignore').decode('ascii')
+        name_slug = name_slug.lower().replace(' ', '-').replace("'", '-')
+        player['profile_url'] = f"https://www.premierleague.com/en/players/{int(player['code'])}/{name_slug}/overview"
 
     response = {
         'gameweek_info': metadata,
@@ -214,6 +252,70 @@ def get_history():
         return jsonify([])
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/model-stats')
+def get_model_stats():
+    """Returns performance statistics grouped by model version."""
+    import math
+    from src.config import MODEL_ERAS
+    
+    try:
+        with open('data/history/predictions_log.json', 'r') as f:
+            history = json.load(f)
+    except FileNotFoundError:
+        return jsonify([])
+    
+    stats = {}
+    
+    for entry in history:
+        version = entry.get('model_version', 'unknown')
+        if version not in stats:
+            stats[version] = {
+                'version': version,
+                'name': entry.get('model_name', 'Unknown'),
+                'total_picks': 0,
+                'hits': 0,
+                'total_predicted': 0,
+                'total_actual': 0,
+                'gameweeks': []
+            }
+        
+        if entry['gameweek'] not in stats[version]['gameweeks']:
+            stats[version]['gameweeks'].append(entry['gameweek'])
+        
+        for pick in entry.get('picks', []):
+            if pick.get('actual_points') is not None:
+                stats[version]['total_picks'] += 1
+                stats[version]['total_predicted'] += pick['predicted_points']
+                stats[version]['total_actual'] += pick['actual_points']
+                
+                # Hit = Actual >= 90% of floor(Predicted)
+                if pick['actual_points'] >= (math.floor(pick['predicted_points']) * 0.9):
+                    stats[version]['hits'] += 1
+    
+    # Calculate hit rates and averages
+    result = []
+    for version, data in stats.items():
+        if data['total_picks'] > 0:
+            data['hit_rate'] = round((data['hits'] / data['total_picks']) * 100, 1)
+            data['avg_predicted'] = round(data['total_predicted'] / data['total_picks'], 2)
+            data['avg_actual'] = round(data['total_actual'] / data['total_picks'], 2)
+        else:
+            data['hit_rate'] = None  # No data yet
+            data['avg_predicted'] = None
+            data['avg_actual'] = None
+        
+        # Add color and description from MODEL_ERAS config
+        era = next((e for e in MODEL_ERAS if e['version'] == version), None)
+        data['color'] = era['color'] if era else '#888'
+        data['description'] = era['description'] if era else ''
+        
+        result.append(data)
+    
+    # Sort by version
+    result.sort(key=lambda x: x['version'])
+    return jsonify(result)
 
 @app.route('/api/stats')
 def get_stats():
@@ -271,8 +373,13 @@ def get_live_scores():
     
     if requested_gw and LIVE_DATA_CACHE['gameweek'] != requested_gw:
         # If we asked for GW20 but cache has GW19, we must fetch fresh.
-        # We don't want to rely on the "window" optimization for the wrong week.
-        pass 
+        # Invalidate cache for the new gameweek
+        LIVE_DATA_CACHE['last_updated'] = 0
+        LIVE_DATA_CACHE['data'] = None
+        LIVE_DATA_CACHE['gameweek'] = requested_gw
+        LIVE_DATA_CACHE['window_start'] = None
+        LIVE_DATA_CACHE['window_end'] = None
+        print(f"Cache invalidated for GW{requested_gw} (was GW{LIVE_DATA_CACHE.get('gameweek', 'None')})")
     elif LIVE_DATA_CACHE['gameweek']:
         # Standard Cache Check (same GW)
         # Check Window optimizations

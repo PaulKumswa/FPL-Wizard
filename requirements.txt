@@ -4,6 +4,7 @@ beautifulsoup4
 python-dotenv
 pyarrow
 scikit-learn
+lightgbm
 flask
 gunicorn
 understatapi

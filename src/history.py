@@ -11,6 +11,7 @@ import pandas as pd
 from pathlib import Path
 from datetime import datetime
 import os
+from src.config import MODEL_VERSION, MODEL_ERAS
 
 HISTORY_FILE = Path('data/history/predictions_log.json')
 
@@ -61,12 +62,16 @@ def log_predictions(predictions_df, gameweek_info):
             'web_name': row['web_name'],
             'position': row.get('position', 'UNK'),
             'predicted_points': float(row['predicted_points']),
+            'confidence_score': float(row.get('confidence_score', 50.0)),
             'actual_points': None  # To be filled later
         })
 
     entry = {
         'gameweek': current_gw,
         'timestamp': timestamp,
+        'model_version': MODEL_VERSION['version'],
+        'model_name': MODEL_VERSION['name'],
+        'model_type': MODEL_VERSION['type'],
         'picks': picks
     }
     
@@ -125,3 +130,75 @@ def update_actuals():
         print("History log updated with actual points.")
     else:
         print("No new actual points found.")
+
+
+def backfill_model_versions():
+    """
+    Adds model_version metadata to historical entries based on gameweek.
+    Run once to populate existing data.
+    """
+    history = load_history()
+    updated = False
+    
+    # Build gameweek -> era lookup from MODEL_ERAS
+    gw_to_era = {}
+    for era in MODEL_ERAS:
+        for gw in era['gameweeks']:
+            gw_to_era[gw] = era
+    
+    for entry in history:
+        gw = entry['gameweek']
+        era = gw_to_era.get(gw)
+        
+        # Check if this is a skipped week (empty picks)
+        is_skipped = len(entry.get('picks', [])) == 0
+        
+        if era:
+            # Explicit era assignment
+            if entry.get('model_version') != era['version']:
+                entry['model_version'] = era['version']
+                entry['model_name'] = era['name']
+                entry['model_type'] = era['type']
+                updated = True
+                print(f"  GW {gw} -> {era['version']} ({era['name']})")
+        elif is_skipped:
+            # Skipped weeks - mark appropriately based on surrounding GWs
+            # GW14 was between v1 GWs (13, 15) -> v1
+            # GW18 was between v1 GW17 and v2 GW19 -> mark as v1 (last active version)
+            if gw == 14:
+                if entry.get('model_version') != 'v1':
+                    entry['model_version'] = 'v1'
+                    entry['model_name'] = '4 Position Regressors'
+                    entry['model_type'] = 'regressor'
+                    updated = True
+                    print(f"  GW {gw} -> v1 (skipped week)")
+            elif gw == 18:
+                if entry.get('model_version') != 'v1':
+                    entry['model_version'] = 'v1'
+                    entry['model_name'] = '4 Position Regressors'
+                    entry['model_type'] = 'regressor'
+                    updated = True
+                    print(f"  GW {gw} -> v1 (skipped week)")
+            else:
+                # Future skipped weeks default to current version
+                if entry.get('model_version') != 'v3':
+                    entry['model_version'] = 'v3'
+                    entry['model_name'] = MODEL_VERSION['name']
+                    entry['model_type'] = MODEL_VERSION['type']
+                    updated = True
+                    print(f"  GW {gw} -> v3 (skipped, default)")
+        else:
+            # Non-skipped week not in any era list -> v3 (future weeks)
+            if entry.get('model_version') != 'v3':
+                entry['model_version'] = 'v3'
+                entry['model_name'] = MODEL_VERSION['name']
+                entry['model_type'] = MODEL_VERSION['type']
+                updated = True
+                print(f"  GW {gw} -> v3 (default/current)")
+    
+    if updated:
+        save_history(history)
+        print("Backfilled model versions for historical entries.")
+    else:
+        print("All entries already have correct model versions.")
+
