@@ -17,6 +17,7 @@ from datetime import datetime
 import src.inference as inference
 import src.data_fetch as data_fetch
 import time
+import unicodedata
 
 app = Flask(__name__)
 
@@ -224,7 +225,10 @@ def format_predictions_response(result_df, metadata):
         player['team_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['team_code'])}.png"
         player['opponent_logo_url'] = f"https://resources.premierleague.com/premierleague/badges/t{int(player['opponent_team_code'])}.png"
         player['position'] = pos_map.get(player['element_type'], 'UNK')
-        player['profile_url'] = f"https://www.premierleague.com/en/players/{int(player['code'])}/{player['web_name']}/overview"
+        # Convert web_name to URL slug (lowercase, spaces to hyphens, remove accents)
+        name_slug = unicodedata.normalize('NFKD', player['web_name']).encode('ascii', 'ignore').decode('ascii')
+        name_slug = name_slug.lower().replace(' ', '-').replace("'", '-')
+        player['profile_url'] = f"https://www.premierleague.com/en/players/{int(player['code'])}/{name_slug}/overview"
 
     response = {
         'gameweek_info': metadata,
