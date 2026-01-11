@@ -1,8 +1,9 @@
 ﻿# FPL Underdog Predictor
 
 **Live Site:** [fplbangers.com](https://fplbangers.com)
+It provides predictions based on custom-trained machine learning models, updated weekly. The model identifies high-potential "underdog" players ((10% Own, £7m Cost) with 'Fail-Upward' logic) with strong form or underlying stats.
 
-Built with ChatGPT Codex and Google Antigravity.
+Built with Antigravity, Opus, and time :)
 
 A machine learning-powered Fantasy Premier League (FPL) assistant that identifies high-potential "underdog" players—those with less than 10% ownership and under £8.0m—who have strong form or underlying stats. Predictions are updated weekly using custom-trained models.
 
