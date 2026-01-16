@@ -325,7 +325,7 @@
   },
   {
     "gameweek": 22,
-    "timestamp": "2026-01-11T14:00:53.147555",
+    "timestamp": "2026-01-16T16:35:45.350875",
     "model_version": "v3",
     "model_name": "Component-Based LightGBM",
     "model_type": "component",
@@ -334,8 +334,8 @@
         "player_id": 253,
         "web_name": "Henderson",
         "position": "GKP",
-        "predicted_points": 5.472802065972239,
-        "confidence_score": 78.91208263888956,
+        "predicted_points": 5.610774647715804,
+        "confidence_score": 84.43098590863218,
         "is_wildcard": false,
         "actual_points": null
       },
@@ -343,17 +343,17 @@
         "player_id": 370,
         "web_name": "Frimpong",
         "position": "DEF",
-        "predicted_points": 6.248265463824675,
-        "confidence_score": 78.48659362849902,
+        "predicted_points": 6.428209586724488,
+        "confidence_score": 67.32119891043105,
         "is_wildcard": false,
         "actual_points": null
       },
       {
-        "player_id": 83,
-        "web_name": "O.Dango",
+        "player_id": 591,
+        "web_name": "Gray",
         "position": "MID",
-        "predicted_points": 5.333434175876375,
-        "confidence_score": 64.03604481964875,
+        "predicted_points": 4.134389400994756,
+        "confidence_score": 63.99628483179064,
         "is_wildcard": false,
         "actual_points": null
       },
@@ -361,17 +361,17 @@
         "player_id": 100,
         "web_name": "Kroupi.Jr",
         "position": "FWD",
-        "predicted_points": 5.0372673674043575,
-        "confidence_score": 62.58302862054429,
+        "predicted_points": 5.38768459761102,
+        "confidence_score": 72.8523513782022,
         "is_wildcard": false,
         "actual_points": null
       },
       {
-        "player_id": 47,
-        "web_name": "Rogers",
-        "position": "MID",
-        "predicted_points": 9.486026567720206,
-        "confidence_score": 67.57082557441862,
+        "player_id": 373,
+        "web_name": "Virgil",
+        "position": "DEF",
+        "predicted_points": 8.324453009665488,
+        "confidence_score": 62.987891069378186,
         "is_wildcard": true,
         "actual_points": null
       }
