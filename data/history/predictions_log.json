@@ -391,7 +391,7 @@
         "predicted_points": 5.584493808500742,
         "confidence_score": 83.37975234002968,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 411,
@@ -400,7 +400,7 @@
         "predicted_points": 12.09086169702786,
         "confidence_score": 70.44073754450677,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 418,
@@ -409,7 +409,7 @@
         "predicted_points": 5.106993536567359,
         "confidence_score": 62.382542791928365,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 250,
@@ -418,7 +418,7 @@
         "predicted_points": 5.578125727189811,
         "confidence_score": 63.537557931758194,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 405,
@@ -426,6 +426,60 @@
         "position": "DEF",
         "predicted_points": 6.631300347668034,
         "confidence_score": 73.13317446883747,
+        "is_wildcard": true,
+        "actual_points": 0.0
+      }
+    ]
+  },
+  {
+    "gameweek": 24,
+    "timestamp": "2026-01-30T18:27:43.480695",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 139,
+        "web_name": "Verbruggen",
+        "position": "GKP",
+        "predicted_points": 5.313801741376697,
+        "confidence_score": 72.55206965506787,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 148,
+        "web_name": "F.Kad\u0131o\u011flu",
+        "position": "DEF",
+        "predicted_points": 6.073006610244328,
+        "confidence_score": 68.43198930195209,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 242,
+        "web_name": "Dewsbury-Hall",
+        "position": "MID",
+        "predicted_points": 4.325658826194637,
+        "confidence_score": 66.23677290486435,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 749,
+        "web_name": "Man\u00e9",
+        "position": "FWD",
+        "predicted_points": 5.126652854864501,
+        "confidence_score": 74.35995646233553,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 224,
+        "web_name": "Cucurella",
+        "position": "DEF",
+        "predicted_points": 7.4585367842922,
+        "confidence_score": 67.109966959449,
         "is_wildcard": true,
         "actual_points": null
       }

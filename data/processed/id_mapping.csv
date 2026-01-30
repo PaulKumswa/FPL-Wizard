@@ -27,6 +27,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 44,10025,Lamare Bogarde,Lamare Bogarde,100
 47,12412,Morgan Rogers,Morgan Rogers,100
 48,5956,Youri Tielemans,Youri Tielemans,100
+49,5221,Leon Bailey,Leon Bailey,100
 53,9749,Donyell Malen,Donyell Malen,100
 54,7723,John McGinn,John McGinn,100
 55,592,Ross Barkley,Ross Barkley,100
@@ -59,6 +60,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 217,7498,Lyle Foster,Lyle Foster,100
 218,4422,Ashley Barnes,Ashley Barnes,100
 470,6532,Martin Dúbravka,Martin Dubravka,100
+614,843,James Ward-Prowse,James Ward-Prowse,100
 680,8384,Armando Broja,Armando Broja,100
 67,12032,Đorđe Petrović,Djordje Petrovic,100
 73,825,Adam Smith,Adam Smith,100
@@ -77,6 +79,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 685,7268,Bafodé Diakité,Bafode Diakite,100
 697,8211,Amine Adli,Amine Adli,100
 721,14027,Veljko Milosavljevic,Veljko Milosavljevic,100
+801,14374,Alex Tóth,Alex Tóth,100
 27,6492,Reiss Nelson,Reiss Nelson,100
 83,9662,Dango Ouattara,Dango Ouattara,100
 101,7904,Caoimhín Kelleher,Caoimhin Kelleher,100
@@ -160,6 +163,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 762,14263,Joél Drakes-Thomas,Joél Drakes-Thomas,100
 242,9739,Kiernan Dewsbury-Hall,Kiernan Dewsbury-Hall,100
 287,741,Jordan Pickford,Jordan Pickford,100
+290,8476,Jarrad Branthwaite,Jarrad Branthwaite,100
 291,1665,James Tarkowski,James Tarkowski,100
 292,10291,Vitalii Mykolenko,Vitalii Mykolenko,100
 293,12014,Jake O'Brien,Jake O&#039;Brien,100
@@ -191,6 +195,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 332,1537,Saša Lukić,Sasa Lukic,100
 335,12410,Josh King,Joshua King,100
 336,910,Harrison Reed,Harrison Reed,100
+424,11903,Oscar Bobb,Oscar Bobb,100
 727,7208,Samuel Chukwueze,Samuel Chukwueze,100
 737,13262,Jonah Kusi-Asare,Jonah Kusi-Asare,100
 168,11362,Facundo Buonanotte,Facundo Buonanotte,100
@@ -251,7 +256,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 414,6055,Phil Foden,Phil Foden,100
 418,8981,Jérémy Doku,Jéremy Doku,100
 422,2254,Mateo Kovačić,Mateo Kovacic,100
-424,11903,Oscar Bobb,Oscar Bobb,100
 427,11965,Tijjani Reijnders,Tijjani Reijnders,100
 430,8260,Erling Haaland,Erling Haaland,100
 736,1116,Gianluigi Donnarumma,Gianluigi Donnarumma,100
@@ -366,7 +370,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 609,6816,Jean-Clair Todibo,Jean-Clair Todibo,100
 610,5584,Aaron Wan-Bissaka,Aaron Wan-Bissaka,100
 613,8288,Tomáš Souček,Tomas Soucek,100
-614,843,James Ward-Prowse,James Ward-Prowse,100
 615,9492,Crysencio Summerville,Crysencio Summerville,100
 618,8267,Guido Rodríguez,Guido Rodríguez,100
 620,12474,George Earthy,George Earthy,100
