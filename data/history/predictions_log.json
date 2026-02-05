@@ -445,7 +445,7 @@
         "predicted_points": 5.313801741376697,
         "confidence_score": 72.55206965506787,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 148,
@@ -454,7 +454,7 @@
         "predicted_points": 6.073006610244328,
         "confidence_score": 68.43198930195209,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 242,
@@ -463,7 +463,7 @@
         "predicted_points": 4.325658826194637,
         "confidence_score": 66.23677290486435,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 749,
@@ -472,7 +472,7 @@
         "predicted_points": 5.126652854864501,
         "confidence_score": 74.35995646233553,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 224,
@@ -480,6 +480,60 @@
         "position": "DEF",
         "predicted_points": 7.4585367842922,
         "confidence_score": 67.109966959449,
+        "is_wildcard": true,
+        "actual_points": 7.0
+      }
+    ]
+  },
+  {
+    "gameweek": 25,
+    "timestamp": "2026-02-05T18:36:06.588305",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 67,
+        "web_name": "Petrovi\u0107",
+        "position": "GKP",
+        "predicted_points": 5.457277064681197,
+        "confidence_score": 78.29108258724789,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 473,
+        "web_name": "Hall",
+        "position": "DEF",
+        "predicted_points": 7.651447546198173,
+        "confidence_score": 76.49358337825811,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 237,
+        "web_name": "Enzo",
+        "position": "MID",
+        "predicted_points": 7.800626233602638,
+        "confidence_score": 62.0633646696962,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 97,
+        "web_name": "Evanilson",
+        "position": "FWD",
+        "predicted_points": 4.816986102425736,
+        "confidence_score": 66.11104092297444,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 7,
+        "web_name": "Calafiori",
+        "position": "DEF",
+        "predicted_points": 8.65143319316096,
+        "confidence_score": 67.52356855849393,
         "is_wildcard": true,
         "actual_points": null
       }
