@@ -499,7 +499,7 @@
         "predicted_points": 5.457277064681197,
         "confidence_score": 78.29108258724789,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 473,
@@ -508,7 +508,7 @@
         "predicted_points": 7.651447546198173,
         "confidence_score": 76.49358337825811,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 237,
@@ -517,7 +517,7 @@
         "predicted_points": 7.800626233602638,
         "confidence_score": 62.0633646696962,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 97,
@@ -526,7 +526,7 @@
         "predicted_points": 4.816986102425736,
         "confidence_score": 66.11104092297444,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 7,
@@ -534,6 +534,60 @@
         "position": "DEF",
         "predicted_points": 8.65143319316096,
         "confidence_score": 67.52356855849393,
+        "is_wildcard": true,
+        "actual_points": 6.0
+      }
+    ]
+  },
+  {
+    "gameweek": 26,
+    "timestamp": "2026-02-09T18:43:05.867914",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 565,
+        "web_name": "Vicario",
+        "position": "GKP",
+        "predicted_points": 5.415513933299658,
+        "confidence_score": 76.62055733198632,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 684,
+        "web_name": "Thiaw",
+        "position": "DEF",
+        "predicted_points": 9.453604792971404,
+        "confidence_score": 65.82923362389559,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 47,
+        "web_name": "Rogers",
+        "position": "MID",
+        "predicted_points": 9.275238776948603,
+        "confidence_score": 60.20647802161362,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 337,
+        "web_name": "Ra\u00fal",
+        "position": "FWD",
+        "predicted_points": 4.5118288604701355,
+        "confidence_score": 82.2920461785954,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 5,
+        "web_name": "Gabriel",
+        "position": "DEF",
+        "predicted_points": 7.59006677132292,
+        "confidence_score": 71.65398806341229,
         "is_wildcard": true,
         "actual_points": null
       }

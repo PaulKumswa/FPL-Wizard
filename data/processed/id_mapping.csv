@@ -126,6 +126,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 181,14118,Charalampos Kostoulas,Charalampos Kostoulas,100
 744,14127,Nehemiah Oriola,Nehemiah Oriola,100
 783,239,Pascal Groß,Pascal Groß,100
+795,13584,Harry Howell,Harry Howell,100
 221,9272,Filip Jörgensen,Filip Jorgensen,100
 225,8067,Reece James,Reece James,100
 226,6615,Trevoh Chalobah,Trevoh Chalobah,100
@@ -283,6 +284,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 733,14056,Senne Lammens,Senne Lammens,100
 755,14198,Shea Lacey,Shea Lacey,100
 769,14266,Bendito Mantato,Bendito Mantato,100
+771,14272,Tyler Fletcher,Tyler Fletcher,100
 52,8941,Jacob Ramsey,Jacob Ramsey,100
 135,5786,Yoane Wissa,Yoane Wissa,100
 469,5552,Nick Pope,Nick Pope,100
@@ -307,6 +309,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 684,8378,Malick Thiaw,Malick Thiaw,100
 714,8117,Nick Woltemade,Nick Woltemade,100
 12,2958,Oleksandr Zinchenko,Oleksandr Zinchenko,100
+400,8786,Stefan Ortega Moreno,Stefan Ortega Moreno,100
 426,10126,James McAtee,James McAtee,100
 502,6903,Matz Sels,Matz Sels,100
 505,6174,Nikola Milenković,Nikola Milenkovic,100
@@ -326,6 +329,8 @@ fpl_id,understat_id,fpl_name,understat_name,score
 693,10348,Omari Hutchinson,Omari Hutchinson,100
 716,12905,Nicolò Savona,Nicolò Savona,100
 734,8920,Dilane Bakwa,Dilane Bakwa,100
+805,11936,Lorenzo Lucca,Lorenzo Lucca,100
+814,8401,Luca Netz,Luca Netz,100
 531,13715,Daniel Ballard,Dan Ballard,100
 532,13713,Trai Hume,Trai Hume,100
 535,8537,Dennis Cirkin,Dennis Cirkin,100
@@ -348,6 +353,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 724,13064,Lutsharel Geertruida,Lutsharel Geertruida,100
 730,9789,Brian Brobbey,Brian Brobbey,100
 735,695,Bertrand Traoré,Bertrand Traoré,100
+813,14424,Nilson Angulo,Nilson Angulo,100
 565,8858,Guglielmo Vicario,Guglielmo Vicario,100
 569,7218,Cristian Romero,Cristian Romero,100
 570,5261,Kevin Danso,Kevin Danso,100
@@ -390,6 +396,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 747,13247,Ezra Mayers,Ezra Mayers,100
 758,14219,Mohamadou Kanté,Mohamadou Kanté,100
 791,10948,Valentín Castellanos,Valentín Castellanos,100
+815,6885,Axel Disasi,Axel Disasi,100
 627,978,Sam Johnstone,Sam Johnstone,100
 631,10856,Emmanuel Agbadou,Emmanuel Agbadou,100
 632,6852,Matt Doherty,Matt Doherty,100
@@ -405,3 +412,5 @@ fpl_id,understat_id,fpl_name,understat_name,score
 709,12721,Ladislav Krejcí,Ladislav Krejcí,100
 720,8875,Tolu Arokodare,Tolu Arokodare,100
 749,13484,Mateus Mané,Mateus Mané,100
+816,5598,Angel Gomes,Angel Gomes,100
+817,4419,Adam Armstrong,Adam Armstrong,100
