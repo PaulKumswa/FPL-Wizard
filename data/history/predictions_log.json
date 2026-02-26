@@ -1,5 +1,57 @@
 [
   {
+    "gameweek": 13,
+    "timestamp": "2025-11-28T17:35:51.629405",
+    "picks": [
+      {
+        "player_id": 502,
+        "web_name": "Sels",
+        "position": "GKP",
+        "predicted_points": 4.828667018439077,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 506,
+        "web_name": "Murillo",
+        "position": "DEF",
+        "predicted_points": 7.23,
+        "actual_points": 0.0
+      },
+      {
+        "player_id": 673,
+        "web_name": "J.Palhinha",
+        "position": "MID",
+        "predicted_points": 5.57,
+        "actual_points": 1.0
+      },
+      {
+        "player_id": 597,
+        "web_name": "Richarlison",
+        "position": "FWD",
+        "predicted_points": 4.049641330891331,
+        "actual_points": 1.0
+      },
+      {
+        "player_id": 694,
+        "web_name": "Mukiele",
+        "position": "DEF",
+        "predicted_points": 6.34,
+        "actual_points": 0.0
+      }
+    ],
+    "model_version": "v1",
+    "model_name": "4 Position Regressors",
+    "model_type": "regressor"
+  },
+  {
+    "gameweek": 14,
+    "timestamp": "2025-12-01T12:00:00.000000",
+    "picks": [],
+    "model_version": "v1",
+    "model_name": "4 Position Regressors",
+    "model_type": "regressor"
+  },
+  {
     "gameweek": 15,
     "timestamp": "2025-12-05T12:00:00.000000",
     "picks": [
@@ -44,50 +96,42 @@
     "model_type": "regressor"
   },
   {
-    "gameweek": 14,
-    "timestamp": "2025-12-01T12:00:00.000000",
-    "picks": [],
-    "model_version": "v1",
-    "model_name": "4 Position Regressors",
-    "model_type": "regressor"
-  },
-  {
-    "gameweek": 13,
-    "timestamp": "2025-11-28T17:35:51.629405",
+    "gameweek": 16,
+    "timestamp": "2025-12-26T20:08:32.028366",
     "picks": [
       {
-        "player_id": 502,
-        "web_name": "Sels",
+        "player_id": 565,
+        "web_name": "Vicario",
         "position": "GKP",
-        "predicted_points": 4.828667018439077,
+        "predicted_points": 4.117758240942066,
         "actual_points": 2.0
       },
       {
-        "player_id": 506,
-        "web_name": "Murillo",
+        "player_id": 411,
+        "web_name": "Oâ€™Reilly",
         "position": "DEF",
-        "predicted_points": 7.23,
-        "actual_points": 0.0
+        "predicted_points": 5.96,
+        "actual_points": 6.0
       },
       {
-        "player_id": 673,
-        "web_name": "J.Palhinha",
+        "player_id": 242,
+        "web_name": "Dewsbury-Hall",
         "position": "MID",
-        "predicted_points": 5.57,
+        "predicted_points": 6.74,
         "actual_points": 1.0
       },
       {
-        "player_id": 597,
-        "web_name": "Richarlison",
+        "player_id": 624,
+        "web_name": "Bowen",
         "position": "FWD",
-        "predicted_points": 4.049641330891331,
-        "actual_points": 1.0
+        "predicted_points": 4.031208513708514,
+        "actual_points": 8.0
       },
       {
-        "player_id": 694,
-        "web_name": "Mukiele",
-        "position": "DEF",
-        "predicted_points": 6.34,
+        "player_id": 418,
+        "web_name": "Doku",
+        "position": "MID",
+        "predicted_points": 5.59,
         "actual_points": 0.0
       }
     ],
@@ -133,50 +177,6 @@
         "position": "DEF",
         "predicted_points": 5.9,
         "actual_points": 4.0
-      }
-    ],
-    "model_version": "v1",
-    "model_name": "4 Position Regressors",
-    "model_type": "regressor"
-  },
-  {
-    "gameweek": 16,
-    "timestamp": "2025-12-26T20:08:32.028366",
-    "picks": [
-      {
-        "player_id": 565,
-        "web_name": "Vicario",
-        "position": "GKP",
-        "predicted_points": 4.117758240942066,
-        "actual_points": 2.0
-      },
-      {
-        "player_id": 411,
-        "web_name": "O\u2019Reilly",
-        "position": "DEF",
-        "predicted_points": 5.96,
-        "actual_points": 6.0
-      },
-      {
-        "player_id": 242,
-        "web_name": "Dewsbury-Hall",
-        "position": "MID",
-        "predicted_points": 6.74,
-        "actual_points": 1.0
-      },
-      {
-        "player_id": 624,
-        "web_name": "Bowen",
-        "position": "FWD",
-        "predicted_points": 4.031208513708514,
-        "actual_points": 8.0
-      },
-      {
-        "player_id": 418,
-        "web_name": "Doku",
-        "position": "MID",
-        "predicted_points": 5.59,
-        "actual_points": 0.0
       }
     ],
     "model_version": "v1",
@@ -422,7 +422,7 @@
       },
       {
         "player_id": 405,
-        "web_name": "Ak\u00e9",
+        "web_name": "AkÃ©",
         "position": "DEF",
         "predicted_points": 6.631300347668034,
         "confidence_score": 73.13317446883747,
@@ -449,7 +449,7 @@
       },
       {
         "player_id": 148,
-        "web_name": "F.Kad\u0131o\u011flu",
+        "web_name": "F.KadÄ±oÄŸlu",
         "position": "DEF",
         "predicted_points": 6.073006610244328,
         "confidence_score": 68.43198930195209,
@@ -467,7 +467,7 @@
       },
       {
         "player_id": 749,
-        "web_name": "Man\u00e9",
+        "web_name": "ManÃ©",
         "position": "FWD",
         "predicted_points": 5.126652854864501,
         "confidence_score": 74.35995646233553,
@@ -494,7 +494,7 @@
     "picks": [
       {
         "player_id": 67,
-        "web_name": "Petrovi\u0107",
+        "web_name": "PetroviÄ‡",
         "position": "GKP",
         "predicted_points": 5.457277064681197,
         "confidence_score": 78.29108258724789,
@@ -575,7 +575,7 @@
       },
       {
         "player_id": 337,
-        "web_name": "Ra\u00fal",
+        "web_name": "RaÃºl",
         "position": "FWD",
         "predicted_points": 4.5118288604701355,
         "confidence_score": 82.2920461785954,
@@ -611,7 +611,7 @@
       },
       {
         "player_id": 374,
-        "web_name": "Konat\u00e9",
+        "web_name": "Konaté",
         "position": "DEF",
         "predicted_points": 6.451757328419621,
         "confidence_score": 64.63577430519666,
@@ -629,7 +629,7 @@
       },
       {
         "player_id": 249,
-        "web_name": "Jo\u00e3o Pedro",
+        "web_name": "João Pedro",
         "position": "FWD",
         "predicted_points": 7.9349493444683885,
         "confidence_score": 65.37741771182138,

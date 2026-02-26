@@ -145,6 +145,8 @@ def main():
             
             # Log
             history.log_predictions(top_5, metadata)
+            history.log_full_predictions(df, metadata)
+            history.save_complete_predictions(df, metadata)
         
     except Exception as e:
         print(f"Warning: Failed to log predictions: {e}")

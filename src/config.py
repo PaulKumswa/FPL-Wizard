@@ -58,14 +58,16 @@ FEATURE_CONFIGS = {
 POSITION_MAP = {1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD'}
 POSITION_MAP_REV = {'GKP': 1, 'DEF': 2, 'MID': 3, 'FWD': 4}
 
-# Selection Criteria - Percentile-Based (Dynamic)
-# ... (comments)
-OWNERSHIP_PERCENTILE = 50   # Broaden search, floor will handle "underdog"
-COST_PERCENTILE = 75        # Higher budget (~£7.0m+)
-FORM_PERCENTILE = 30
-ICT_PERCENTILE = 30
+# Selection Criteria
+MAX_COST_HARD = 75  # £7.5m hard cap — captures the £4.5-6.0m sweet spot, excludes premiums
 
-# Default Fallbacks (Static)
+# Legacy percentile-based thresholds (unused by v4 selection logic)
+# OWNERSHIP_PERCENTILE = 50
+# COST_PERCENTILE = 75
+# FORM_PERCENTILE = 30
+# ICT_PERCENTILE = 30
+
+# Legacy static fallbacks (kept for test compatibility)
 MAX_COST = 80       # £8.0m
 MAX_OWNERSHIP = 10  # 10%
 MIN_FORM = 2.0

@@ -1197,6 +1197,10 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 <span class="desktop-nav-tab-icon">ℹ️</span>
                 <span>Info</span>
             </button>
+            <button class="desktop-nav-tab" data-page="scouting" onclick="switchPage('scouting')">
+                <span class="desktop-nav-tab-icon">🔭</span>
+                <span>Scout</span>
+            </button>
         </nav>
 
         <!-- ========== PICKS PAGE ========== -->
@@ -1212,11 +1216,10 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                 <!-- Hit % Card (Clickable on mobile to go to Info) -->
                 <div class="dashboard-card" id="hit-rate-card"
                     onclick="if(window.innerWidth <= 768) switchPage('info');" style="cursor: pointer;">
-                    <h3>Hit Rate <span class="mobile-only" style="font-size: 0.8em;">ℹ️</span></h3>
+                    <h3>6+ Rate <span class="mobile-only" style="font-size: 0.8em;">ℹ️</span></h3>
                     <div class="card-value" id="hit-rate-display">-</div>
                     <p class="card-desc desktop-only">
-                        Rolling percentage of picks over last 5 active weeks where <strong>Actual ≥ 0.9 ×
-                            Predicted</strong>.
+                        Rolling percentage of picks over last 5 active weeks where <strong>Actual ≥ 6 pts</strong>.
                     </p>
                     <p class="mobile-only" style="font-size: 0.7em; color: #666; margin: 5px 0 0 0;">Tap for details</p>
                 </div>
@@ -1266,9 +1269,9 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
             <div class="info-section info-section-desktop">
                 <h3>Model Accuracy</h3>
                 <div class="info-accuracy-value info-accuracy-value-desktop" id="info-hit-rate">-</div>
-                <div class="info-accuracy-label">5-Week Rolling Hit Rate</div>
+                <div class="info-accuracy-label">5-Week Rolling 6+ Rate</div>
                 <p class="info-accuracy-desc">
-                    Percentage of picks where Actual ≥ 90% of Predicted points over the last 5 gameweeks.
+                    Percentage of picks where Actual ≥ 6 points over the last 5 gameweeks.
                 </p>
             </div>
 
@@ -1332,119 +1335,144 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                     <a href="https://github.com/PaulKumswa" target="_blank">GitHub</a>
             </div>
         </section>
-    </div>
 
-    <!-- Mobile Bottom Navigation -->
-    <nav class="mobile-nav mobile-only">
-        <button class="mobile-nav-tab active" data-page="picks" onclick="switchPage('picks')">
-            <span class="mobile-nav-tab-icon">⚽</span>
-            <span>Picks</span>
-        </button>
-        <button class="mobile-nav-tab" data-page="history" onclick="switchPage('history')">
-            <span class="mobile-nav-tab-icon">📅</span>
-            <span>History</span>
-        </button>
-        <button class="mobile-nav-tab" data-page="info" onclick="switchPage('info')">
-            <span class="mobile-nav-tab-icon">ℹ️</span>
-            <span>Info</span>
-        </button>
-    </nav>
+        <!-- ========== SCOUTING PAGE ========== -->
+        <section id="scouting-page" class="page-section">
+            <h2>Scouting Report</h2>
+            <p style="color: #888; margin-bottom: 12px; font-size: 0.9em;">
+                Top 30 model predictions this gameweek &mdash; the full picture beyond the 5 picks.
+            </p>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 18px; font-size: 0.8em; color: #aaa;">
+                <span><span
+                        style="display:inline-block;width:12px;height:12px;background:#00ff85;border-radius:2px;margin-right:5px;vertical-align:middle;"></span>High
+                    Confidence + Affordable</span>
+                <span><span
+                        style="display:inline-block;width:12px;height:12px;background:#ffcc00;border-radius:2px;margin-right:5px;vertical-align:middle;"></span>Medium
+                    Confidence + Affordable</span>
+                <span><span
+                        style="display:inline-block;width:12px;height:12px;background:#ff4d4d;border-radius:2px;margin-right:5px;vertical-align:middle;"></span>Over
+                    &pound;7.5m Budget</span>
+            </div>
+            <div id="scouting-container">
+                <p class="loading">Loading scouting data...</p>
+            </div>
+        </section>
 
-    <script>
-        // ========== TAB NAVIGATION (Desktop & Mobile) ==========
-        function switchPage(pageName) {
-            // Update page sections
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(pageName + '-page').classList.add('active');
+        <!-- Mobile Bottom Navigation -->
+        <nav class="mobile-nav mobile-only">
+            <button class="mobile-nav-tab active" data-page="picks" onclick="switchPage('picks')">
+                <span class="mobile-nav-tab-icon">⚽</span>
+                <span>Picks</span>
+            </button>
+            <button class="mobile-nav-tab" data-page="history" onclick="switchPage('history')">
+                <span class="mobile-nav-tab-icon">📅</span>
+                <span>History</span>
+            </button>
+            <button class="mobile-nav-tab" data-page="info" onclick="switchPage('info')">
+                <span class="mobile-nav-tab-icon">ℹ️</span>
+                <span>Info</span>
+            </button>
+            <button class="mobile-nav-tab" data-page="scouting" onclick="switchPage('scouting')">
+                <span class="mobile-nav-tab-icon">🔭</span>
+                <span>Scout</span>
+            </button>
+        </nav>
 
-            // Update mobile nav tabs
-            document.querySelectorAll('.mobile-nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
+        <script>
+            // ========== TAB NAVIGATION (Desktop & Mobile) ==========
+            function switchPage(pageName) {
+                // Update page sections
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(pageName + '-page').classList.add('active');
 
-            // Update desktop nav tabs
-            document.querySelectorAll('.desktop-nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
+                // Update mobile nav tabs
+                document.querySelectorAll('.mobile-nav-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
 
-            // Set active tab (works for both mobile and desktop)
-            document.querySelectorAll(`[data-page="${pageName}"]`).forEach(tab => {
-                tab.classList.add('active');
-            });
+                // Update desktop nav tabs
+                document.querySelectorAll('.desktop-nav-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
 
-            // Scroll to top
-            window.scrollTo(0, 0);
-        }
+                // Set active tab (works for both mobile and desktop)
+                document.querySelectorAll(`[data-page="${pageName}"]`).forEach(tab => {
+                    tab.classList.add('active');
+                });
 
-        // Toggle How It Works expansion
-        function toggleHowItWorks() {
-            const section = document.getElementById('how-it-works-section');
-            section.classList.toggle('expanded');
-        }
-
-        // Toggle Model Evolution expansion
-        function toggleModelEvolution() {
-            const section = document.getElementById('model-evolution');
-            section.classList.toggle('expanded');
-        }
-
-        // Toggle player card expansion
-        function togglePlayerCard(cardElement) {
-            cardElement.classList.toggle('expanded');
-        }
-
-        // Helper function to get color based on confidence score
-        function getConfidenceColor(confidence) {
-            if (confidence >= 70) return '#00ff85'; // Green - High confidence
-            if (confidence >= 40) return '#ffcc00'; // Yellow - Medium confidence
-            return '#ff9933'; // Orange - Low confidence
-        }
-
-        // Get position name from element_type
-        function getPositionName(elementType) {
-            const positions = { 1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD' };
-            return positions[elementType] || 'N/A';
-        }
-
-        // Get player initials from web_name
-        function getPlayerInitials(webName) {
-            if (!webName) return '?';
-            // Handle names like "De Bruyne" -> "DB", "Salah" -> "SA"
-            const parts = webName.split(/[\s-]+/);
-            if (parts.length >= 2) {
-                return (parts[0][0] + parts[1][0]).toUpperCase();
+                // Scroll to top
+                window.scrollTo(0, 0);
             }
-            return webName.substring(0, 2).toUpperCase();
-        }
 
-        // Handle image load error - replace with initials fallback
-        function handleImgError(img, webName) {
-            const initials = getPlayerInitials(webName);
-            const fallback = document.createElement('div');
-            fallback.className = 'player-photo-fallback';
-            fallback.textContent = initials;
-            img.parentNode.replaceChild(fallback, img);
-        }
+            // Toggle How It Works expansion
+            function toggleHowItWorks() {
+                const section = document.getElementById('how-it-works-section');
+                section.classList.toggle('expanded');
+            }
 
-        // ========== FETCH PREDICTIONS ==========
-        fetch('/api/predictions')
-            .then(response => response.json())
-            .then(data => {
-                const predContainer = document.getElementById('predictions');
+            // Toggle Model Evolution expansion
+            function toggleModelEvolution() {
+                const section = document.getElementById('model-evolution');
+                section.classList.toggle('expanded');
+            }
 
-                if (data.error) {
-                    predContainer.innerHTML = `<p style="color: #ff4d4d;">Error: ${data.error}</p>`;
-                    return;
+            // Toggle player card expansion
+            function togglePlayerCard(cardElement) {
+                cardElement.classList.toggle('expanded');
+            }
+
+            // Helper function to get color based on confidence score
+            function getConfidenceColor(confidence) {
+                if (confidence >= 70) return '#00ff85'; // Green - High confidence
+                if (confidence >= 40) return '#ffcc00'; // Yellow - Medium confidence
+                return '#ff9933'; // Orange - Low confidence
+            }
+
+            // Get position name from element_type
+            function getPositionName(elementType) {
+                const positions = { 1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD' };
+                return positions[elementType] || 'N/A';
+            }
+
+            // Get player initials from web_name
+            function getPlayerInitials(webName) {
+                if (!webName) return '?';
+                // Handle names like "De Bruyne" -> "DB", "Salah" -> "SA"
+                const parts = webName.split(/[\s-]+/);
+                if (parts.length >= 2) {
+                    return (parts[0][0] + parts[1][0]).toUpperCase();
                 }
+                return webName.substring(0, 2).toUpperCase();
+            }
 
-                // Update Gameweek Info
-                const gw = data.gameweek_info;
-                document.getElementById('next-gw-display').textContent = gw.next_gameweek || '-';
+            // Handle image load error - replace with initials fallback
+            function handleImgError(img, webName) {
+                const initials = getPlayerInitials(webName);
+                const fallback = document.createElement('div');
+                fallback.className = 'player-photo-fallback';
+                fallback.textContent = initials;
+                img.parentNode.replaceChild(fallback, img);
+            }
 
-                // ===== DESKTOP TABLE =====
-                let desktopHtml = `
+            // ========== FETCH PREDICTIONS ==========
+            fetch('/api/predictions')
+                .then(response => response.json())
+                .then(data => {
+                    const predContainer = document.getElementById('predictions');
+
+                    if (data.error) {
+                        predContainer.innerHTML = `<p style="color: #ff4d4d;">Error: ${data.error}</p>`;
+                        return;
+                    }
+
+                    // Update Gameweek Info
+                    const gw = data.gameweek_info;
+                    document.getElementById('next-gw-display').textContent = gw.next_gameweek || '-';
+
+                    // ===== DESKTOP TABLE =====
+                    let desktopHtml = `
                     <div class="table-responsive desktop-only">
                         <table>
                             <thead>
@@ -1462,8 +1490,8 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                             <tbody>
                 `;
 
-                data.predictions.forEach(player => {
-                    desktopHtml += `
+                    data.predictions.forEach(player => {
+                        desktopHtml += `
                         <tr>
                             <td>
                                 <div class="player-cell">
@@ -1490,20 +1518,20 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                             <td class="mono-font">${(player.now_cost / 10).toFixed(1)}</td>
                             <td class="mono-font">
                                 ${(player.element_type === 3 || player.element_type === 4)
-                            ? `<span style="font-size:0.85em; color:#ccc;">xG: <strong style="color:#fff;">${(player.recent_expected_goals || 0).toFixed(2)}</strong><br>xA: <strong style="color:#fff;">${(player.recent_expected_assists || 0).toFixed(2)}</strong></span>`
-                            : `<span style="font-size:0.85em; color:#ccc;">TxGA: <strong style="color:#ff6b6b;">${(player.recent_team_xga || 0).toFixed(2)}</strong></span>`
-                        }
+                                ? `<span style="font-size:0.85em; color:#ccc;">xG: <strong style="color:#fff;">${(player.recent_expected_goals || 0).toFixed(2)}</strong><br>xA: <strong style="color:#fff;">${(player.recent_expected_assists || 0).toFixed(2)}</strong></span>`
+                                : `<span style="font-size:0.85em; color:#ccc;">TxGA: <strong style="color:#ff6b6b;">${(player.recent_team_xga || 0).toFixed(2)}</strong></span>`
+                            }
                             </td>
                             <td class="points-cell mono-font" style="color: ${getConfidenceColor(player.confidence_score)}"> ${player.predicted_points.toFixed(1)} </td>
                             <td class="points-cell mono-font" id="live-${player.element}" style="color: #888;">-</td>
                         </tr>
                     `;
-                });
+                    });
 
-                desktopHtml += `</tbody></table></div>`;
+                    desktopHtml += `</tbody></table></div>`;
 
-                // Desktop confidence legend
-                desktopHtml += `
+                    // Desktop confidence legend
+                    desktopHtml += `
                     <div class="desktop-only" style="margin-top: 15px; display: flex; gap: 20px; font-size: 0.85em; color: #888; justify-content: center;">
                         <span><span style="display: inline-block; width: 12px; height: 12px; background: #00ff85; border-radius: 2px; margin-right: 5px;"></span>High Confidence (≥70%)</span>
                         <span><span style="display: inline-block; width: 12px; height: 12px; background: #ffcc00; border-radius: 2px; margin-right: 5px;"></span>Medium (40-69%)</span>
@@ -1511,15 +1539,15 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                     </div>
                 `;
 
-                // ===== MOBILE CARDS =====
-                let mobileHtml = `<div class="mobile-cards-container mobile-only">`;
+                    // ===== MOBILE CARDS =====
+                    let mobileHtml = `<div class="mobile-cards-container mobile-only">`;
 
-                data.predictions.forEach(player => {
-                    const statDisplay = (player.element_type === 3 || player.element_type === 4)
-                        ? `xG: ${(player.recent_expected_goals || 0).toFixed(2)} | xA: ${(player.recent_expected_assists || 0).toFixed(2)}`
-                        : `TxGA: ${(player.recent_team_xga || 0).toFixed(2)}`;
+                    data.predictions.forEach(player => {
+                        const statDisplay = (player.element_type === 3 || player.element_type === 4)
+                            ? `xG: ${(player.recent_expected_goals || 0).toFixed(2)} | xA: ${(player.recent_expected_assists || 0).toFixed(2)}`
+                            : `TxGA: ${(player.recent_team_xga || 0).toFixed(2)}`;
 
-                    mobileHtml += `
+                        mobileHtml += `
                         <div class="player-card" onclick="togglePlayerCard(this)">
                             <div class="player-card-header">
                                 <img src="${player.photo_url}" alt="${player.web_name}" class="player-card-photo" onerror="handleImgError(this, '${player.web_name}')">
@@ -1565,81 +1593,79 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                             </div>
                         </div>
                     `;
-                });
-
-                mobileHtml += `</div>`;
-
-                predContainer.innerHTML = desktopHtml + mobileHtml;
-
-                // Trigger live updates
-                updateLiveScores(data.gameweek_info.next_gameweek);
-            })
-            .catch(error => {
-                document.getElementById('predictions').innerHTML = `<p style="color: #ff4d4d;">Error fetching data.</p>`;
-                console.error('Error:', error);
-            });
-
-        // Fetch History
-        fetch('/api/history')
-            .then(response => response.json())
-            .then(data => {
-                const historyContainer = document.getElementById('history-section');
-
-                if (data.length === 0) {
-                    historyContainer.innerHTML = '<p style="text-align:center; color:#888;">No history available yet.</p>';
-                    document.getElementById('hit-rate-display').textContent = '-';
-                    return;
-                }
-
-                // Filter for entries with actual points
-                const entriesWithActuals = data.filter(entry =>
-                    entry.picks.some(pick => pick.actual_points !== null)
-                );
-
-                // Take only the last 5 gameweeks with actuals
-                const recentEntries = entriesWithActuals.slice(0, 5);
-
-                // Calculate Hit % (5-GW Rolling with 10% buffer)
-                let totalPicks = 0;
-                let totalHits = 0;
-
-                recentEntries.forEach(entry => {
-                    entry.picks.forEach(pick => {
-                        if (pick.actual_points !== null) {
-                            totalPicks++;
-                            // Hit = Actual >= Math.floor(Predicted) * 0.9 (10% buffer)
-                            // We floor the predicted points because players score integers.
-                            // If predicted 5.6 and actual 5, Math.floor(5.6) = 5. 5 >= 4.5 is True.
-                            // This ensures we're comparing "apples to apples" regarding achievable scores.
-                            if (pick.actual_points >= (Math.floor(pick.predicted_points) * 0.9)) {
-                                totalHits++;
-                            }
-                        }
                     });
+
+                    mobileHtml += `</div>`;
+
+                    predContainer.innerHTML = desktopHtml + mobileHtml;
+
+                    // Trigger live updates
+                    updateLiveScores(data.gameweek_info.next_gameweek);
+                })
+                .catch(error => {
+                    document.getElementById('predictions').innerHTML = `<p style="color: #ff4d4d;">Error fetching data.</p>`;
+                    console.error('Error:', error);
                 });
 
-                const hitRate = totalPicks > 0
-                    ? ((totalHits / totalPicks) * 100).toFixed(1) + '%'
-                    : '-';
+            // Fetch History
+            fetch('/api/history')
+                .then(response => response.json())
+                .then(data => {
+                    const historyContainer = document.getElementById('history-section');
 
-                document.getElementById('hit-rate-display').textContent = hitRate;
-                // Also update Info page hit rate for mobile
-                const infoHitRate = document.getElementById('info-hit-rate');
-                if (infoHitRate) {
-                    infoHitRate.textContent = hitRate;
-                }
+                    if (data.length === 0) {
+                        historyContainer.innerHTML = '<p style="text-align:center; color:#888;">No history available yet.</p>';
+                        document.getElementById('hit-rate-display').textContent = '-';
+                        return;
+                    }
 
-                // Render Dropdowns (Show all history, not just 5 weeks)
-                let html = '';
+                    // Filter for entries with actual points
+                    const entriesWithActuals = data.filter(entry =>
+                        entry.picks.some(pick => pick.actual_points !== null)
+                    );
 
-                data.forEach(entry => {
-                    let gwTotalActual = 0;
-                    let gwTotalPred = 0;
-                    let hasActuals = false;
+                    // Take only the last 5 gameweeks with actuals
+                    const recentEntries = entriesWithActuals.slice(0, 5);
+
+                    // Calculate 6+ Rate (5-GW Rolling)
+                    let totalPicks = 0;
+                    let totalHits = 0;
+
+                    recentEntries.forEach(entry => {
+                        entry.picks.forEach(pick => {
+                            if (pick.actual_points !== null) {
+                                totalPicks++;
+                                // Hit = Actual >= 6
+                                // This ensures we're calculating hit rate based on 6+ points.
+                                if (pick.actual_points >= 6) {
+                                    totalHits++;
+                                }
+                            }
+                        });
+                    });
+
+                    const hitRate = totalPicks > 0
+                        ? ((totalHits / totalPicks) * 100).toFixed(1) + '%'
+                        : '-';
+
+                    document.getElementById('hit-rate-display').textContent = hitRate;
+                    // Also update Info page hit rate for mobile
+                    const infoHitRate = document.getElementById('info-hit-rate');
+                    if (infoHitRate) {
+                        infoHitRate.textContent = hitRate;
+                    }
+
+                    // Render Dropdowns (Show all history, not just 5 weeks)
+                    let html = '';
+
+                    data.forEach(entry => {
+                        let gwTotalActual = 0;
+                        let gwTotalPred = 0;
+                        let hasActuals = false;
 
 
-                    if (entry.picks.length === 0) {
-                        html += `
+                        if (entry.picks.length === 0) {
+                            html += `
                             <details>
                                 <summary>
                                     <span>Gameweek ${entry.gameweek}</span>
@@ -1650,28 +1676,28 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                                 </div>
                             </details>
                         `;
-                        return;
-                    }
-
-                    // Pre-calculate GW totals
-                    entry.picks.forEach(pick => {
-                        if (pick.actual_points !== null) {
-                            gwTotalActual += pick.actual_points;
-                            hasActuals = true;
+                            return;
                         }
-                        gwTotalPred += pick.predicted_points;
-                    });
 
-                    const summaryText = hasActuals
-                        ? `Actual: ${gwTotalActual} pts (Pred: ${gwTotalPred.toFixed(0)})`
-                        : `Pred: ${gwTotalPred.toFixed(0)} pts (Pending)`;
+                        // Pre-calculate GW totals
+                        entry.picks.forEach(pick => {
+                            if (pick.actual_points !== null) {
+                                gwTotalActual += pick.actual_points;
+                                hasActuals = true;
+                            }
+                            gwTotalPred += pick.predicted_points;
+                        });
 
-                    // Build version badge if available
-                    const versionBadge = entry.model_version
-                        ? `<span class="model-version-badge" style="background-color: ${getVersionColor(entry.model_version)}; color: #111;">${entry.model_version}</span>`
-                        : '';
+                        const summaryText = hasActuals
+                            ? `Actual: ${gwTotalActual} pts (Pred: ${gwTotalPred.toFixed(0)})`
+                            : `Pred: ${gwTotalPred.toFixed(0)} pts (Pending)`;
 
-                    html += `
+                        // Build version badge if available
+                        const versionBadge = entry.model_version
+                            ? `<span class="model-version-badge" style="background-color: ${getVersionColor(entry.model_version)}; color: #111;">${entry.model_version}</span>`
+                            : '';
+
+                        html += `
                         <details>
                             <summary>
                                 <span>Gameweek ${entry.gameweek} ${versionBadge}</span>
@@ -1691,27 +1717,27 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                                     <tbody>
                     `;
 
-                    entry.picks.forEach(pick => {
-                        let actualDisplay = '-';
-                        let diffDisplay = '-';
-                        let rowClass = '';
+                        entry.picks.forEach(pick => {
+                            let actualDisplay = '-';
+                            let diffDisplay = '-';
+                            let rowClass = '';
 
-                        if (pick.actual_points !== null) {
-                            actualDisplay = pick.actual_points;
-                            const diff = pick.actual_points - pick.predicted_points;
-                            diffDisplay = diff > 0 ? `+${diff.toFixed(1)}` : diff.toFixed(1);
+                            if (pick.actual_points !== null) {
+                                actualDisplay = pick.actual_points;
+                                const diff = pick.actual_points - pick.predicted_points;
+                                diffDisplay = diff > 0 ? `+${diff.toFixed(1)}` : diff.toFixed(1);
 
-                            // Highlight Logic
-                            // Use the same condition as the metric for consistency
-                            if (pick.actual_points >= (Math.floor(pick.predicted_points) * 0.9)) {
-                                rowClass = 'style="color: var(--accent-green);"';
-                            } else if (pick.actual_points < pick.predicted_points - 2) {
-                                // Keep the "huge miss" red
-                                rowClass = 'style="color: #ff4d4d;"';
+                                // Highlight Logic
+                                // Use the same condition as the metric for consistency
+                                if (pick.actual_points >= 6) {
+                                    rowClass = 'style="color: var(--accent-green);"';
+                                } else if (pick.actual_points < pick.predicted_points - 2) {
+                                    // Keep the "huge miss" red
+                                    rowClass = 'style="color: #ff4d4d;"';
+                                }
                             }
-                        }
 
-                        html += `
+                            html += `
                             <tr>
                                 <td>${pick.web_name}</td>
                                 <td><span class="pos-badge" style="font-size: 0.7em; padding: 2px 6px;">${pick.position || '-'}</span></td>
@@ -1720,37 +1746,37 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                                 <td class="mono-font">${diffDisplay}</td>
                             </tr>
                         `;
+                        });
+
+                        html += `</tbody></table></div></details>`;
                     });
 
-                    html += `</tbody></table></div></details>`;
+                    historyContainer.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error fetching history:', error);
+                    document.getElementById('history-section').innerHTML = '<p>Error loading history.</p>';
                 });
 
-                historyContainer.innerHTML = html;
-            })
-            .catch(error => {
-                console.error('Error fetching history:', error);
-                document.getElementById('history-section').innerHTML = '<p>Error loading history.</p>';
-            });
+            // Fetch Model Evolution Stats
+            fetch('/api/model-stats')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('model-stats-container');
 
-        // Fetch Model Evolution Stats
-        fetch('/api/model-stats')
-            .then(res => res.json())
-            .then(data => {
-                const container = document.getElementById('model-stats-container');
+                    if (!data || data.length === 0) {
+                        container.innerHTML = '<p style="color: #888;">No model statistics available yet.</p>';
+                        return;
+                    }
 
-                if (!data || data.length === 0) {
-                    container.innerHTML = '<p style="color: #888;">No model statistics available yet.</p>';
-                    return;
-                }
+                    let html = '';
+                    data.forEach(model => {
+                        const hitRateDisplay = model.hit_rate !== null ? `${model.hit_rate}%` : 'Pending';
+                        const avgPredDisplay = model.avg_predicted !== null ? model.avg_predicted : '-';
+                        const avgActualDisplay = model.avg_actual !== null ? model.avg_actual : '-';
+                        const picksDisplay = model.total_picks > 0 ? model.total_picks : 'No data';
 
-                let html = '';
-                data.forEach(model => {
-                    const hitRateDisplay = model.hit_rate !== null ? `${model.hit_rate}%` : 'Pending';
-                    const avgPredDisplay = model.avg_predicted !== null ? model.avg_predicted : '-';
-                    const avgActualDisplay = model.avg_actual !== null ? model.avg_actual : '-';
-                    const picksDisplay = model.total_picks > 0 ? model.total_picks : 'No data';
-
-                    html += `
+                        html += `
                         <div class="model-stat-card">
                             <div class="model-stat-header">
                                 <div>
@@ -1781,74 +1807,157 @@ It uses vanilla JS to fetch data from the Flask API (/api/predictions, /api/hist
                             <div class="model-stat-gws">Gameweeks: ${model.gameweeks.sort((a, b) => a - b).join(', ') || 'N/A'}</div>
                         </div>
                     `;
+                    });
+
+                    container.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error('Error fetching model stats:', err);
+                    document.getElementById('model-stats-container').innerHTML =
+                        '<p style="color: #ff4d4d;">Error loading model statistics.</p>';
                 });
 
-                container.innerHTML = html;
-            })
-            .catch(err => {
-                console.error('Error fetching model stats:', err);
-                document.getElementById('model-stats-container').innerHTML =
-                    '<p style="color: #ff4d4d;">Error loading model statistics.</p>';
-            });
-
-        // Helper function to get version color
-        function getVersionColor(version) {
-            const colors = { 'v1': '#ff9933', 'v2': '#ffcc00', 'v3': '#00ff85' };
-            return colors[version] || '#888';
-        }
-
-        // Update Live Scores
-        // Parameter: gameweek (int, optional) - The gameweek to fetch. 
-        // We typically pass the "Next" gameweek to ensure we don't accidentally show old live data 
-        // if the previous gameweek hasn't technically "finished" in the API's eyes.
-        function updateLiveScores(gameweek) {
-            console.log(`Fetching live scores for GW ${gameweek || 'current'}...`);
-            let url = '/api/live';
-            if (gameweek) {
-                url += `?gw=${gameweek}`;
+            // Helper function to get version color
+            function getVersionColor(version) {
+                const colors = { 'v1': '#ff9933', 'v2': '#ffcc00', 'v3': '#00ff85' };
+                return colors[version] || '#888';
             }
 
-            fetch(url)
+            // Update Live Scores
+            // Parameter: gameweek (int, optional) - The gameweek to fetch. 
+            // We typically pass the "Next" gameweek to ensure we don't accidentally show old live data 
+            // if the previous gameweek hasn't technically "finished" in the API's eyes.
+            function updateLiveScores(gameweek) {
+                console.log(`Fetching live scores for GW ${gameweek || 'current'}...`);
+                let url = '/api/live';
+                if (gameweek) {
+                    url += `?gw=${gameweek}`;
+                }
+
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error || !data) return;
+
+                        for (const [pid, stats] of Object.entries(data)) {
+                            // Update desktop table cell
+                            const cell = document.getElementById(`live-${pid}`);
+                            if (cell) {
+                                cell.textContent = stats.points;
+
+                                // Style Logic
+                                if (stats.finished) {
+                                    cell.style.color = 'var(--accent-green)'; // Match Over
+                                } else if (stats.minutes > 0) {
+                                    cell.style.color = '#ff4d4d'; // Live / Playing
+                                    cell.style.fontWeight = 'bold';
+                                } else {
+                                    cell.style.color = '#888'; // Not started
+                                }
+                            }
+
+                            // Update mobile card cell
+                            const mobileCell = document.getElementById(`mobile-live-${pid}`);
+                            if (mobileCell) {
+                                mobileCell.textContent = stats.points;
+
+                                // Style Logic
+                                if (stats.finished) {
+                                    mobileCell.style.color = 'var(--accent-green)';
+                                } else if (stats.minutes > 0) {
+                                    mobileCell.style.color = '#ff4d4d';
+                                } else {
+                                    mobileCell.style.color = '#888';
+                                }
+                            }
+                        }
+                    })
+                    .catch(err => console.error("Live update failed", err));
+            }
+
+            // ========== SCOUTING TAB DATA ==========
+            fetch('/api/full-predictions')
                 .then(res => res.json())
                 .then(data => {
-                    if (data.error || !data) return;
-
-                    for (const [pid, stats] of Object.entries(data)) {
-                        // Update desktop table cell
-                        const cell = document.getElementById(`live-${pid}`);
-                        if (cell) {
-                            cell.textContent = stats.points;
-
-                            // Style Logic
-                            if (stats.finished) {
-                                cell.style.color = 'var(--accent-green)'; // Match Over
-                            } else if (stats.minutes > 0) {
-                                cell.style.color = '#ff4d4d'; // Live / Playing
-                                cell.style.fontWeight = 'bold';
-                            } else {
-                                cell.style.color = '#888'; // Not started
-                            }
-                        }
-
-                        // Update mobile card cell
-                        const mobileCell = document.getElementById(`mobile-live-${pid}`);
-                        if (mobileCell) {
-                            mobileCell.textContent = stats.points;
-
-                            // Style Logic
-                            if (stats.finished) {
-                                mobileCell.style.color = 'var(--accent-green)';
-                            } else if (stats.minutes > 0) {
-                                mobileCell.style.color = '#ff4d4d';
-                            } else {
-                                mobileCell.style.color = '#888';
-                            }
-                        }
+                    const container = document.getElementById('scouting-container');
+                    if (!data || data.length === 0) {
+                        container.innerHTML = '<p style="color: #888;">No scouting data yet. Run the pipeline to generate.</p>';
+                        return;
                     }
+                    const latest = data[data.length - 1];
+                    const scoutGw = latest.gameweek;
+                    // Filter to high+medium confidence (>=40%) client-side
+                    const predictions = latest.predictions.filter(p => p.confidence_score >= 40);
+
+                    let html = `<p style="color: var(--accent-green); margin-bottom: 15px; font-weight: 500;">GW ${scoutGw} &mdash; ${predictions.length} players scouted (&#8805;40% confidence)</p>`;
+                    html += `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;">`;
+
+                    predictions.forEach((p, i) => {
+                        const confColor = p.confidence_score >= 70 ? '#00ff85' : '#ffcc00';
+                        const confLabel = p.confidence_score >= 70 ? 'High' : 'Med';
+                        const cost = (p.now_cost / 10).toFixed(1);
+                        const borderColor = p.now_cost <= 75 ? confColor : '#ff4d4d';
+
+                        html += `<div style="background:var(--card-bg);border-radius:12px;padding:14px 16px;border-left:3px solid ${borderColor};">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <div>
+                                <span style="color:#666;font-size:0.75em;margin-right:6px;">#${i + 1}</span>
+                                <strong style="font-size:1.05em;">${p.web_name}</strong>
+                                <span class="pos-badge" style="font-size:0.65em;padding:1px 5px;margin-left:5px;">${p.position}</span>
+                            </div>
+                            <div style="text-align:right;">
+                                <div class="mono-font" style="font-size:1.2em;"><strong>${p.predicted_points.toFixed(1)}</strong></div>
+                                <div style="font-size:0.7em;color:${confColor};">${confLabel} ${p.confidence_score.toFixed(0)}%</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:0.8em;color:#888;">
+                            <span>${p.team_name}</span>
+                            <span>&#163;${cost}m &middot; ${p.selected_by_percent.toFixed(1)}% owned</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.05);font-size:0.8em;">
+                            <span style="color:#666;">Live Pts</span>
+                            <span id="scout-live-${p.player_id}" class="mono-font" style="color:#888;">-</span>
+                        </div>
+                    </div>`;
+                    });
+
+                    html += `</div>`;
+                    container.innerHTML = html;
+
+                    // Trigger live score updates for scout players
+                    updateScoutLiveScores(scoutGw, predictions);
                 })
-                .catch(err => console.error("Live update failed", err));
-        }
-    </script>
+                .catch(err => {
+                    document.getElementById('scouting-container').innerHTML = '<p style="color:#ff4d4d;">Failed to load scouting data.</p>';
+                    console.error('Scouting error:', err);
+                });
+
+            function updateScoutLiveScores(gameweek, predictions) {
+                let url = '/api/live';
+                if (gameweek) url += `?gw=${gameweek}`;
+
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error || !data) return;
+                        predictions.forEach(p => {
+                            const cell = document.getElementById(`scout-live-${p.player_id}`);
+                            if (!cell) return;
+                            const stats = data[String(p.player_id)];
+                            if (stats) {
+                                cell.textContent = stats.points;
+                                if (stats.finished) {
+                                    cell.style.color = 'var(--accent-green)';
+                                } else if (stats.minutes > 0) {
+                                    cell.style.color = '#ff4d4d';
+                                    cell.style.fontWeight = 'bold';
+                                }
+                            }
+                        });
+                    })
+                    .catch(err => console.error('Scout live update failed', err));
+            }
+        </script>
 </body>
 
 </html>

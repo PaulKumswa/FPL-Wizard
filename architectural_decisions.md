@@ -128,8 +128,8 @@ Models are trained independently for each position (`element_type`) to capture u
 
 ### 3.3 Inference
 *   Generates predictions for the **Next Gameweek** only.
-*   Filters: `status != 'u'` (injured), `chance_of_playing >= 75%`.
-*   Selection: Picks top player per position + 1 Wildcard (highest predicted remaining player).
+*   Filters: `status != suspended/unavailable/injured`, `chance_of_playing >= 75%`.
+*   Selection: Top 5 by reliability score (position-agnostic, £7.5m cost cap, max 3 per team). See Section 9.
 
 ## 4. Operational Decisions
 *   **Updates**: The pipeline (`update_pipeline.py`) is designed to run end-to-end (Fetch -> Train -> Predict) or in `--quick` mode (Predict only).
@@ -206,52 +206,29 @@ Phase 1 (goals, assists, clean sheets) captures **~80% of FPL point variance** f
 
 These will be revisited if Phase 1 performance plateaus and additional accuracy is needed.
 
-## 9. Dynamic Selection Thresholds (Added Jan 2026)
+## 9. Selection Strategy: Position-Agnostic Reliability (Updated Feb 2026)
 
-### 9.1 Problem with Static Thresholds
-Previously, underdog selection used hardcoded thresholds:
-```python
-MAX_COST = 80       # £8.0m
-MAX_OWNERSHIP = 10  # 10%
-MIN_FORM = 2.0
-MIN_ICT = 3.0
-```
+### 9.1 Problem with Position-Locked Selection
+The v3 selection logic forced 1 player per position (GKP, DEF, MID, FWD) + 1 wildcard. Analysis of v3 results (GW22-26) showed:
+*   **100% of 6+ point picks were DEFs** (O'Reilly 6, Cucurella 7, Calafiori 6, Thiaw 11)
+*   MID/FWD/GKP picks **never** scored 6+ — the model's MID/FWD predictions lack signal
+*   Position-locking forced 3-4 bad picks per week
 
-These static values had several issues:
-*   **Early Season**: Many quality players still under 10% ownership → thresholds too lenient
-*   **Mid-Season**: Template teams form, only 10-15 players above 10% → thresholds too restrictive
-*   **Late Season**: Ownership distributions shift as managers wildcard
-*   **No Rationale**: Values were arbitrary with no documented justification
+### 9.2 Solution: Top 5 by Reliability Score
+*   **No position constraints** — if the model thinks 5 DEFs are the best picks, you get 5 DEFs
+*   **Reliability Score**: `predicted_points × (confidence / 100)²` — balances upside with model certainty
+*   **£7.5m hard cap** (`MAX_COST_HARD = 75` in config) — captures the £4.5-6.0m sweet spot, excludes premiums
+*   **Max 3 per team** — FPL squad constraint
+*   **No ownership filter** — cost cap alone preserves underdog identity
 
-### 9.2 Solution: Percentile-Based Dynamic Calculation
-Thresholds are now computed at inference time based on the current week's player pool:
+### 9.3 Cost-Performance Rationale
+*   **DEFs (£4.0-6.0m)**: Clean sheets are team-level events. A £4.5m CB earns the same 4pts as a £7m one on the same team. Cheap DEFs = genuine value.
+*   **MIDs/FWDs**: Goals/assists are individual talent events. Cheap attackers genuinely have less goal threat. The cost cap excludes premiums (Salah £13m, Palmer £11m) while allowing mid-tier options.
 
-| Metric | Percentile | Interpretation |
-| :--- | :--- | :--- |
-| **Ownership** | 50th percentile (Floor 10%) | Select from bottom ~50% (but allow at least 10% ownership) |
-| **Cost** | 75th percentile (Floor £7.0m) | Select from below ~75th percentile cost (budget-friendly) |
-| **Predicted Points** | 92nd percentile (Range 5.5-8.0) | Target high scorers (approx > 6.0 pts) |
-| **Form/ICT** | 30th percentile | Exclude bottom 30% by form/activity |
-
-### 9.3 Implementation
-*   **Config** (`src/config.py`): Defines `OWNERSHIP_PERCENTILE`, `COST_PERCENTILE`, `FORM_PERCENTILE`, `ICT_PERCENTILE`
-*   **Inference** (`src/inference.py`): 
-    *   Added `calculate_dynamic_thresholds(df)` function which computes thresholds.
-    *   Added `select_best_team(df)` with robust fallback logic.
-*   **Logging**: Computed thresholds are printed each inference run for transparency
-
-### 9.4 'Fail Upward' Strategy
-If no "perfect underdog" (Low Ownership + Low Cost + High Points) matches the criteria:
-
-1.  **Prioritize Points**: The system looks for high-scoring players who might be slightly more expensive or popular.
-2.  **Fallback Levels**:
-    *   **Level 1 (Ideal)**: Meets all strict criteria.
-    *   **Level 2 (Value Pick)**: Relax Ownership constraint.
-    *   **Level 3 (Premium Differential)**: Relax Cost constraint.
-    *   **Level 4 (Points Only)**: Ignore Ownership/Cost, just find a scorer.
-    *   **Level 5 (Last Resort)**: Lower the predicted points expectation.
-
-This ensures the system always returns the best available players rather than forcing low-scoring underdogs.
+### 9.4 Implementation
+*   **Config** (`src/config.py`): `MAX_COST_HARD = 75`
+*   **Inference** (`src/inference.py`): `select_best_team(df)` — greedy pick from sorted pool
+*   **No wildcard concept** — all 5 picks selected on equal merit. `is_wildcard = False` for all.
 
 ## 10. Prediction Confidence Scoring (Added Jan 2026)
 
@@ -313,6 +290,8 @@ When multiple players pass the same level's filters:
 *   **Points Preservation**: The 6.0 point floor is maintained through Levels 1-4 before relaxing
 *   **Underdog DNA**: The system still tries to find low-ownership/cost players first, but won't sacrifice prediction quality for it
 
+> **Note (Feb 2026)**: Sections 11.1-11.3 document the v3 confidence cascade which has been superseded by v4's position-agnostic reliability sort (Section 9). The confidence score is still calculated and displayed, but no longer drives tiered selection.
+
 ## 12. User Interface & Navigation (Added Jan 2026)
 
 ### 12.1 Mobile-First Design
@@ -328,6 +307,7 @@ Both mobile and desktop views use a consistent three-tab navigation structure:
 | **Picks** | Player predictions table/cards | Primary use case: weekly picks |
 | **History** | Past gameweek predictions | Track accuracy and backfill points |
 | **Info** | How it works, accuracy, credits | System explanation and transparency |
+| **Scout** | Full 30-player prediction pool | See what the model liked beyond the 5 picks |
 
 ### 12.3 Mobile-Specific Features
 *   **Player Cards**: Swipeable cards replace tables for better touch interaction
@@ -454,8 +434,15 @@ This section documents the iterative development of the prediction system across
 
 ### 15.4 Performance Comparison
 Performance statistics are calculated and displayed in the UI via `/api/model-stats`:
-*   **Hit Rate**: % of picks where Actual ≥ 90% of floor(Predicted)
+*   **6+ Rate**: % of picks that scored 6+ FPL points
 *   **Avg Predicted**: Mean predicted points per pick
 *   **Avg Actual**: Mean actual points per pick
+
+### 15.5 Full Predictions Log (Added Feb 2026)
+*   **File**: `data/history/full_predictions_log.json`
+*   **Content**: Top 30 predictions per gameweek (not just the 5 picks), for retrospective analysis
+*   **API**: `/api/full-predictions` returns the full log
+*   **UI**: "Scout" tab displays the latest gameweek's full scouting report
+*   **Rationale**: Allows analysis of which good predictions the selection logic left on the table
 
 This allows users to see how model improvements have affected prediction accuracy over time.

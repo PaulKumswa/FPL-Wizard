@@ -296,8 +296,8 @@ def get_model_stats():
                 stats[version]['total_predicted'] += pick['predicted_points']
                 stats[version]['total_actual'] += pick['actual_points']
                 
-                # Hit = Actual >= 90% of floor(Predicted)
-                if pick['actual_points'] >= (math.floor(pick['predicted_points']) * 0.9):
+                # Hit = Actual >= 6
+                if pick['actual_points'] >= 6:
                     stats[version]['hits'] += 1
     
     # Calculate hit rates and averages
@@ -322,6 +322,19 @@ def get_model_stats():
     # Sort by version
     result.sort(key=lambda x: x['version'])
     return jsonify(result)
+
+@app.route('/api/full-predictions')
+def get_full_predictions():
+    """Returns full predictions pool for the Scouting tab."""
+    try:
+        full_log_path = 'data/history/full_predictions_log.json'
+        if not os.path.exists(full_log_path):
+            return jsonify([])
+        with open(full_log_path, 'r') as f:
+            data = json.load(f)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/stats')
 def get_stats():

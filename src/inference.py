@@ -9,8 +9,7 @@ import json
 import numpy as np
 from src.config import (
     FEATURE_CONFIGS, POSITION_MAP_REV, POSITION_MAP,
-    MAX_COST, MAX_OWNERSHIP, MIN_FORM, MIN_ICT,
-    OWNERSHIP_PERCENTILE, COST_PERCENTILE, FORM_PERCENTILE, ICT_PERCENTILE
+    MAX_COST_HARD
 )
 from src.scoring_constants import (
     GOAL_POINTS, ASSIST_POINTS, CLEAN_SHEET_POINTS, 
@@ -163,37 +162,10 @@ def predict_points(df, models, component_models=None):
     return df
 
 
-def calculate_dynamic_thresholds(df):
-    thresholds = {}
-    
-    # Ownership: Bottom X percentile
-    if 'selected_by_percent' in df.columns:
-        ownership_vals = pd.to_numeric(df['selected_by_percent'], errors='coerce').dropna()
-        if len(ownership_vals) > 0:
-            p_val = np.percentile(ownership_vals, OWNERSHIP_PERCENTILE)
-            thresholds['max_ownership'] = max(p_val, 10.0) 
-        else:
-            thresholds['max_ownership'] = 10.0
-    else:
-        thresholds['max_ownership'] = 10.0
-    
-    # Cost: Below X percentile
-    if 'now_cost' in df.columns:
-        cost_vals = pd.to_numeric(df['now_cost'], errors='coerce').dropna()
-        if len(cost_vals) > 0:
-            c_val = np.percentile(cost_vals, COST_PERCENTILE)
-            thresholds['max_cost'] = max(c_val, 70.0) 
-        else:
-            thresholds['max_cost'] = 80.0
-    else:
-        thresholds['max_cost'] = 80.0
-    
-    return thresholds
-
-
 def select_best_team(df):
     """
-    Select 1 player per position + 1 Wildcard.
+    Select top 5 players by predicted points within high/medium confidence bands.
+    Position-agnostic, £7.5m cost cap, max 3 per team, confidence >= 40%.
     """
     
     # 1. Ensure numeric columns
@@ -205,92 +177,40 @@ def select_best_team(df):
     if 'confidence_score' not in df.columns:
         df['confidence_score'] = 50.0
     
-    # 2. Availability Filter
+    # 2. Availability filter
     if 'status' in df.columns:
-         df = df[~df['status'].isin(['s', 'u', 'n', 'i', 'd'])]
+        df = df[~df['status'].isin(['s', 'u', 'n', 'i', 'd'])]
     if 'chance_of_playing_next_round' in df.columns:
-        df.loc[:, 'chance_of_playing_next_round'] = pd.to_numeric(df['chance_of_playing_next_round'], errors='coerce').fillna(100)
+        df['chance_of_playing_next_round'] = pd.to_numeric(
+            df['chance_of_playing_next_round'], errors='coerce'
+        ).fillna(100)
         df = df[df['chance_of_playing_next_round'] >= 75]
 
-    # 3. Calculate Reliability Score
-    df['reliability_score'] = df['predicted_points'] * (df['confidence_score'] / 100.0) ** 2
+    # 3. Filter: cost cap + confidence >= 40% (high + medium bands only)
+    pool = df[
+        (df['now_cost'] <= MAX_COST_HARD) &
+        (df['confidence_score'] >= 40.0)
+    ].copy()
     
-    # 4. Get Thresholds
-    thresholds = calculate_dynamic_thresholds(df)
-    max_own = thresholds['max_ownership']
-    max_cost = thresholds['max_cost']
+    # 4. Sort by predicted points (highest upside within confident players)
+    pool = pool.sort_values('predicted_points', ascending=False)
     
+    # 5. Greedy selection: top 5 with max 3 per team
     final_picks = []
-    selected_ids = set()
+    team_counts = {}
     
-    # === REGULAR POSITIONS (1-4) ===
-    for pos_id in [1, 2, 3, 4]:
-        pos_pool = df[df['element_type'] == pos_id].copy()
+    for _, player in pool.iterrows():
+        if len(final_picks) >= 5:
+            break
         
-        if pos_pool.empty:
+        team_id = player.get('team', 0)
+        if team_counts.get(team_id, 0) >= 3:
             continue
-            
-        # -- STRICT RELIABILITY TIERS --
         
-        # Level 1: High Points (>6.0) AND High Confidence (>60%)
-        # This prevents Casemiro (46% conf) from winning just by raw reliability score if sorting is weird
-        candidates = pos_pool[
-            (pos_pool['selected_by_percent'] < max_own) &
-            (pos_pool['now_cost'] < max_cost) &
-            (pos_pool['predicted_points'] >= 6.0) &
-            (pos_pool['confidence_score'] >= 60.0) 
-        ]
-        
-        # Level 2: Safe Points (>4.0) AND High Confidence (>60%)
-        if candidates.empty:
-            candidates = pos_pool[
-                (pos_pool['selected_by_percent'] < max_own) &
-                (pos_pool['now_cost'] < max_cost) &
-                (pos_pool['predicted_points'] >= 4.0) &
-                (pos_pool['confidence_score'] >= 60.0)
-            ]
-            
-        # Level 3: Relax Confidence (>40%) for High Points (>6.0)
-        if candidates.empty:
-            candidates = pos_pool[
-                (pos_pool['predicted_points'] >= 6.0) &
-                (pos_pool['confidence_score'] >= 40.0)
-            ]
-            
-        # Level 4: Fallback (Just pick most reliable)
-        if candidates.empty:
-            candidates = pos_pool
-            
-        # Sort and Pick
-        if not candidates.empty:
-            best_pick = candidates.sort_values('reliability_score', ascending=False).iloc[0]
-            
-            best_pick_dict = best_pick.to_dict()
-            best_pick_dict['is_wildcard'] = False
-            
-            final_picks.append(best_pick_dict)
-            selected_ids.add(best_pick['element'])
-        
-    # === WILDCARD SELECTION ===
-    remaining_pool = df[~df['element'].isin(selected_ids)].copy()
-    
-    # Level 1: Unpicked, High Conf (>=60), Any Value
-    wildcard_candidates = remaining_pool[
-        (remaining_pool['confidence_score'] >= 60.0)
-    ]
-    
-    wildcard_pick = None
-    
-    if not wildcard_candidates.empty:
-        wildcard_pick = wildcard_candidates.sort_values('predicted_points', ascending=False).iloc[0]
-    
-    # Fallback
-    if wildcard_pick is None and not remaining_pool.empty:
-        wildcard_pick = remaining_pool.sort_values('reliability_score', ascending=False).iloc[0]
-        
-    if wildcard_pick is not None:
-        pick_dict = wildcard_pick.to_dict()
-        pick_dict['is_wildcard'] = True
+        pick_dict = player.to_dict()
+        pick_dict['is_wildcard'] = False
         final_picks.append(pick_dict)
-
+        team_counts[team_id] = team_counts.get(team_id, 0) + 1
+    
     return pd.DataFrame(final_picks)
+

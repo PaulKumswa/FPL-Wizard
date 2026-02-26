@@ -80,6 +80,113 @@ def log_predictions(predictions_df, gameweek_info):
     save_history(history)
     print(f"Logged predictions for GW {current_gw}")
 
+
+FULL_PREDICTIONS_FILE = Path('data/history/full_predictions_log.json')
+
+def log_full_predictions(all_predictions_df, gameweek_info, top_n=30):
+    """Save top N predictions (all positions) for retrospective analysis."""
+    ensure_history_dir()
+    
+    current_gw = gameweek_info.get('next_gameweek')
+    if not current_gw:
+        print("Warning: Could not determine next gameweek. Skipping full log.")
+        return
+    
+    # Load existing full log
+    full_log = []
+    if FULL_PREDICTIONS_FILE.exists():
+        try:
+            with open(FULL_PREDICTIONS_FILE, 'r') as f:
+                full_log = json.load(f)
+        except json.JSONDecodeError:
+            full_log = []
+    
+    # Remove existing entry for this GW (overwrite)
+    full_log = [e for e in full_log if e['gameweek'] != current_gw]
+    
+    # Filter to high+medium confidence (>=40%) then take top N by predicted points
+    confident = all_predictions_df[
+        pd.to_numeric(all_predictions_df.get('confidence_score', 50.0), errors='coerce').fillna(50.0) >= 40.0
+    ]
+    top = confident.nlargest(top_n, 'predicted_points')
+    pos_map = {1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD'}
+    
+    players = []
+    for _, row in top.iterrows():
+        players.append({
+            'player_id': int(row['element']),
+            'web_name': row['web_name'],
+            'position': pos_map.get(int(row.get('element_type', 0)), 'UNK'),
+            'predicted_points': round(float(row['predicted_points']), 2),
+            'confidence_score': round(float(row.get('confidence_score', 50.0)), 1),
+            'now_cost': float(row.get('now_cost', 0)),
+            'selected_by_percent': float(row.get('selected_by_percent', 0)),
+            'team_name': str(row.get('team_name', '')),
+            'actual_points': None
+        })
+    
+    full_log.append({
+        'gameweek': current_gw,
+        'timestamp': datetime.now().isoformat(),
+        'predictions': players
+    })
+    
+    with open(FULL_PREDICTIONS_FILE, 'w') as f:
+        json.dump(full_log, f, indent=2)
+    
+    print(f"Logged top {top_n} full predictions for GW {current_gw}")
+
+
+COMPLETE_PREDICTIONS_DIR = Path('data/history/complete_predictions')
+
+def save_complete_predictions(all_predictions_df, gameweek_info):
+    """Save ALL unfiltered predictions for a gameweek to a separate archive.
+    
+    Stored as individual files: data/history/complete_predictions/gw_XX.json
+    This is for long-term analysis, independent of the Scout tab display.
+    """
+    ensure_history_dir()
+    COMPLETE_PREDICTIONS_DIR.mkdir(parents=True, exist_ok=True)
+    
+    current_gw = gameweek_info.get('next_gameweek')
+    if not current_gw:
+        print("Warning: Could not determine next gameweek. Skipping complete log.")
+        return
+    
+    pos_map = {1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD'}
+    
+    players = []
+    for _, row in all_predictions_df.iterrows():
+        players.append({
+            'player_id': int(row['element']),
+            'web_name': row['web_name'],
+            'position': pos_map.get(int(row.get('element_type', 0)), 'UNK'),
+            'team_name': str(row.get('team_name', '')),
+            'team': int(row.get('team', 0)),
+            'predicted_points': round(float(row['predicted_points']), 2),
+            'confidence_score': round(float(row.get('confidence_score', 50.0)), 1),
+            'now_cost': float(row.get('now_cost', 0)),
+            'selected_by_percent': float(row.get('selected_by_percent', 0)),
+            'status': str(row.get('status', '')),
+            'chance_of_playing': float(row.get('chance_of_playing_next_round', 100)),
+        })
+    
+    # Sort by predicted points descending
+    players.sort(key=lambda p: p['predicted_points'], reverse=True)
+    
+    archive = {
+        'gameweek': current_gw,
+        'timestamp': datetime.now().isoformat(),
+        'total_players': len(players),
+        'predictions': players
+    }
+    
+    filepath = COMPLETE_PREDICTIONS_DIR / f'gw_{current_gw:02d}.json'
+    with open(filepath, 'w', encoding='utf-8') as f:
+        json.dump(archive, f, indent=2, ensure_ascii=False)
+    
+    print(f"Archived {len(players)} complete predictions for GW {current_gw} → {filepath}")
+
 def update_actuals():
     """
     Updates actual points for past gameweeks using fpl_histories.
