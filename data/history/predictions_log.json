@@ -108,7 +108,7 @@
       },
       {
         "player_id": 411,
-        "web_name": "Oâ€™Reilly",
+        "web_name": "O\u00e2\u20ac\u2122Reilly",
         "position": "DEF",
         "predicted_points": 5.96,
         "actual_points": 6.0
@@ -422,7 +422,7 @@
       },
       {
         "player_id": 405,
-        "web_name": "AkÃ©",
+        "web_name": "Ak\u00c3\u00a9",
         "position": "DEF",
         "predicted_points": 6.631300347668034,
         "confidence_score": 73.13317446883747,
@@ -449,7 +449,7 @@
       },
       {
         "player_id": 148,
-        "web_name": "F.KadÄ±oÄŸlu",
+        "web_name": "F.Kad\u00c4\u00b1o\u00c4\u0178lu",
         "position": "DEF",
         "predicted_points": 6.073006610244328,
         "confidence_score": 68.43198930195209,
@@ -467,7 +467,7 @@
       },
       {
         "player_id": 749,
-        "web_name": "ManÃ©",
+        "web_name": "Man\u00c3\u00a9",
         "position": "FWD",
         "predicted_points": 5.126652854864501,
         "confidence_score": 74.35995646233553,
@@ -494,7 +494,7 @@
     "picks": [
       {
         "player_id": 67,
-        "web_name": "PetroviÄ‡",
+        "web_name": "Petrovi\u00c4\u2021",
         "position": "GKP",
         "predicted_points": 5.457277064681197,
         "confidence_score": 78.29108258724789,
@@ -575,7 +575,7 @@
       },
       {
         "player_id": 337,
-        "web_name": "RaÃºl",
+        "web_name": "Ra\u00c3\u00bal",
         "position": "FWD",
         "predicted_points": 4.5118288604701355,
         "confidence_score": 82.2920461785954,
@@ -607,16 +607,16 @@
         "predicted_points": 5.782148371684986,
         "confidence_score": 91.28593486739946,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 374,
-        "web_name": "Konaté",
+        "web_name": "Konat\u00e9",
         "position": "DEF",
         "predicted_points": 6.451757328419621,
         "confidence_score": 64.63577430519666,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 206,
@@ -625,16 +625,16 @@
         "predicted_points": 5.268377278618927,
         "confidence_score": 62.48289881202149,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 249,
-        "web_name": "João Pedro",
+        "web_name": "Jo\u00e3o Pedro",
         "position": "FWD",
         "predicted_points": 7.9349493444683885,
         "confidence_score": 65.37741771182138,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 430,
@@ -643,6 +643,60 @@
         "predicted_points": 5.973666089235412,
         "confidence_score": 91.20771751138133,
         "is_wildcard": true,
+        "actual_points": 6.0
+      }
+    ]
+  },
+  {
+    "gameweek": 28,
+    "timestamp": "2026-02-26T18:38:02.187026",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 440,
+        "web_name": "Dalot",
+        "position": "DEF",
+        "predicted_points": 10.927013770263692,
+        "confidence_score": 47.868898717441304,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 106,
+        "web_name": "Collins",
+        "position": "DEF",
+        "predicted_points": 10.634249626067563,
+        "confidence_score": 48.635007011844095,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 476,
+        "web_name": "Burn",
+        "position": "DEF",
+        "predicted_points": 10.314090925427344,
+        "confidence_score": 47.53643133383209,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 151,
+        "web_name": "Van Hecke",
+        "position": "DEF",
+        "predicted_points": 8.980631904466172,
+        "confidence_score": 63.75225555504389,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 442,
+        "web_name": "Maguire",
+        "position": "DEF",
+        "predicted_points": 8.894724320866413,
+        "confidence_score": 56.13615956203629,
+        "is_wildcard": false,
         "actual_points": null
       }
     ]
