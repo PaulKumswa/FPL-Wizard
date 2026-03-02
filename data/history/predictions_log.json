@@ -661,7 +661,7 @@
         "predicted_points": 10.927013770263692,
         "confidence_score": 47.868898717441304,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 106,
@@ -670,7 +670,7 @@
         "predicted_points": 10.634249626067563,
         "confidence_score": 48.635007011844095,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 476,
@@ -679,7 +679,7 @@
         "predicted_points": 10.314090925427344,
         "confidence_score": 47.53643133383209,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 151,
@@ -688,7 +688,7 @@
         "predicted_points": 8.980631904466172,
         "confidence_score": 63.75225555504389,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 442,
@@ -696,6 +696,60 @@
         "position": "DEF",
         "predicted_points": 8.894724320866413,
         "confidence_score": 56.13615956203629,
+        "is_wildcard": false,
+        "actual_points": 2.0
+      }
+    ]
+  },
+  {
+    "gameweek": 29,
+    "timestamp": "2026-03-02T18:32:31.337957",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 373,
+        "web_name": "Virgil",
+        "position": "DEF",
+        "predicted_points": 11.424222337226064,
+        "confidence_score": 64.07722007017058,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 256,
+        "web_name": "Mu\u00f1oz",
+        "position": "DEF",
+        "predicted_points": 10.998370970537929,
+        "confidence_score": 50.25188027738186,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 532,
+        "web_name": "Hume",
+        "position": "DEF",
+        "predicted_points": 10.83478257604391,
+        "confidence_score": 59.734686223574116,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 507,
+        "web_name": "Aina",
+        "position": "DEF",
+        "predicted_points": 8.732594783852162,
+        "confidence_score": 58.629756236744555,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 417,
+        "web_name": "Cherki",
+        "position": "MID",
+        "predicted_points": 8.684094195769513,
+        "confidence_score": 47.441502151505105,
         "is_wildcard": false,
         "actual_points": null
       }
