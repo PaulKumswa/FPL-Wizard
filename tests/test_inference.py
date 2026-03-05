@@ -11,7 +11,7 @@ import pytest
 import pandas as pd
 import numpy as np
 from src.inference import select_best_team, predict_points, calculate_confidence
-from src.config import MAX_COST_HARD
+from src.config import MAX_COST_HARD, MAX_PER_POSITION
 
 
 def test_calculate_confidence_high():
@@ -115,10 +115,10 @@ def test_select_best_team_max_per_team():
         'element': [1, 2, 3, 4, 5, 6],
         'web_name': ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'],
         'team': [1, 1, 1, 1, 2, 2],  # 4 from team 1, 2 from team 2
-        'element_type': [2, 2, 2, 2, 2, 2],  # All DEF
+        'element_type': [2, 3, 4, 1, 2, 3],  # Mixed positions
         'now_cost': [50] * 6,
         'selected_by_percent': [5.0] * 6,
-        'predicted_points': [10, 9, 8, 7, 6, 5],
+        'predicted_points': [9, 8.5, 8, 7.5, 7, 6.5],
         'confidence_score': [80, 80, 80, 80, 80, 80],
         'status': ['a'] * 6,
         'chance_of_playing_next_round': [100] * 6
@@ -139,3 +139,32 @@ def test_select_best_team_max_per_team():
     # Both team 2 players should be picked to fill the 5 slots
     assert 5 in team['element'].values
     assert 6 in team['element'].values
+
+
+def test_select_best_team_max_per_position():
+    """Max 2 players from the same position."""
+    data = {
+        'element': [1, 2, 3, 4, 5, 6, 7],
+        'web_name': ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7'],
+        'team': [1, 2, 3, 4, 5, 6, 7],  # All different teams
+        'element_type': [2, 2, 2, 2, 3, 4, 1],  # 4 DEF, 1 MID, 1 FWD, 1 GKP
+        'now_cost': [50] * 7,
+        'selected_by_percent': [5.0] * 7,
+        'predicted_points': [9, 8.5, 8, 7.5, 7, 6.5, 6],
+        'confidence_score': [80, 80, 80, 80, 80, 80, 80],
+        'status': ['a'] * 7,
+        'chance_of_playing_next_round': [100] * 7
+    }
+    df = pd.DataFrame(data)
+    team = select_best_team(df)
+    
+    assert len(team) == 5
+    
+    # Max 2 DEFs
+    def_count = len(team[team['element_type'] == 2])
+    assert def_count <= MAX_PER_POSITION, f"Expected max {MAX_PER_POSITION} DEFs, got {def_count}"
+    
+    # Non-DEF players should fill remaining slots
+    assert 5 in team['element'].values  # MID
+    assert 6 in team['element'].values  # FWD
+    assert 7 in team['element'].values  # GKP
