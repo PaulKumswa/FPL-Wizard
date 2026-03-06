@@ -214,9 +214,10 @@ The v3 selection logic forced 1 player per position (GKP, DEF, MID, FWD) + 1 wil
 *   MID/FWD/GKP picks **never** scored 6+ — the model's MID/FWD predictions lack signal
 *   Position-locking forced 3-4 bad picks per week
 
-### 9.2 Solution: Top 5 by Reliability Score
-*   **No position constraints** — if the model thinks 5 DEFs are the best picks, you get 5 DEFs
-*   **Reliability Score**: `predicted_points × (confidence / 100)²` — balances upside with model certainty
+### 9.2 Solution: Top 5 by Predicted Points (Updated Mar 2026)
+*   **No position requirements** — but max 2 per position (`MAX_PER_POSITION = 2`) to prevent clustering
+*   **Prediction cap**: `MAX_PREDICTED_POINTS = 9` — `np.clip` prevents over-prediction outliers
+*   **Confidence floor**: `MIN_CONFIDENCE = 50` — raised from 40% after GW28 analysis showed 40-50% band had very low hit rates
 *   **£7.5m hard cap** (`MAX_COST_HARD = 75` in config) — captures the £4.5-6.0m sweet spot, excludes premiums
 *   **Max 3 per team** — FPL squad constraint
 *   **No ownership filter** — cost cap alone preserves underdog identity
@@ -226,9 +227,16 @@ The v3 selection logic forced 1 player per position (GKP, DEF, MID, FWD) + 1 wil
 *   **MIDs/FWDs**: Goals/assists are individual talent events. Cheap attackers genuinely have less goal threat. The cost cap excludes premiums (Salah £13m, Palmer £11m) while allowing mid-tier options.
 
 ### 9.4 Implementation
-*   **Config** (`src/config.py`): `MAX_COST_HARD = 75`
-*   **Inference** (`src/inference.py`): `select_best_team(df)` — greedy pick from sorted pool
+*   **Config** (`src/config.py`): `MAX_COST_HARD`, `MIN_CONFIDENCE`, `MAX_PREDICTED_POINTS`, `MAX_PER_POSITION`
+*   **Inference** (`src/inference.py`): `select_best_team(df)` — greedy pick from sorted pool with position + team caps
+*   **Prediction cap** (`src/inference.py`): `np.clip(expected_pts, 0, MAX_PREDICTED_POINTS)` in `predict_points()`
 *   **No wildcard concept** — all 5 picks selected on equal merit. `is_wildcard = False` for all.
+
+### 9.5 GW28 Lessons (Added Mar 2026)
+GW28 was the worst gameweek in history (0/5 hits, 7 total pts). All 5 picks were DEF due to clean sheet over-prediction. This motivated:
+1.  `MAX_PER_POSITION = 2`: Prevents single-position dominance
+2.  `MIN_CONFIDENCE = 50`: Filters out low-conviction picks (GW28 avg confidence was 52.8%)
+3.  `MAX_PREDICTED_POINTS = 9`: Caps unrealistic 10+ pt predictions
 
 ## 10. Prediction Confidence Scoring (Added Jan 2026)
 

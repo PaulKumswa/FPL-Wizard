@@ -9,7 +9,7 @@ import json
 import numpy as np
 from src.config import (
     FEATURE_CONFIGS, POSITION_MAP_REV, POSITION_MAP,
-    MAX_COST_HARD
+    MAX_COST_HARD, MIN_CONFIDENCE, MAX_PREDICTED_POINTS, MAX_PER_POSITION
 )
 from src.scoring_constants import (
     GOAL_POINTS, ASSIST_POINTS, CLEAN_SHEET_POINTS, 
@@ -154,6 +154,8 @@ def predict_points(df, models, component_models=None):
                 p_cs * CLEAN_SHEET_POINTS[pos_id] +
                 APPEARANCE_POINTS
             )
+            # Cap predicted points to prevent over-prediction outliers
+            expected_pts = np.clip(expected_pts, 0, MAX_PREDICTED_POINTS)
             df.loc[pos_mask, 'predicted_points'] = expected_pts
         else:
             # Fallback to legacy
@@ -165,7 +167,8 @@ def predict_points(df, models, component_models=None):
 def select_best_team(df):
     """
     Select top 5 players by predicted points within high/medium confidence bands.
-    Position-agnostic, £7.5m cost cap, max 3 per team, confidence >= 40%.
+    Position-agnostic, £7.5m cost cap, max 3 per team, max 2 per position,
+    confidence >= MIN_CONFIDENCE.
     """
     
     # 1. Ensure numeric columns
@@ -186,18 +189,19 @@ def select_best_team(df):
         ).fillna(100)
         df = df[df['chance_of_playing_next_round'] >= 75]
 
-    # 3. Filter: cost cap + confidence >= 40% (high + medium bands only)
+    # 3. Filter: cost cap + confidence >= MIN_CONFIDENCE (high + medium bands only)
     pool = df[
         (df['now_cost'] <= MAX_COST_HARD) &
-        (df['confidence_score'] >= 40.0)
+        (df['confidence_score'] >= MIN_CONFIDENCE)
     ].copy()
     
     # 4. Sort by predicted points (highest upside within confident players)
     pool = pool.sort_values('predicted_points', ascending=False)
     
-    # 5. Greedy selection: top 5 with max 3 per team
+    # 5. Greedy selection: top 5 with max 3 per team, max per position
     final_picks = []
     team_counts = {}
+    position_counts = {}
     
     for _, player in pool.iterrows():
         if len(final_picks) >= 5:
@@ -207,10 +211,15 @@ def select_best_team(df):
         if team_counts.get(team_id, 0) >= 3:
             continue
         
+        pos_id = player.get('element_type', 0)
+        if position_counts.get(pos_id, 0) >= MAX_PER_POSITION:
+            continue
+        
         pick_dict = player.to_dict()
         pick_dict['is_wildcard'] = False
         final_picks.append(pick_dict)
         team_counts[team_id] = team_counts.get(team_id, 0) + 1
+        position_counts[pos_id] = position_counts.get(pos_id, 0) + 1
     
     return pd.DataFrame(final_picks)
 
