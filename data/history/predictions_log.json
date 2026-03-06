@@ -715,7 +715,7 @@
         "predicted_points": 11.424222337226064,
         "confidence_score": 64.07722007017058,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 256,
@@ -724,7 +724,7 @@
         "predicted_points": 10.998370970537929,
         "confidence_score": 50.25188027738186,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 532,
@@ -733,7 +733,7 @@
         "predicted_points": 10.83478257604391,
         "confidence_score": 59.734686223574116,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 8.0
       },
       {
         "player_id": 507,
@@ -742,7 +742,7 @@
         "predicted_points": 8.732594783852162,
         "confidence_score": 58.629756236744555,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 417,
@@ -750,6 +750,60 @@
         "position": "MID",
         "predicted_points": 8.684094195769513,
         "confidence_score": 47.441502151505105,
+        "is_wildcard": false,
+        "actual_points": 5.0
+      }
+    ]
+  },
+  {
+    "gameweek": 30,
+    "timestamp": "2026-03-06T07:11:28.642425",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 8,
+        "web_name": "J.Timber",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 67.71790235942186,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 21,
+        "web_name": "Rice",
+        "position": "MID",
+        "predicted_points": 9.0,
+        "confidence_score": 66.78394820977942,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 408,
+        "web_name": "R\u00faben",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 54.21249740409968,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 384,
+        "web_name": "Gakpo",
+        "position": "MID",
+        "predicted_points": 8.911711144750534,
+        "confidence_score": 50.82051767414133,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 1,
+        "web_name": "Raya",
+        "position": "GKP",
+        "predicted_points": 5.872987352397464,
+        "confidence_score": 94.91949409589857,
         "is_wildcard": false,
         "actual_points": null
       }
