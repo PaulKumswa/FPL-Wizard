@@ -1678,5 +1678,341 @@
         "actual_points": null
       }
     ]
+  },
+  {
+    "gameweek": 32,
+    "timestamp": "2026-04-09T18:47:07.560376",
+    "predictions": [
+      {
+        "player_id": 373,
+        "web_name": "Virgil",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 55.4,
+        "now_cost": 63.0,
+        "selected_by_percent": 34.4,
+        "team_name": "Liverpool",
+        "actual_points": null
+      },
+      {
+        "player_id": 256,
+        "web_name": "Mu\u00f1oz",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 52.9,
+        "now_cost": 58.0,
+        "selected_by_percent": 7.3,
+        "team_name": "Crystal Palace",
+        "actual_points": null
+      },
+      {
+        "player_id": 258,
+        "web_name": "Mitchell",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 51.9,
+        "now_cost": 50.0,
+        "selected_by_percent": 2.1,
+        "team_name": "Crystal Palace",
+        "actual_points": null
+      },
+      {
+        "player_id": 267,
+        "web_name": "Sarr",
+        "position": "MID",
+        "predicted_points": 9.0,
+        "confidence_score": 59.6,
+        "now_cost": 63.0,
+        "selected_by_percent": 3.9,
+        "team_name": "Crystal Palace",
+        "actual_points": null
+      },
+      {
+        "player_id": 36,
+        "web_name": "Cash",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 51.4,
+        "now_cost": 47.0,
+        "selected_by_percent": 8.6,
+        "team_name": "Aston Villa",
+        "actual_points": null
+      },
+      {
+        "player_id": 37,
+        "web_name": "Digne",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 55.2,
+        "now_cost": 45.0,
+        "selected_by_percent": 1.6,
+        "team_name": "Aston Villa",
+        "actual_points": null
+      },
+      {
+        "player_id": 450,
+        "web_name": "Cunha",
+        "position": "MID",
+        "predicted_points": 9.0,
+        "confidence_score": 68.1,
+        "now_cost": 80.0,
+        "selected_by_percent": 8.4,
+        "team_name": "Man Utd",
+        "actual_points": null
+      },
+      {
+        "player_id": 106,
+        "web_name": "Collins",
+        "position": "DEF",
+        "predicted_points": 8.87,
+        "confidence_score": 45.2,
+        "now_cost": 49.0,
+        "selected_by_percent": 2.9,
+        "team_name": "Brentford",
+        "actual_points": null
+      },
+      {
+        "player_id": 82,
+        "web_name": "Semenyo",
+        "position": "MID",
+        "predicted_points": 8.77,
+        "confidence_score": 47.1,
+        "now_cost": 82.0,
+        "selected_by_percent": 54.3,
+        "team_name": "Man City",
+        "actual_points": null
+      },
+      {
+        "player_id": 47,
+        "web_name": "Rogers",
+        "position": "MID",
+        "predicted_points": 8.75,
+        "confidence_score": 44.6,
+        "now_cost": 74.0,
+        "selected_by_percent": 23.9,
+        "team_name": "Aston Villa",
+        "actual_points": null
+      },
+      {
+        "player_id": 21,
+        "web_name": "Rice",
+        "position": "MID",
+        "predicted_points": 8.68,
+        "confidence_score": 48.7,
+        "now_cost": 73.0,
+        "selected_by_percent": 25.9,
+        "team_name": "Arsenal",
+        "actual_points": null
+      },
+      {
+        "player_id": 83,
+        "web_name": "O.Dango",
+        "position": "MID",
+        "predicted_points": 8.66,
+        "confidence_score": 48.5,
+        "now_cost": 60.0,
+        "selected_by_percent": 3.7,
+        "team_name": "Brentford",
+        "actual_points": null
+      },
+      {
+        "player_id": 26,
+        "web_name": "Zubimendi",
+        "position": "MID",
+        "predicted_points": 8.65,
+        "confidence_score": 44.4,
+        "now_cost": 51.0,
+        "selected_by_percent": 3.5,
+        "team_name": "Arsenal",
+        "actual_points": null
+      },
+      {
+        "player_id": 384,
+        "web_name": "Gakpo",
+        "position": "MID",
+        "predicted_points": 8.61,
+        "confidence_score": 48.7,
+        "now_cost": 73.0,
+        "selected_by_percent": 5.8,
+        "team_name": "Liverpool",
+        "actual_points": null
+      },
+      {
+        "player_id": 38,
+        "web_name": "Konsa",
+        "position": "DEF",
+        "predicted_points": 8.47,
+        "confidence_score": 69.4,
+        "now_cost": 44.0,
+        "selected_by_percent": 8.1,
+        "team_name": "Aston Villa",
+        "actual_points": null
+      },
+      {
+        "player_id": 517,
+        "web_name": "Anderson",
+        "position": "MID",
+        "predicted_points": 8.34,
+        "confidence_score": 45.1,
+        "now_cost": 55.0,
+        "selected_by_percent": 8.4,
+        "team_name": "Nott'm Forest",
+        "actual_points": null
+      },
+      {
+        "player_id": 261,
+        "web_name": "Richards",
+        "position": "DEF",
+        "predicted_points": 7.76,
+        "confidence_score": 51.4,
+        "now_cost": 44.0,
+        "selected_by_percent": 2.5,
+        "team_name": "Crystal Palace",
+        "actual_points": null
+      },
+      {
+        "player_id": 6,
+        "web_name": "Saliba",
+        "position": "DEF",
+        "predicted_points": 7.72,
+        "confidence_score": 57.6,
+        "now_cost": 61.0,
+        "selected_by_percent": 13.4,
+        "team_name": "Arsenal",
+        "actual_points": null
+      },
+      {
+        "player_id": 8,
+        "web_name": "J.Timber",
+        "position": "DEF",
+        "predicted_points": 7.72,
+        "confidence_score": 64.5,
+        "now_cost": 63.0,
+        "selected_by_percent": 26.2,
+        "team_name": "Arsenal",
+        "actual_points": null
+      },
+      {
+        "player_id": 151,
+        "web_name": "Van Hecke",
+        "position": "DEF",
+        "predicted_points": 7.5,
+        "confidence_score": 64.2,
+        "now_cost": 45.0,
+        "selected_by_percent": 6.2,
+        "team_name": "Brighton",
+        "actual_points": null
+      },
+      {
+        "player_id": 235,
+        "web_name": "Palmer",
+        "position": "MID",
+        "predicted_points": 7.4,
+        "confidence_score": 42.5,
+        "now_cost": 106.0,
+        "selected_by_percent": 16.6,
+        "team_name": "Chelsea",
+        "actual_points": null
+      },
+      {
+        "player_id": 348,
+        "web_name": "Rodon",
+        "position": "DEF",
+        "predicted_points": 7.39,
+        "confidence_score": 62.6,
+        "now_cost": 39.0,
+        "selected_by_percent": 4.1,
+        "team_name": "Leeds",
+        "actual_points": null
+      },
+      {
+        "player_id": 374,
+        "web_name": "Konat\u00e9",
+        "position": "DEF",
+        "predicted_points": 7.23,
+        "confidence_score": 52.3,
+        "now_cost": 55.0,
+        "selected_by_percent": 4.3,
+        "team_name": "Liverpool",
+        "actual_points": null
+      },
+      {
+        "player_id": 291,
+        "web_name": "Tarkowski",
+        "position": "DEF",
+        "predicted_points": 7.19,
+        "confidence_score": 62.4,
+        "now_cost": 57.0,
+        "selected_by_percent": 11.8,
+        "team_name": "Everton",
+        "actual_points": null
+      },
+      {
+        "player_id": 724,
+        "web_name": "Geertruida",
+        "position": "DEF",
+        "predicted_points": 7.18,
+        "confidence_score": 42.8,
+        "now_cost": 45.0,
+        "selected_by_percent": 0.1,
+        "team_name": "Sunderland",
+        "actual_points": null
+      },
+      {
+        "player_id": 370,
+        "web_name": "Frimpong",
+        "position": "DEF",
+        "predicted_points": 7.17,
+        "confidence_score": 42.3,
+        "now_cost": 57.0,
+        "selected_by_percent": 5.2,
+        "team_name": "Liverpool",
+        "actual_points": null
+      },
+      {
+        "player_id": 449,
+        "web_name": "B.Fernandes",
+        "position": "MID",
+        "predicted_points": 7.06,
+        "confidence_score": 45.2,
+        "now_cost": 103.0,
+        "selected_by_percent": 45.0,
+        "team_name": "Man Utd",
+        "actual_points": null
+      },
+      {
+        "player_id": 615,
+        "web_name": "Summerville",
+        "position": "MID",
+        "predicted_points": 7.04,
+        "confidence_score": 59.0,
+        "now_cost": 55.0,
+        "selected_by_percent": 1.4,
+        "team_name": "West Ham",
+        "actual_points": null
+      },
+      {
+        "player_id": 668,
+        "web_name": "Xhaka",
+        "position": "MID",
+        "predicted_points": 6.96,
+        "confidence_score": 41.3,
+        "now_cost": 51.0,
+        "selected_by_percent": 3.3,
+        "team_name": "Sunderland",
+        "actual_points": null
+      },
+      {
+        "player_id": 200,
+        "web_name": "Anthony",
+        "position": "MID",
+        "predicted_points": 6.93,
+        "confidence_score": 43.0,
+        "now_cost": 50.0,
+        "selected_by_percent": 2.0,
+        "team_name": "Burnley",
+        "actual_points": null
+      }
+    ]
   }
 ]

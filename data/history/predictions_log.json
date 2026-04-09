@@ -823,7 +823,7 @@
         "predicted_points": 9.0,
         "confidence_score": 58.56199469751012,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 38,
@@ -832,7 +832,7 @@
         "predicted_points": 9.0,
         "confidence_score": 55.401586210319834,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 84,
@@ -841,7 +841,7 @@
         "predicted_points": 9.0,
         "confidence_score": 66.10515218591804,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 39,
@@ -850,7 +850,7 @@
         "predicted_points": 8.495257717912306,
         "confidence_score": 52.2295718659328,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 681,
@@ -858,6 +858,60 @@
         "position": "FWD",
         "predicted_points": 5.6401169915147396,
         "confidence_score": 87.16791193177099,
+        "is_wildcard": false,
+        "actual_points": 0.0
+      }
+    ]
+  },
+  {
+    "gameweek": 32,
+    "timestamp": "2026-04-09T18:47:07.555835",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 36,
+        "web_name": "Cash",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 51.38272886555391,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 256,
+        "web_name": "Mu\u00f1oz",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 52.89905381236113,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 267,
+        "web_name": "Sarr",
+        "position": "MID",
+        "predicted_points": 9.0,
+        "confidence_score": 59.58815423591686,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 32,
+        "web_name": "Martinez",
+        "position": "GKP",
+        "predicted_points": 5.728624347321344,
+        "confidence_score": 89.14497389285376,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 90,
+        "web_name": "Scott",
+        "position": "MID",
+        "predicted_points": 5.386981994729148,
+        "confidence_score": 51.90472184758441,
         "is_wildcard": false,
         "actual_points": null
       }
