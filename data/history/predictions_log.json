@@ -877,7 +877,7 @@
         "predicted_points": 9.0,
         "confidence_score": 51.38272886555391,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 256,
@@ -886,7 +886,7 @@
         "predicted_points": 9.0,
         "confidence_score": 52.89905381236113,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 267,
@@ -895,7 +895,7 @@
         "predicted_points": 9.0,
         "confidence_score": 59.58815423591686,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 32,
@@ -904,7 +904,7 @@
         "predicted_points": 5.728624347321344,
         "confidence_score": 89.14497389285376,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 90,
@@ -912,6 +912,60 @@
         "position": "MID",
         "predicted_points": 5.386981994729148,
         "confidence_score": 51.90472184758441,
+        "is_wildcard": false,
+        "actual_points": 12.0
+      }
+    ]
+  },
+  {
+    "gameweek": 33,
+    "timestamp": "2026-04-17T12:54:17.686883",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 317,
+        "web_name": "Andersen",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 58.91455513272902,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 402,
+        "web_name": "A\u00eft-Nouri",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 55.080243868986166,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 47,
+        "web_name": "Rogers",
+        "position": "MID",
+        "predicted_points": 9.0,
+        "confidence_score": 65.02841319607813,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 84,
+        "web_name": "Tavernier",
+        "position": "MID",
+        "predicted_points": 9.0,
+        "confidence_score": 61.22226305894678,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 736,
+        "web_name": "Donnarumma",
+        "position": "GKP",
+        "predicted_points": 5.340475123922174,
+        "confidence_score": 73.61900495688698,
         "is_wildcard": false,
         "actual_points": null
       }
