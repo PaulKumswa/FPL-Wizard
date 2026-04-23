@@ -161,7 +161,8 @@ def get_predictions():
                 hist_ids = [p['player_id'] for p in gw_entry['picks']]
                 
                 # Filter DataFrame for these players
-                final_df = df[df['element'].isin(hist_ids)].copy()
+                # Deduplicate: DGW players appear multiple times (one row per fixture)
+                final_df = df[df['element'].isin(hist_ids)].drop_duplicates(subset=['element']).copy()
                 
                 # Ensure we strictly follow the history order/content if possible, 
                 # or just return these players. 
