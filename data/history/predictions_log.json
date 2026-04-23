@@ -931,7 +931,7 @@
         "predicted_points": 9.0,
         "confidence_score": 58.91455513272902,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 402,
@@ -940,7 +940,7 @@
         "predicted_points": 9.0,
         "confidence_score": 55.080243868986166,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 47,
@@ -949,7 +949,7 @@
         "predicted_points": 9.0,
         "confidence_score": 65.02841319607813,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 84,
@@ -958,7 +958,7 @@
         "predicted_points": 9.0,
         "confidence_score": 61.22226305894678,
         "is_wildcard": false,
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 736,
@@ -966,6 +966,60 @@
         "position": "GKP",
         "predicted_points": 5.340475123922174,
         "confidence_score": 73.61900495688698,
+        "is_wildcard": false,
+        "actual_points": 2.0
+      }
+    ]
+  },
+  {
+    "gameweek": 34,
+    "timestamp": "2026-04-23T18:54:29.537531",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 531,
+        "web_name": "Ballard",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 52.37422675541421,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 724,
+        "web_name": "Geertruida",
+        "position": "DEF",
+        "predicted_points": 9.0,
+        "confidence_score": 50.19258626746078,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 47,
+        "web_name": "Rogers",
+        "position": "MID",
+        "predicted_points": 9.0,
+        "confidence_score": 55.66425126558955,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 329,
+        "web_name": "Wilson",
+        "position": "MID",
+        "predicted_points": 9.0,
+        "confidence_score": 57.172697785991964,
+        "is_wildcard": false,
+        "actual_points": null
+      },
+      {
+        "player_id": 32,
+        "web_name": "Martinez",
+        "position": "GKP",
+        "predicted_points": 5.491097546418157,
+        "confidence_score": 79.64390185672625,
         "is_wildcard": false,
         "actual_points": null
       }
