@@ -195,6 +195,9 @@ def select_best_team(df):
         (df['confidence_score'] >= MIN_CONFIDENCE)
     ].copy()
     
+    # 3b. Deduplicate: DGW players appear multiple times (one row per fixture)
+    pool = pool.drop_duplicates(subset=['element'])
+    
     # 4. Sort by predicted points (highest upside within confident players)
     pool = pool.sort_values('predicted_points', ascending=False)
     
@@ -202,10 +205,15 @@ def select_best_team(df):
     final_picks = []
     team_counts = {}
     position_counts = {}
+    picked_ids = set()
     
     for _, player in pool.iterrows():
         if len(final_picks) >= 5:
             break
+        
+        player_id = player.get('element', 0)
+        if player_id in picked_ids:
+            continue
         
         team_id = player.get('team', 0)
         if team_counts.get(team_id, 0) >= 3:
@@ -218,6 +226,7 @@ def select_best_team(df):
         pick_dict = player.to_dict()
         pick_dict['is_wildcard'] = False
         final_picks.append(pick_dict)
+        picked_ids.add(player_id)
         team_counts[team_id] = team_counts.get(team_id, 0) + 1
         position_counts[pos_id] = position_counts.get(pos_id, 0) + 1
     
