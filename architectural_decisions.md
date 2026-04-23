@@ -129,6 +129,7 @@ Models are trained independently for each position (`element_type`) to capture u
 ### 3.3 Inference
 *   Generates predictions for the **Next Gameweek** only.
 *   Filters: `status != suspended/unavailable/injured`, `chance_of_playing >= 75%`.
+*   **DGW Deduplication**: During Double Gameweeks, `inference_data.csv` contains one row per fixture per player (different opponents). Both `select_best_team()` and the history-loading path in `app.py` deduplicate by `element` to ensure each player appears once in predictions. See Section 16.
 *   Selection: Top 5 by reliability score (position-agnostic, £7.5m cost cap, max 3 per team). See Section 9.
 
 ## 4. Operational Decisions
@@ -229,6 +230,7 @@ The v3 selection logic forced 1 player per position (GKP, DEF, MID, FWD) + 1 wil
 ### 9.4 Implementation
 *   **Config** (`src/config.py`): `MAX_COST_HARD`, `MIN_CONFIDENCE`, `MAX_PREDICTED_POINTS`, `MAX_PER_POSITION`
 *   **Inference** (`src/inference.py`): `select_best_team(df)` — greedy pick from sorted pool with position + team caps
+*   **DGW safety** (`src/inference.py`): `drop_duplicates(subset=['element'])` + `picked_ids` set prevents duplicate player selections
 *   **Prediction cap** (`src/inference.py`): `np.clip(expected_pts, 0, MAX_PREDICTED_POINTS)` in `predict_points()`
 *   **No wildcard concept** — all 5 picks selected on equal merit. `is_wildcard = False` for all.
 
@@ -454,3 +456,34 @@ Performance statistics are calculated and displayed in the UI via `/api/model-st
 *   **Rationale**: Allows analysis of which good predictions the selection logic left on the table
 
 This allows users to see how model improvements have affected prediction accuracy over time.
+
+## 16. Double Gameweek (DGW) Handling (Added Apr 2026)
+
+### 16.1 Problem
+During Double Gameweeks, some teams play two fixtures. The preprocessing pipeline (`preprocess.py`) creates one row per fixture per player, resulting in duplicate entries in `inference_data.csv` with different `next_opponent_id`, `opponent_strength`, `is_home`, and `opponent_team_code` values. This caused:
+*   **Duplicate player cards** on the predictions page (players shown twice)
+*   **Potential double-selection** in `select_best_team()` if the same player appears in the sorted pool twice
+
+### 16.2 Current Fix: Deduplication
+*   **`src/app.py`**: When loading picks from history, `drop_duplicates(subset=['element'])` collapses DGW rows to one per player before returning to the frontend.
+*   **`src/inference.py`**: `select_best_team()` deduplicates the candidate pool by `element` before ranking. A `picked_ids` set in the greedy loop provides a secondary safety net.
+*   **Kept row**: The first row encountered (based on DataFrame order) is kept. Since `predicted_points` and `confidence_score` are mapped from history in the display path, the only "arbitrary" fields are fixture-specific metadata (opponent name, home/away).
+*   **Test coverage**: `test_select_best_team_dgw_dedup` and `test_select_best_team_dgw_no_double_pick` in `tests/test_inference.py`.
+
+### 16.3 Planned Enhancement: DGW-Aware Scoring
+> **Status**: Under consideration for future implementation.
+
+Currently, predictions are per-fixture — a DGW player's predicted points reflect a single fixture, not the sum of both. This **undervalues DGW players** compared to single-gameweek players, since they actually play twice and can accumulate points from both matches.
+
+**Proposed approach**: Aggregate predicted points across fixtures for DGW players:
+```
+DGW_predicted_points = sum(predicted_points per fixture)
+```
+
+**Open questions**:
+*   **Prediction cap**: `MAX_PREDICTED_POINTS = 9` would need to be raised or conditionally applied for DGW sums (~18 max).
+*   **Confidence aggregation**: How to combine confidence scores across two different fixtures (max? weighted average?).
+*   **Selection bias**: Summed DGW points (~10-18) would strongly dominate single-GW players (~5-9), potentially overriding the underdog selection philosophy.
+*   **History log format**: Would need schema changes to log per-fixture breakdowns.
+
+This will be evaluated based on DGW frequency and whether current dedup-only handling causes missed value.

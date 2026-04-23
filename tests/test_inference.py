@@ -5,6 +5,7 @@ It verifies:
 - `predict_points` correctly tracks form (via a MockModel)
 - `calculate_confidence` with position-specific weights
 - `select_best_team` picks top 5 by reliability, respects cost cap and max 3 per team
+- `select_best_team` deduplicates DGW players (multiple rows per fixture) to prevent duplicate picks
 """
 
 import pytest
@@ -168,3 +169,67 @@ def test_select_best_team_max_per_position():
     assert 5 in team['element'].values  # MID
     assert 6 in team['element'].values  # FWD
     assert 7 in team['element'].values  # GKP
+
+
+def test_select_best_team_dgw_dedup():
+    """DGW players with multiple rows (one per fixture) should be deduplicated.
+    
+    In a Double Gameweek, preprocess.py creates one row per fixture per player,
+    with different opponent_strength/is_home values. select_best_team must
+    collapse these to one pick per player.
+    """
+    data = {
+        # Player 1 appears TWICE (DGW: two fixtures with different opponents)
+        'element':        [1,    1,    2,    3,    4,    5,    6],
+        'web_name':       ['DGW_Star', 'DGW_Star', 'P2', 'P3', 'P4', 'P5', 'P6'],
+        'team':           [1,    1,    2,    3,    4,    5,    6],
+        'element_type':   [3,    3,    2,    4,    3,    2,    1],  # MID, DEF, FWD, MID, DEF, GKP
+        'now_cost':       [50] * 7,
+        'selected_by_percent': [5.0] * 7,
+        'predicted_points': [9, 8.5, 8, 7.5, 7, 6.5, 6],  # Player 1 has two different scores
+        'confidence_score': [80, 75, 80, 80, 80, 80, 80],
+        'opponent_strength': [3, 5, 4, 4, 4, 4, 4],  # Different opponents for DGW player
+        'is_home':        [1, 0, 1, 0, 1, 0, 1],     # Home for one, away for other
+        'status': ['a'] * 7,
+        'chance_of_playing_next_round': [100] * 7
+    }
+    df = pd.DataFrame(data)
+    team = select_best_team(df)
+    
+    # Player 1 should appear exactly ONCE despite having two rows
+    player1_count = len(team[team['element'] == 1])
+    assert player1_count == 1, f"DGW player should appear once, got {player1_count}"
+    
+    # Should still select exactly 5 unique players
+    assert len(team) == 5
+    assert team['element'].nunique() == 5, "All 5 picks should be unique players"
+
+
+def test_select_best_team_dgw_no_double_pick():
+    """Even if multiple DGW rows pass all filters, a player must never be picked twice.
+    
+    This tests the picked_ids guard: if deduplication somehow doesn't catch a 
+    duplicate, the greedy loop's picked_ids set must prevent double selection.
+    """
+    data = {
+        # Player 1 appears THREE times (extreme DGW edge case)
+        'element':        [1,    1,    1,    2,    3,    4,    5],
+        'web_name':       ['Triple', 'Triple', 'Triple', 'P2', 'P3', 'P4', 'P5'],
+        'team':           [1,    1,    1,    2,    3,    4,    5],
+        'element_type':   [3,    3,    3,    2,    4,    1,    2],
+        'now_cost':       [50] * 7,
+        'selected_by_percent': [5.0] * 7,
+        'predicted_points': [9, 9, 9, 8, 7, 6, 5],
+        'confidence_score': [80] * 7,
+        'status': ['a'] * 7,
+        'chance_of_playing_next_round': [100] * 7
+    }
+    df = pd.DataFrame(data)
+    team = select_best_team(df)
+    
+    # Player 1 must appear at most once
+    player1_count = len(team[team['element'] == 1])
+    assert player1_count <= 1, f"Player should appear at most once, got {player1_count}"
+    
+    # All selected players must be unique
+    assert team['element'].nunique() == len(team), "No duplicate players allowed in final picks"

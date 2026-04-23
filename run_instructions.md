@@ -1,4 +1,4 @@
-﻿# Run Instructions
+# Run Instructions
 
 ## Quick Start
 
@@ -126,6 +126,11 @@ To update the site with new predictions:
 ---
 
 ## Testing
+
+### Unit Tests
+```bash
+python -m pytest tests/ -v
+```
 
 ### Smoke Test
 `src/test_api.py` contains a lightweight smoke test that hits each data source and prints samples.
