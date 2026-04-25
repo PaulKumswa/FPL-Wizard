@@ -60,8 +60,8 @@ POSITION_MAP_REV = {'GKP': 1, 'DEF': 2, 'MID': 3, 'FWD': 4}
 
 # Selection Criteria
 MAX_COST_HARD = 75  # £7.5m hard cap — captures the £4.5-6.0m sweet spot, excludes premiums
-MIN_CONFIDENCE = 50  # Minimum confidence score (%) — raised from 40 due to low hit rate in 40-50 band
-MAX_PREDICTED_POINTS = 9  # Cap predicted points to prevent over-prediction outliers
+MIN_CONFIDENCE = 60  # Minimum confidence score (%) — raised from 50; 50-60% band had ~12% hit rate vs ~37% for 80%+
+MAX_PREDICTED_POINTS = 14  # Cap predicted points — raised from 9 which caused saturation (76% of picks tied at 9.0 from GW30+)
 MAX_PER_POSITION = 2  # Max picks per position to ensure positional diversity
 
 # Legacy percentile-based thresholds (unused by v4 selection logic)

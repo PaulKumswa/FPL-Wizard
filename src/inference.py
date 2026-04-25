@@ -88,6 +88,36 @@ def calculate_confidence(p_goal, p_assist, p_cs, pos_id):
     return confidence_val * 100.0
 
 
+def calculate_p_six_plus(p_goal, p_assist, p_cs, pos_id):
+    """
+    Calculate P(player scores >= 6 FPL points) from component probabilities.
+    
+    The main paths to 6+ points per position:
+      GKP: Clean sheet (2+4=6) or Goal (2+10=12)
+      DEF: Clean sheet (2+4=6) or Goal (2+6=8)
+      MID: Goal (2+5=7) or Assist+CS (2+3+1=6)
+      FWD: Goal (2+4=6)
+    
+    Assumes independence between goal, assist, and clean sheet events.
+    """
+    p_goal = np.asarray(p_goal, dtype=float)
+    p_assist = np.asarray(p_assist, dtype=float)
+    p_cs = np.asarray(p_cs, dtype=float)
+
+    if pos_id == 1:  # GKP: CS alone = 6, goal alone = 12
+        p6 = 1 - (1 - p_cs) * (1 - p_goal)
+    elif pos_id == 2:  # DEF: CS alone = 6, goal alone = 8
+        p6 = 1 - (1 - p_cs) * (1 - p_goal)
+    elif pos_id == 3:  # MID: goal alone = 7, assist+CS = 6
+        p6 = 1 - (1 - p_goal) * (1 - p_assist * p_cs)
+    elif pos_id == 4:  # FWD: goal alone = 6
+        p6 = p_goal
+    else:
+        p6 = np.zeros_like(p_goal)
+
+    return np.clip(p6, 0.0, 1.0)
+
+
 def predict_points(df, models, component_models=None):
     """
     Apply models to the dataframe to generate 'predicted_points'.
@@ -98,6 +128,7 @@ def predict_points(df, models, component_models=None):
     df['p_goal'] = 0.0
     df['p_assist'] = 0.0
     df['p_cleansheet'] = 0.0
+    df['p_six_plus'] = 0.0  # P(player scores >= 6 pts)
     df['confidence_score'] = 50.0  # Default moderate confidence
     
     use_components = component_models is not None and len(component_models) > 0
@@ -147,16 +178,23 @@ def predict_points(df, models, component_models=None):
             confidence = calculate_confidence(p_goal, p_assist, p_cs, pos_id)
             df.loc[pos_mask, 'confidence_score'] = confidence
             
-            # Aggregate into expected points
-            expected_pts = (
+            # Aggregate into expected points (component model)
+            component_pts = (
                 p_goal * GOAL_POINTS[pos_id] +
                 p_assist * ASSIST_POINTS +
                 p_cs * CLEAN_SHEET_POINTS[pos_id] +
                 APPEARANCE_POINTS
             )
-            # Cap predicted points to prevent over-prediction outliers
-            expected_pts = np.clip(expected_pts, 0, MAX_PREDICTED_POINTS)
-            df.loc[pos_mask, 'predicted_points'] = expected_pts
+            # Blend component (60%) with legacy regressor (40%) to reduce over-prediction.
+            # Component model ranks well but over-predicts; legacy is more conservative.
+            blended_pts = (0.6 * component_pts) + (0.4 * legacy_preds)
+            # Cap to prevent extreme outliers
+            blended_pts = np.clip(blended_pts, 0, MAX_PREDICTED_POINTS)
+            df.loc[pos_mask, 'predicted_points'] = blended_pts
+            
+            # Calculate P(>=6 points) — the actual selection metric
+            p6 = calculate_p_six_plus(p_goal, p_assist, p_cs, pos_id)
+            df.loc[pos_mask, 'p_six_plus'] = p6
         else:
             # Fallback to legacy
             df.loc[pos_mask, 'predicted_points'] = legacy_preds
@@ -198,8 +236,10 @@ def select_best_team(df):
     # 3b. Deduplicate: DGW players appear multiple times (one row per fixture)
     pool = pool.drop_duplicates(subset=['element'])
     
-    # 4. Sort by predicted points (highest upside within confident players)
-    pool = pool.sort_values('predicted_points', ascending=False)
+    # 4. Sort by P(>=6 points) — directly optimizes for the 6+ hit target
+    #    Falls back to predicted_points if p_six_plus is not available
+    sort_col = 'p_six_plus' if 'p_six_plus' in pool.columns and pool['p_six_plus'].sum() > 0 else 'predicted_points'
+    pool = pool.sort_values(sort_col, ascending=False)
     
     # 5. Greedy selection: top 5 with max 3 per team, max per position
     final_picks = []

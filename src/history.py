@@ -190,10 +190,8 @@ def save_complete_predictions(all_predictions_df, gameweek_info):
 def update_actuals():
     """
     Updates actual points for past gameweeks using fpl_histories.
+    Backfills both predictions_log.json (top 5) and full_predictions_log.json (top 30).
     """
-    history = load_history()
-    updated = False
-    
     # Load latest histories
     try:
         histories_path = Path('data/raw/fpl_histories.parquet')
@@ -205,6 +203,10 @@ def update_actuals():
     except Exception as e:
         print(f"Error loading histories: {e}")
         return
+
+    # --- Backfill predictions_log.json (top 5 picks) ---
+    history = load_history()
+    updated = False
 
     for entry in history:
         gw = entry['gameweek']
@@ -221,7 +223,6 @@ def update_actuals():
                 continue
                 
             # Find match in histories
-            # Filter by player_id (element) and round (gameweek)
             match = df_hist[
                 (df_hist['element'] == pick['player_id']) & 
                 (df_hist['round'] == gw)
@@ -238,6 +239,44 @@ def update_actuals():
         print("History log updated with actual points.")
     else:
         print("No new actual points found.")
+
+    # --- Backfill full_predictions_log.json (top 30 scouting report) ---
+    full_updated = False
+    full_log = []
+    if FULL_PREDICTIONS_FILE.exists():
+        try:
+            with open(FULL_PREDICTIONS_FILE, 'r') as f:
+                full_log = json.load(f)
+        except json.JSONDecodeError:
+            full_log = []
+
+    for entry in full_log:
+        gw = entry['gameweek']
+        predictions = entry.get('predictions', [])
+        
+        needs_update = any(p.get('actual_points') is None for p in predictions)
+        if not needs_update:
+            continue
+
+        for pred in predictions:
+            if pred.get('actual_points') is not None:
+                continue
+            
+            match = df_hist[
+                (df_hist['element'] == pred['player_id']) &
+                (df_hist['round'] == gw)
+            ]
+            
+            if not match.empty:
+                pred['actual_points'] = float(match.iloc[0]['total_points'])
+                full_updated = True
+
+    if full_updated:
+        with open(FULL_PREDICTIONS_FILE, 'w') as f:
+            json.dump(full_log, f, indent=2)
+        print("Full predictions log updated with actual points.")
+    else:
+        print("No new full prediction actuals found.")
 
 
 def backfill_model_versions():

@@ -139,22 +139,26 @@ def test_position_specific_scoring(sample_df, mock_models, mock_component_models
 
 
 def test_expected_points_formula(sample_df, mock_models, mock_component_models):
-    """Test that expected points are calculated correctly from components."""
+    """Test that expected points are calculated correctly from blended components."""
     df = predict_points(sample_df, mock_models, mock_component_models)
     
-    # Verify formula for each position
+    # Verify blended formula for each position:
+    # predicted_points = 0.6 * component_pts + 0.4 * legacy_pts
+    # where legacy_pts = 4.0 (from MockRegressor)
     for pos_id in [1, 2, 3, 4]:
         row = df[df['element_type'] == pos_id].iloc[0]
         
-        expected = (
+        component_pts = (
             row['p_goal'] * GOAL_POINTS[pos_id] +
             row['p_assist'] * ASSIST_POINTS +
             row['p_cleansheet'] * CLEAN_SHEET_POINTS[pos_id] +
             APPEARANCE_POINTS
         )
+        legacy_pts = 4.0  # MockRegressor returns 4.0
+        blended = 0.6 * component_pts + 0.4 * legacy_pts
         
-        assert abs(row['predicted_points'] - expected) < 0.01, \
-            f"Position {pos_id}: expected {expected}, got {row['predicted_points']}"
+        assert abs(row['predicted_points'] - blended) < 0.01, \
+            f"Position {pos_id}: expected {blended}, got {row['predicted_points']}"
 
 
 def test_legacy_fallback(sample_df, mock_models):

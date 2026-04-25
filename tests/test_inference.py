@@ -4,14 +4,15 @@ Description: Unit tests for the src.inference module.
 It verifies:
 - `predict_points` correctly tracks form (via a MockModel)
 - `calculate_confidence` with position-specific weights
-- `select_best_team` picks top 5 by reliability, respects cost cap and max 3 per team
+- `calculate_p_six_plus` probability derivation per position
+- `select_best_team` picks top 5 by P(>=6), respects cost cap and max 3 per team
 - `select_best_team` deduplicates DGW players (multiple rows per fixture) to prevent duplicate picks
 """
 
 import pytest
 import pandas as pd
 import numpy as np
-from src.inference import select_best_team, predict_points, calculate_confidence
+from src.inference import select_best_team, predict_points, calculate_confidence, calculate_p_six_plus
 from src.config import MAX_COST_HARD, MAX_PER_POSITION
 
 
@@ -42,6 +43,40 @@ def test_calculate_confidence_arrays():
     assert confidence[0] > 60  # All decisive (near 0)
     assert confidence[1] < 10  # All uncertain (at 0.5)
     assert confidence[2] > 60  # All decisive (near 1)
+
+
+# --- P(>=6) tests ---
+
+def test_p_six_plus_def_clean_sheet():
+    """DEF with high CS probability should have high P(>=6)."""
+    # DEF: P(>=6) = 1 - (1-P(cs)) * (1-P(goal))
+    p6 = calculate_p_six_plus(0.05, 0.10, 0.60, pos_id=2)
+    # = 1 - 0.95 * 0.40 = 1 - 0.38 = 0.62
+    assert abs(p6 - 0.62) < 0.01
+
+
+def test_p_six_plus_fwd_goal():
+    """FWD P(>=6) is just P(goal)."""
+    p6 = calculate_p_six_plus(0.30, 0.15, 0.0, pos_id=4)
+    assert abs(p6 - 0.30) < 0.01
+
+
+def test_p_six_plus_mid():
+    """MID: P(>=6) = 1 - (1-P(goal)) * (1 - P(assist)*P(cs))."""
+    p6 = calculate_p_six_plus(0.20, 0.25, 0.50, pos_id=3)
+    # = 1 - (1-0.20) * (1 - 0.25*0.50) = 1 - 0.80 * 0.875 = 1 - 0.70 = 0.30
+    assert abs(p6 - 0.30) < 0.01
+
+
+def test_p_six_plus_arrays():
+    """P(>=6) should work with numpy arrays."""
+    p_goal = np.array([0.0, 0.5, 1.0])
+    p_cs = np.array([0.0, 0.5, 1.0])
+    p6 = calculate_p_six_plus(p_goal, np.zeros(3), p_cs, pos_id=2)
+    # [0, 1-(0.5*0.5), 1-(0*0)] = [0, 0.75, 1.0]
+    assert abs(p6[0] - 0.0) < 0.01
+    assert abs(p6[1] - 0.75) < 0.01
+    assert abs(p6[2] - 1.0) < 0.01
 
 # Mock Model
 class MockModel:
@@ -89,6 +124,8 @@ def test_predict_points(sample_df, mock_models):
 
 def test_select_best_team_basic(sample_df, mock_models):
     df = predict_points(sample_df, mock_models)
+    # Legacy-only predictions default to 50% confidence; override to test selection logic
+    df['confidence_score'] = 80.0
     team = select_best_team(df)
     
     # Should select exactly 5 players
@@ -105,6 +142,8 @@ def test_select_best_team_cost_cap(sample_df, mock_models):
     sample_df.loc[sample_df['element'] == 17, 'now_cost'] = MAX_COST_HARD + 1
     
     df = predict_points(sample_df, mock_models)
+    # Legacy-only predictions default to 50% confidence; override to test selection logic
+    df['confidence_score'] = 80.0
     team = select_best_team(df)
     
     # Player 17 should NOT be selected despite high form
@@ -120,6 +159,7 @@ def test_select_best_team_max_per_team():
         'now_cost': [50] * 6,
         'selected_by_percent': [5.0] * 6,
         'predicted_points': [9, 8.5, 8, 7.5, 7, 6.5],
+        'p_six_plus': [0.9, 0.85, 0.8, 0.75, 0.7, 0.65],
         'confidence_score': [80, 80, 80, 80, 80, 80],
         'status': ['a'] * 6,
         'chance_of_playing_next_round': [100] * 6
@@ -152,6 +192,7 @@ def test_select_best_team_max_per_position():
         'now_cost': [50] * 7,
         'selected_by_percent': [5.0] * 7,
         'predicted_points': [9, 8.5, 8, 7.5, 7, 6.5, 6],
+        'p_six_plus': [0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6],
         'confidence_score': [80, 80, 80, 80, 80, 80, 80],
         'status': ['a'] * 7,
         'chance_of_playing_next_round': [100] * 7
@@ -187,6 +228,7 @@ def test_select_best_team_dgw_dedup():
         'now_cost':       [50] * 7,
         'selected_by_percent': [5.0] * 7,
         'predicted_points': [9, 8.5, 8, 7.5, 7, 6.5, 6],  # Player 1 has two different scores
+        'p_six_plus': [0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6],
         'confidence_score': [80, 75, 80, 80, 80, 80, 80],
         'opponent_strength': [3, 5, 4, 4, 4, 4, 4],  # Different opponents for DGW player
         'is_home':        [1, 0, 1, 0, 1, 0, 1],     # Home for one, away for other
@@ -220,6 +262,7 @@ def test_select_best_team_dgw_no_double_pick():
         'now_cost':       [50] * 7,
         'selected_by_percent': [5.0] * 7,
         'predicted_points': [9, 9, 9, 8, 7, 6, 5],
+        'p_six_plus': [0.9, 0.9, 0.9, 0.8, 0.7, 0.6, 0.5],
         'confidence_score': [80] * 7,
         'status': ['a'] * 7,
         'chance_of_playing_next_round': [100] * 7
