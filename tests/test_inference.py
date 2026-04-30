@@ -4,15 +4,16 @@ Description: Unit tests for the src.inference module.
 It verifies:
 - `predict_points` correctly tracks form (via a MockModel)
 - `calculate_confidence` with position-specific weights
-- `select_best_team` picks top 5 by reliability, respects cost cap and max 3 per team
+- `calculate_p_six_plus` probability derivation per position
+- `select_best_team` picks top 5 by P(>=6), respects cost cap and max 3 per team
 - `select_best_team` deduplicates DGW players (multiple rows per fixture) to prevent duplicate picks
 """
 
 import pytest
 import pandas as pd
 import numpy as np
-from src.inference import select_best_team, predict_points, calculate_confidence
-from src.config import MAX_COST_HARD, MAX_PER_POSITION
+from src.inference import select_best_team, predict_points, calculate_confidence, calculate_p_six_plus, aggregate_dgw_predictions
+from src.config import MAX_COST_HARD, MAX_PER_POSITION, MAX_PREDICTED_POINTS_DGW
 
 
 def test_calculate_confidence_high():
@@ -42,6 +43,40 @@ def test_calculate_confidence_arrays():
     assert confidence[0] > 60  # All decisive (near 0)
     assert confidence[1] < 10  # All uncertain (at 0.5)
     assert confidence[2] > 60  # All decisive (near 1)
+
+
+# --- P(>=6) tests ---
+
+def test_p_six_plus_def_clean_sheet():
+    """DEF with high CS probability should have high P(>=6)."""
+    # DEF: P(>=6) = 1 - (1-P(cs)) * (1-P(goal))
+    p6 = calculate_p_six_plus(0.05, 0.10, 0.60, pos_id=2)
+    # = 1 - 0.95 * 0.40 = 1 - 0.38 = 0.62
+    assert abs(p6 - 0.62) < 0.01
+
+
+def test_p_six_plus_fwd_goal():
+    """FWD P(>=6) is just P(goal)."""
+    p6 = calculate_p_six_plus(0.30, 0.15, 0.0, pos_id=4)
+    assert abs(p6 - 0.30) < 0.01
+
+
+def test_p_six_plus_mid():
+    """MID: P(>=6) = 1 - (1-P(goal)) * (1 - P(assist)*P(cs))."""
+    p6 = calculate_p_six_plus(0.20, 0.25, 0.50, pos_id=3)
+    # = 1 - (1-0.20) * (1 - 0.25*0.50) = 1 - 0.80 * 0.875 = 1 - 0.70 = 0.30
+    assert abs(p6 - 0.30) < 0.01
+
+
+def test_p_six_plus_arrays():
+    """P(>=6) should work with numpy arrays."""
+    p_goal = np.array([0.0, 0.5, 1.0])
+    p_cs = np.array([0.0, 0.5, 1.0])
+    p6 = calculate_p_six_plus(p_goal, np.zeros(3), p_cs, pos_id=2)
+    # [0, 1-(0.5*0.5), 1-(0*0)] = [0, 0.75, 1.0]
+    assert abs(p6[0] - 0.0) < 0.01
+    assert abs(p6[1] - 0.75) < 0.01
+    assert abs(p6[2] - 1.0) < 0.01
 
 # Mock Model
 class MockModel:
@@ -89,6 +124,8 @@ def test_predict_points(sample_df, mock_models):
 
 def test_select_best_team_basic(sample_df, mock_models):
     df = predict_points(sample_df, mock_models)
+    # Legacy-only predictions default to 50% confidence; override to test selection logic
+    df['confidence_score'] = 80.0
     team = select_best_team(df)
     
     # Should select exactly 5 players
@@ -105,6 +142,8 @@ def test_select_best_team_cost_cap(sample_df, mock_models):
     sample_df.loc[sample_df['element'] == 17, 'now_cost'] = MAX_COST_HARD + 1
     
     df = predict_points(sample_df, mock_models)
+    # Legacy-only predictions default to 50% confidence; override to test selection logic
+    df['confidence_score'] = 80.0
     team = select_best_team(df)
     
     # Player 17 should NOT be selected despite high form
@@ -120,6 +159,7 @@ def test_select_best_team_max_per_team():
         'now_cost': [50] * 6,
         'selected_by_percent': [5.0] * 6,
         'predicted_points': [9, 8.5, 8, 7.5, 7, 6.5],
+        'p_six_plus': [0.9, 0.85, 0.8, 0.75, 0.7, 0.65],
         'confidence_score': [80, 80, 80, 80, 80, 80],
         'status': ['a'] * 6,
         'chance_of_playing_next_round': [100] * 6
@@ -152,6 +192,7 @@ def test_select_best_team_max_per_position():
         'now_cost': [50] * 7,
         'selected_by_percent': [5.0] * 7,
         'predicted_points': [9, 8.5, 8, 7.5, 7, 6.5, 6],
+        'p_six_plus': [0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6],
         'confidence_score': [80, 80, 80, 80, 80, 80, 80],
         'status': ['a'] * 7,
         'chance_of_playing_next_round': [100] * 7
@@ -187,6 +228,7 @@ def test_select_best_team_dgw_dedup():
         'now_cost':       [50] * 7,
         'selected_by_percent': [5.0] * 7,
         'predicted_points': [9, 8.5, 8, 7.5, 7, 6.5, 6],  # Player 1 has two different scores
+        'p_six_plus': [0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6],
         'confidence_score': [80, 75, 80, 80, 80, 80, 80],
         'opponent_strength': [3, 5, 4, 4, 4, 4, 4],  # Different opponents for DGW player
         'is_home':        [1, 0, 1, 0, 1, 0, 1],     # Home for one, away for other
@@ -220,6 +262,7 @@ def test_select_best_team_dgw_no_double_pick():
         'now_cost':       [50] * 7,
         'selected_by_percent': [5.0] * 7,
         'predicted_points': [9, 9, 9, 8, 7, 6, 5],
+        'p_six_plus': [0.9, 0.9, 0.9, 0.8, 0.7, 0.6, 0.5],
         'confidence_score': [80] * 7,
         'status': ['a'] * 7,
         'chance_of_playing_next_round': [100] * 7
@@ -233,3 +276,112 @@ def test_select_best_team_dgw_no_double_pick():
     
     # All selected players must be unique
     assert team['element'].nunique() == len(team), "No duplicate players allowed in final picks"
+
+
+# --- DGW Aggregation tests ---
+
+def test_aggregate_dgw_predictions_basic():
+    """DGW players should have summed points, hybrid P(>=6), and averaged confidence."""
+    data = {
+        # Player 1 has two fixtures (DGW)
+        'element':           [1,    1,    2],
+        'web_name':          ['DGW', 'DGW', 'SGW'],
+        'team':              [1,    1,    2],
+        'element_type':      [2,    2,    3],
+        'now_cost':          [50,   50,   60],
+        'predicted_points':  [4.5,  3.5,  6.0],
+        'predicted_points_legacy': [4.0, 3.0, 5.0],
+        'p_goal':            [0.05, 0.04, 0.20],
+        'p_assist':          [0.10, 0.08, 0.15],
+        'p_cleansheet':      [0.55, 0.25, 0.30],
+        'p_six_plus':        [0.57, 0.28, 0.35],
+        'confidence_score':  [70.0, 60.0, 55.0],
+    }
+    df = pd.DataFrame(data)
+    result = aggregate_dgw_predictions(df)
+    
+    # Should have 2 rows (one per player)
+    assert len(result) == 2
+    
+    dgw_player = result[result['element'] == 1].iloc[0]
+    sgw_player = result[result['element'] == 2].iloc[0]
+    
+    # Points summed: 4.5 + 3.5 = 8.0
+    assert abs(dgw_player['predicted_points'] - 8.0) < 0.01
+    
+    # Confidence averaged: (70 + 60) / 2 = 65
+    assert abs(dgw_player['confidence_score'] - 65.0) < 0.01
+    
+    # P(>=6) hybrid: max(p_haul, p_accum)
+    # p_haul = 1 - (1-0.57)*(1-0.28) = 1 - 0.43*0.72 = 1 - 0.3096 = 0.6904
+    # p_accum = 8.0 / 12 = 0.6667
+    # max(0.6904, 0.6667) = 0.6904
+    assert dgw_player['p_six_plus'] > 0.65
+    
+    # DGW flags
+    assert dgw_player['is_dgw'] == True
+    assert dgw_player['dgw_fixture_count'] == 2
+    
+    # SGW player unchanged
+    assert abs(sgw_player['predicted_points'] - 6.0) < 0.01
+    assert sgw_player['is_dgw'] == False
+    assert sgw_player['dgw_fixture_count'] == 1
+
+
+def test_aggregate_dgw_predictions_no_dgw():
+    """When no DGW players exist, all rows pass through with is_dgw=False."""
+    data = {
+        'element':           [1, 2, 3],
+        'web_name':          ['A', 'B', 'C'],
+        'predicted_points':  [5.0, 6.0, 7.0],
+        'p_six_plus':        [0.3, 0.4, 0.5],
+        'confidence_score':  [70, 75, 80],
+    }
+    df = pd.DataFrame(data)
+    result = aggregate_dgw_predictions(df)
+    
+    assert len(result) == 3
+    assert all(result['is_dgw'] == False)
+    assert all(result['dgw_fixture_count'] == 1)
+    # Points unchanged
+    assert list(result['predicted_points']) == [5.0, 6.0, 7.0]
+
+
+def test_aggregate_dgw_predictions_cap():
+    """DGW summed predictions should be capped at MAX_PREDICTED_POINTS_DGW."""
+    data = {
+        # Two high-scoring fixtures that would sum beyond cap
+        'element':           [1, 1],
+        'web_name':          ['Star', 'Star'],
+        'predicted_points':  [12.0, 12.0],  # Sum = 24, exceeds cap
+        'p_six_plus':        [0.8, 0.7],
+        'confidence_score':  [85, 80],
+    }
+    df = pd.DataFrame(data)
+    result = aggregate_dgw_predictions(df)
+    
+    assert len(result) == 1
+    assert result.iloc[0]['predicted_points'] == MAX_PREDICTED_POINTS_DGW
+    assert result.iloc[0]['is_dgw'] == True
+
+
+def test_aggregate_dgw_accumulation_path():
+    """When per-fixture P(>=6) is low but summed points are high,
+    the accumulation path should produce a higher p_six_plus."""
+    data = {
+        # A MID with two tough fixtures — low P(>=6) per game but decent expected total
+        'element':           [1, 1],
+        'web_name':          ['Grinder', 'Grinder'],
+        'predicted_points':  [3.5, 3.8],  # Sum = 7.3
+        'p_six_plus':        [0.15, 0.12],  # Low haul chance per game
+        'confidence_score':  [60, 55],
+    }
+    df = pd.DataFrame(data)
+    result = aggregate_dgw_predictions(df)
+    
+    player = result.iloc[0]
+    # p_haul = 1 - (1-0.15)*(1-0.12) = 1 - 0.85*0.88 = 0.252
+    # p_accum = 7.3/12 = 0.608
+    # max(0.252, 0.608) = 0.608 — accumulation path wins
+    assert player['p_six_plus'] > 0.55, f"Accumulation path should dominate, got {player['p_six_plus']}"
+    assert player['p_six_plus'] < 0.65

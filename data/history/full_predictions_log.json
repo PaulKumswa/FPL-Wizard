@@ -12,7 +12,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 2.1,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 11.0
       },
       {
         "player_id": 82,
@@ -23,7 +23,7 @@
         "now_cost": 80.0,
         "selected_by_percent": 50.7,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 371,
@@ -34,7 +34,7 @@
         "now_cost": 56.0,
         "selected_by_percent": 2.9,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 256,
@@ -45,7 +45,7 @@
         "now_cost": 59.0,
         "selected_by_percent": 8.3,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 21,
@@ -56,7 +56,7 @@
         "now_cost": 76.0,
         "selected_by_percent": 34.8,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 20,
@@ -67,7 +67,7 @@
         "now_cost": 68.0,
         "selected_by_percent": 1.2,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 249,
@@ -78,7 +78,7 @@
         "now_cost": 77.0,
         "selected_by_percent": 46.8,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 476,
@@ -89,7 +89,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 3.2,
         "team_name": "Newcastle",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 516,
@@ -100,7 +100,7 @@
         "now_cost": 57.0,
         "selected_by_percent": 0.7,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 36,
@@ -111,7 +111,7 @@
         "now_cost": 49.0,
         "selected_by_percent": 10.9,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 574,
@@ -122,7 +122,7 @@
         "now_cost": 43.0,
         "selected_by_percent": 0.3,
         "team_name": "Spurs",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 443,
@@ -133,7 +133,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.8,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 374,
@@ -144,7 +144,7 @@
         "now_cost": 54.0,
         "selected_by_percent": 3.2,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 416,
@@ -155,7 +155,7 @@
         "now_cost": 62.0,
         "selected_by_percent": 0.6,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 19,
@@ -166,7 +166,7 @@
         "now_cost": 68.0,
         "selected_by_percent": 1.1,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 430,
@@ -177,7 +177,7 @@
         "now_cost": 149.0,
         "selected_by_percent": 67.4,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 257,
@@ -188,7 +188,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 6.3,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 113,
@@ -199,7 +199,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.7,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 673,
@@ -210,7 +210,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 0.8,
         "team_name": "Spurs",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 473,
@@ -221,7 +221,7 @@
         "now_cost": 53.0,
         "selected_by_percent": 2.5,
         "team_name": "Newcastle",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 366,
@@ -232,7 +232,7 @@
         "now_cost": 54.0,
         "selected_by_percent": 5.8,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 783,
@@ -243,7 +243,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 0.1,
         "team_name": "Brighton",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 241,
@@ -254,7 +254,7 @@
         "now_cost": 57.0,
         "selected_by_percent": 7.9,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 736,
@@ -265,7 +265,7 @@
         "now_cost": 56.0,
         "selected_by_percent": 9.0,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 253,
@@ -276,7 +276,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 7.4,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 16.0
       },
       {
         "player_id": 487,
@@ -287,7 +287,7 @@
         "now_cost": 61.0,
         "selected_by_percent": 1.3,
         "team_name": "Newcastle",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 267,
@@ -298,7 +298,7 @@
         "now_cost": 64.0,
         "selected_by_percent": 3.9,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 610,
@@ -309,7 +309,7 @@
         "now_cost": 41.0,
         "selected_by_percent": 4.5,
         "team_name": "West Ham",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 1,
@@ -320,7 +320,7 @@
         "now_cost": 60.0,
         "selected_by_percent": 35.0,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 206,
@@ -331,7 +331,7 @@
         "now_cost": 47.0,
         "selected_by_percent": 0.1,
         "team_name": "Burnley",
-        "actual_points": null
+        "actual_points": 2.0
       }
     ]
   },
@@ -348,7 +348,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 4.8,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 106,
@@ -359,7 +359,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 2.9,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 476,
@@ -370,7 +370,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 3.3,
         "team_name": "Newcastle",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 151,
@@ -381,7 +381,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 3.7,
         "team_name": "Brighton",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 442,
@@ -392,7 +392,7 @@
         "now_cost": 43.0,
         "selected_by_percent": 1.7,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 329,
@@ -403,7 +403,7 @@
         "now_cost": 59.0,
         "selected_by_percent": 20.7,
         "team_name": "Fulham",
-        "actual_points": null
+        "actual_points": 12.0
       },
       {
         "player_id": 452,
@@ -414,7 +414,7 @@
         "now_cost": 62.0,
         "selected_by_percent": 1.7,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 449,
@@ -425,7 +425,7 @@
         "now_cost": 99.0,
         "selected_by_percent": 37.3,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 13.0
       },
       {
         "player_id": 384,
@@ -436,7 +436,7 @@
         "now_cost": 73.0,
         "selected_by_percent": 5.3,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 119,
@@ -447,7 +447,7 @@
         "now_cost": 87.0,
         "selected_by_percent": 23.3,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 200,
@@ -458,7 +458,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 1.8,
         "team_name": "Burnley",
-        "actual_points": null
+        "actual_points": 10.0
       },
       {
         "player_id": 38,
@@ -469,7 +469,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 8.2,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 488,
@@ -480,7 +480,7 @@
         "now_cost": 69.0,
         "selected_by_percent": 6.7,
         "team_name": "Newcastle",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 390,
@@ -491,7 +491,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 4.9,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 382,
@@ -502,7 +502,7 @@
         "now_cost": 84.0,
         "selected_by_percent": 13.2,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 299,
@@ -513,7 +513,7 @@
         "now_cost": 62.0,
         "selected_by_percent": 3.9,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 485,
@@ -524,7 +524,7 @@
         "now_cost": 72.0,
         "selected_by_percent": 2.6,
         "team_name": "Newcastle",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 36,
@@ -535,7 +535,7 @@
         "now_cost": 49.0,
         "selected_by_percent": 11.1,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 108,
@@ -546,7 +546,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 0.2,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 443,
@@ -557,7 +557,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.8,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 146,
@@ -568,7 +568,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 1.0,
         "team_name": "Brighton",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 26,
@@ -579,7 +579,7 @@
         "now_cost": 53.0,
         "selected_by_percent": 5.2,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 373,
@@ -590,7 +590,7 @@
         "now_cost": 60.0,
         "selected_by_percent": 26.4,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 228,
@@ -601,7 +601,7 @@
         "now_cost": 49.0,
         "selected_by_percent": 2.0,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 515,
@@ -612,7 +612,7 @@
         "now_cost": 73.0,
         "selected_by_percent": 3.4,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 487,
@@ -623,7 +623,7 @@
         "now_cost": 61.0,
         "selected_by_percent": 1.2,
         "team_name": "Newcastle",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 148,
@@ -634,7 +634,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 0.3,
         "team_name": "Brighton",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 47,
@@ -645,7 +645,7 @@
         "now_cost": 77.0,
         "selected_by_percent": 31.5,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 113,
@@ -656,7 +656,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.8,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 473,
@@ -667,7 +667,7 @@
         "now_cost": 53.0,
         "selected_by_percent": 2.5,
         "team_name": "Newcastle",
-        "actual_points": null
+        "actual_points": 1.0
       }
     ]
   },
@@ -684,7 +684,7 @@
         "now_cost": 61.0,
         "selected_by_percent": 30.5,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 256,
@@ -695,7 +695,7 @@
         "now_cost": 59.0,
         "selected_by_percent": 8.3,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 532,
@@ -706,7 +706,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.3,
         "team_name": "Sunderland",
-        "actual_points": null
+        "actual_points": 8.0
       },
       {
         "player_id": 82,
@@ -717,7 +717,7 @@
         "now_cost": 82.0,
         "selected_by_percent": 54.8,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 411,
@@ -728,7 +728,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 9.8,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 21,
@@ -739,7 +739,7 @@
         "now_cost": 75.0,
         "selected_by_percent": 32.5,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 329,
@@ -750,7 +750,7 @@
         "now_cost": 60.0,
         "selected_by_percent": 23.3,
         "team_name": "Fulham",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 507,
@@ -761,7 +761,7 @@
         "now_cost": 47.0,
         "selected_by_percent": 2.3,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 417,
@@ -772,7 +772,7 @@
         "now_cost": 64.0,
         "selected_by_percent": 7.8,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 303,
@@ -783,7 +783,7 @@
         "now_cost": 52.0,
         "selected_by_percent": 3.8,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 10.0
       },
       {
         "player_id": 20,
@@ -794,7 +794,7 @@
         "now_cost": 67.0,
         "selected_by_percent": 1.0,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 807,
@@ -805,7 +805,7 @@
         "now_cost": 56.0,
         "selected_by_percent": 2.6,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 228,
@@ -816,7 +816,7 @@
         "now_cost": 49.0,
         "selected_by_percent": 1.9,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 119,
@@ -827,7 +827,7 @@
         "now_cost": 87.0,
         "selected_by_percent": 23.9,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 374,
@@ -838,7 +838,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 4.2,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 6,
@@ -849,7 +849,7 @@
         "now_cost": 61.0,
         "selected_by_percent": 13.5,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 531,
@@ -860,7 +860,7 @@
         "now_cost": 46.0,
         "selected_by_percent": 3.3,
         "team_name": "Sunderland",
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 38,
@@ -871,7 +871,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 8.2,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 515,
@@ -882,7 +882,7 @@
         "now_cost": 73.0,
         "selected_by_percent": 3.4,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 8.0
       },
       {
         "player_id": 407,
@@ -893,7 +893,7 @@
         "now_cost": 54.0,
         "selected_by_percent": 3.3,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 108,
@@ -904,7 +904,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 0.3,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 299,
@@ -915,7 +915,7 @@
         "now_cost": 62.0,
         "selected_by_percent": 4.0,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 697,
@@ -926,7 +926,7 @@
         "now_cost": 54.0,
         "selected_by_percent": 0.6,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 291,
@@ -937,7 +937,7 @@
         "now_cost": 57.0,
         "selected_by_percent": 10.7,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 15.0
       },
       {
         "player_id": 382,
@@ -948,7 +948,7 @@
         "now_cost": 83.0,
         "selected_by_percent": 10.4,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 505,
@@ -959,7 +959,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 3.2,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 416,
@@ -970,7 +970,7 @@
         "now_cost": 62.0,
         "selected_by_percent": 0.6,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 261,
@@ -981,7 +981,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 2.6,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 490,
@@ -992,7 +992,7 @@
         "now_cost": 59.0,
         "selected_by_percent": 0.3,
         "team_name": "Newcastle",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 508,
@@ -1003,7 +1003,7 @@
         "now_cost": 47.0,
         "selected_by_percent": 2.8,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 1.0
       }
     ]
   },
@@ -1020,7 +1020,7 @@
         "now_cost": 63.0,
         "selected_by_percent": 28.3,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 21,
@@ -1031,7 +1031,7 @@
         "now_cost": 74.0,
         "selected_by_percent": 30.1,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 224,
@@ -1042,7 +1042,7 @@
         "now_cost": 60.0,
         "selected_by_percent": 13.7,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 82,
@@ -1053,7 +1053,7 @@
         "now_cost": 83.0,
         "selected_by_percent": 56.9,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 408,
@@ -1064,7 +1064,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 3.4,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 256,
@@ -1075,7 +1075,7 @@
         "now_cost": 59.0,
         "selected_by_percent": 8.3,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 329,
@@ -1086,7 +1086,7 @@
         "now_cost": 60.0,
         "selected_by_percent": 23.5,
         "team_name": "Fulham",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 384,
@@ -1097,7 +1097,7 @@
         "now_cost": 73.0,
         "selected_by_percent": 6.0,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 16,
@@ -1108,7 +1108,7 @@
         "now_cost": 98.0,
         "selected_by_percent": 8.0,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 83,
@@ -1119,7 +1119,7 @@
         "now_cost": 60.0,
         "selected_by_percent": 3.5,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 8.0
       },
       {
         "player_id": 6,
@@ -1130,7 +1130,7 @@
         "now_cost": 61.0,
         "selected_by_percent": 13.5,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 11.0
       },
       {
         "player_id": 84,
@@ -1141,7 +1141,7 @@
         "now_cost": 53.0,
         "selected_by_percent": 1.7,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 5,
@@ -1152,7 +1152,7 @@
         "now_cost": 72.0,
         "selected_by_percent": 43.3,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 225,
@@ -1163,7 +1163,7 @@
         "now_cost": 56.0,
         "selected_by_percent": 8.3,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 266,
@@ -1174,7 +1174,7 @@
         "now_cost": 72.0,
         "selected_by_percent": 8.1,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 457,
@@ -1185,7 +1185,7 @@
         "now_cost": 56.0,
         "selected_by_percent": 2.6,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 515,
@@ -1196,7 +1196,7 @@
         "now_cost": 73.0,
         "selected_by_percent": 3.7,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 381,
@@ -1207,7 +1207,7 @@
         "now_cost": 140.0,
         "selected_by_percent": 14.4,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 411,
@@ -1218,7 +1218,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 9.4,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 72,
@@ -1229,7 +1229,7 @@
         "now_cost": 49.0,
         "selected_by_percent": 17.1,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 10.0
       },
       {
         "player_id": 402,
@@ -1240,7 +1240,7 @@
         "now_cost": 57.0,
         "selected_by_percent": 4.4,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 615,
@@ -1251,7 +1251,7 @@
         "now_cost": 57.0,
         "selected_by_percent": 3.0,
         "team_name": "West Ham",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 120,
@@ -1262,7 +1262,7 @@
         "now_cost": 69.0,
         "selected_by_percent": 1.8,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 113,
@@ -1273,7 +1273,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 1.1,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 74,
@@ -1284,7 +1284,7 @@
         "now_cost": 46.0,
         "selected_by_percent": 2.4,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 11.0
       },
       {
         "player_id": 261,
@@ -1295,7 +1295,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 2.6,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 10.0
       },
       {
         "player_id": 407,
@@ -1306,7 +1306,7 @@
         "now_cost": 54.0,
         "selected_by_percent": 3.5,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 226,
@@ -1317,7 +1317,7 @@
         "now_cost": 56.0,
         "selected_by_percent": 18.8,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 713,
@@ -1328,7 +1328,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.3,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 77,
@@ -1339,7 +1339,7 @@
         "now_cost": 42.0,
         "selected_by_percent": 7.2,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 8.0
       }
     ]
   },
@@ -1356,7 +1356,7 @@
         "now_cost": 54.0,
         "selected_by_percent": 2.2,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 329,
@@ -1367,7 +1367,7 @@
         "now_cost": 60.0,
         "selected_by_percent": 24.1,
         "team_name": "Fulham",
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 224,
@@ -1378,7 +1378,7 @@
         "now_cost": 60.0,
         "selected_by_percent": 14.7,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 225,
@@ -1389,7 +1389,7 @@
         "now_cost": 56.0,
         "selected_by_percent": 8.3,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 228,
@@ -1400,7 +1400,7 @@
         "now_cost": 49.0,
         "selected_by_percent": 1.9,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 343,
@@ -1411,7 +1411,7 @@
         "now_cost": 43.0,
         "selected_by_percent": 0.5,
         "team_name": "Leeds",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 38,
@@ -1422,7 +1422,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 8.3,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 381,
@@ -1433,7 +1433,7 @@
         "now_cost": 140.0,
         "selected_by_percent": 14.7,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 36,
@@ -1444,7 +1444,7 @@
         "now_cost": 47.0,
         "selected_by_percent": 8.2,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 39,
@@ -1455,7 +1455,7 @@
         "now_cost": 42.0,
         "selected_by_percent": 0.6,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 673,
@@ -1466,7 +1466,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 0.8,
         "team_name": "Spurs",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 47,
@@ -1477,7 +1477,7 @@
         "now_cost": 75.0,
         "selected_by_percent": 25.0,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 384,
@@ -1488,7 +1488,7 @@
         "now_cost": 73.0,
         "selected_by_percent": 5.9,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 442,
@@ -1499,7 +1499,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 1.8,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 457,
@@ -1510,7 +1510,7 @@
         "now_cost": 57.0,
         "selected_by_percent": 3.3,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 348,
@@ -1521,7 +1521,7 @@
         "now_cost": 39.0,
         "selected_by_percent": 4.1,
         "team_name": "Leeds",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 373,
@@ -1532,7 +1532,7 @@
         "now_cost": 62.0,
         "selected_by_percent": 35.7,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 476,
@@ -1543,7 +1543,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 3.5,
         "team_name": "Newcastle",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 40,
@@ -1554,7 +1554,7 @@
         "now_cost": 43.0,
         "selected_by_percent": 0.7,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 724,
@@ -1565,7 +1565,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.1,
         "team_name": "Sunderland",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 235,
@@ -1576,7 +1576,7 @@
         "now_cost": 106.0,
         "selected_by_percent": 17.7,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 515,
@@ -1587,7 +1587,7 @@
         "now_cost": 74.0,
         "selected_by_percent": 5.2,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 8.0
       },
       {
         "player_id": 706,
@@ -1598,7 +1598,7 @@
         "now_cost": 39.0,
         "selected_by_percent": 1.0,
         "team_name": "Leeds",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 597,
@@ -1609,7 +1609,7 @@
         "now_cost": 63.0,
         "selected_by_percent": 5.8,
         "team_name": "Spurs",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 660,
@@ -1620,7 +1620,7 @@
         "now_cost": 47.0,
         "selected_by_percent": 2.7,
         "team_name": "Leeds",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 110,
@@ -1631,7 +1631,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 1.0,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 443,
@@ -1642,7 +1642,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.8,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 374,
@@ -1653,7 +1653,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 4.3,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 230,
@@ -1664,7 +1664,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 0.4,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 610,
@@ -1675,7 +1675,7 @@
         "now_cost": 41.0,
         "selected_by_percent": 4.6,
         "team_name": "West Ham",
-        "actual_points": null
+        "actual_points": 0.0
       }
     ]
   },
@@ -1692,7 +1692,7 @@
         "now_cost": 63.0,
         "selected_by_percent": 34.4,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 256,
@@ -1703,7 +1703,7 @@
         "now_cost": 58.0,
         "selected_by_percent": 7.3,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 258,
@@ -1714,7 +1714,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 2.1,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 267,
@@ -1725,7 +1725,7 @@
         "now_cost": 63.0,
         "selected_by_percent": 3.9,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 36,
@@ -1736,7 +1736,7 @@
         "now_cost": 47.0,
         "selected_by_percent": 8.6,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 37,
@@ -1747,7 +1747,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 1.6,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 450,
@@ -1758,7 +1758,7 @@
         "now_cost": 80.0,
         "selected_by_percent": 8.4,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 106,
@@ -1769,7 +1769,7 @@
         "now_cost": 49.0,
         "selected_by_percent": 2.9,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 82,
@@ -1780,7 +1780,7 @@
         "now_cost": 82.0,
         "selected_by_percent": 54.3,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 47,
@@ -1791,7 +1791,7 @@
         "now_cost": 74.0,
         "selected_by_percent": 23.9,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 21,
@@ -1802,7 +1802,7 @@
         "now_cost": 73.0,
         "selected_by_percent": 25.9,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 83,
@@ -1813,7 +1813,7 @@
         "now_cost": 60.0,
         "selected_by_percent": 3.7,
         "team_name": "Brentford",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 26,
@@ -1824,7 +1824,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 3.5,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 384,
@@ -1835,7 +1835,7 @@
         "now_cost": 73.0,
         "selected_by_percent": 5.8,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 38,
@@ -1846,7 +1846,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 8.1,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 517,
@@ -1857,7 +1857,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 8.4,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 261,
@@ -1868,7 +1868,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 2.5,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 6,
@@ -1879,7 +1879,7 @@
         "now_cost": 61.0,
         "selected_by_percent": 13.4,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 8,
@@ -1890,7 +1890,7 @@
         "now_cost": 63.0,
         "selected_by_percent": 26.2,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 151,
@@ -1901,7 +1901,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 6.2,
         "team_name": "Brighton",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 235,
@@ -1912,7 +1912,7 @@
         "now_cost": 106.0,
         "selected_by_percent": 16.6,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 348,
@@ -1923,7 +1923,7 @@
         "now_cost": 39.0,
         "selected_by_percent": 4.1,
         "team_name": "Leeds",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 374,
@@ -1934,7 +1934,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 4.3,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 291,
@@ -1945,7 +1945,7 @@
         "now_cost": 57.0,
         "selected_by_percent": 11.8,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 724,
@@ -1956,7 +1956,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.1,
         "team_name": "Sunderland",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 370,
@@ -1967,7 +1967,7 @@
         "now_cost": 57.0,
         "selected_by_percent": 5.2,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 449,
@@ -1978,7 +1978,7 @@
         "now_cost": 103.0,
         "selected_by_percent": 45.0,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 615,
@@ -1989,7 +1989,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 1.4,
         "team_name": "West Ham",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 668,
@@ -2000,7 +2000,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 3.3,
         "team_name": "Sunderland",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 200,
@@ -2011,7 +2011,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 2.0,
         "team_name": "Burnley",
-        "actual_points": null
+        "actual_points": 2.0
       }
     ]
   },
@@ -2028,7 +2028,7 @@
         "now_cost": 46.0,
         "selected_by_percent": 4.5,
         "team_name": "Fulham",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 84,
@@ -2039,7 +2039,7 @@
         "now_cost": 54.0,
         "selected_by_percent": 5.9,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 569,
@@ -2050,7 +2050,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 3.0,
         "team_name": "Spurs",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 47,
@@ -2061,7 +2061,7 @@
         "now_cost": 74.0,
         "selected_by_percent": 21.9,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 9.0
       },
       {
         "player_id": 505,
@@ -2072,7 +2072,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 3.2,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 506,
@@ -2083,7 +2083,7 @@
         "now_cost": 52.0,
         "selected_by_percent": 2.2,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 507,
@@ -2094,7 +2094,7 @@
         "now_cost": 47.0,
         "selected_by_percent": 2.4,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 411,
@@ -2105,7 +2105,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 13.1,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 258,
@@ -2116,7 +2116,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 2.2,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 225,
@@ -2127,7 +2127,7 @@
         "now_cost": 56.0,
         "selected_by_percent": 6.5,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 84,
@@ -2138,7 +2138,7 @@
         "now_cost": 54.0,
         "selected_by_percent": 5.9,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 82,
@@ -2149,7 +2149,7 @@
         "now_cost": 82.0,
         "selected_by_percent": 57.1,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 402,
@@ -2160,7 +2160,7 @@
         "now_cost": 57.0,
         "selected_by_percent": 4.3,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 411,
@@ -2171,7 +2171,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 13.1,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 384,
@@ -2182,7 +2182,7 @@
         "now_cost": 73.0,
         "selected_by_percent": 5.6,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 408,
@@ -2193,7 +2193,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 3.2,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 237,
@@ -2204,7 +2204,7 @@
         "now_cost": 65.0,
         "selected_by_percent": 12.6,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 329,
@@ -2215,7 +2215,7 @@
         "now_cost": 61.0,
         "selected_by_percent": 21.3,
         "team_name": "Fulham",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 407,
@@ -2226,7 +2226,7 @@
         "now_cost": 53.0,
         "selected_by_percent": 3.2,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 260,
@@ -2237,7 +2237,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 34.7,
         "team_name": "Man City",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 237,
@@ -2248,7 +2248,7 @@
         "now_cost": 65.0,
         "selected_by_percent": 12.6,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 508,
@@ -2259,7 +2259,7 @@
         "now_cost": 47.0,
         "selected_by_percent": 3.8,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 257,
@@ -2270,7 +2270,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 4.9,
         "team_name": "Crystal Palace",
-        "actual_points": null
+        "actual_points": 11.0
       },
       {
         "player_id": 807,
@@ -2281,7 +2281,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 1.9,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 299,
@@ -2292,7 +2292,7 @@
         "now_cost": 62.0,
         "selected_by_percent": 4.1,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 4.0
       },
       {
         "player_id": 713,
@@ -2303,7 +2303,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.3,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 5,
@@ -2314,7 +2314,7 @@
         "now_cost": 72.0,
         "selected_by_percent": 41.4,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 226,
@@ -2325,7 +2325,7 @@
         "now_cost": 54.0,
         "selected_by_percent": 10.4,
         "team_name": "Chelsea",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 90,
@@ -2336,7 +2336,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 3.2,
         "team_name": "Bournemouth",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 443,
@@ -2347,7 +2347,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.8,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 11.0
       }
     ]
   },
@@ -2364,7 +2364,7 @@
         "now_cost": 47.0,
         "selected_by_percent": 3.3,
         "team_name": "Sunderland",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 724,
@@ -2375,7 +2375,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 0.1,
         "team_name": "Sunderland",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 317,
@@ -2386,7 +2386,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 4.7,
         "team_name": "Fulham",
-        "actual_points": null
+        "actual_points": 11.0
       },
       {
         "player_id": 329,
@@ -2397,7 +2397,7 @@
         "now_cost": 60.0,
         "selected_by_percent": 22.4,
         "team_name": "Fulham",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 36,
@@ -2408,7 +2408,7 @@
         "now_cost": 47.0,
         "selected_by_percent": 8.4,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 37,
@@ -2419,7 +2419,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 1.6,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 47,
@@ -2430,7 +2430,7 @@
         "now_cost": 74.0,
         "selected_by_percent": 24.5,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 290,
@@ -2441,7 +2441,7 @@
         "now_cost": 53.0,
         "selected_by_percent": 0.4,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 295,
@@ -2452,7 +2452,7 @@
         "now_cost": 45.0,
         "selected_by_percent": 2.9,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 569,
@@ -2463,7 +2463,7 @@
         "now_cost": 50.0,
         "selected_by_percent": 3.0,
         "team_name": "Spurs",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 449,
@@ -2474,7 +2474,7 @@
         "now_cost": 103.0,
         "selected_by_percent": 46.5,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 384,
@@ -2485,7 +2485,7 @@
         "now_cost": 73.0,
         "selected_by_percent": 6.0,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 450,
@@ -2496,7 +2496,7 @@
         "now_cost": 80.0,
         "selected_by_percent": 9.8,
         "team_name": "Man Utd",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 242,
@@ -2507,7 +2507,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 5.7,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 8.0
       },
       {
         "player_id": 505,
@@ -2518,7 +2518,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 3.4,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 8.0
       },
       {
         "player_id": 20,
@@ -2529,7 +2529,7 @@
         "now_cost": 65.0,
         "selected_by_percent": 0.8,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 390,
@@ -2540,7 +2540,7 @@
         "now_cost": 55.0,
         "selected_by_percent": 4.2,
         "team_name": "Liverpool",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 299,
@@ -2551,7 +2551,7 @@
         "now_cost": 62.0,
         "selected_by_percent": 4.9,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 6,
@@ -2562,7 +2562,7 @@
         "now_cost": 61.0,
         "selected_by_percent": 14.2,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 7.0
       },
       {
         "player_id": 547,
@@ -2573,7 +2573,7 @@
         "now_cost": 48.0,
         "selected_by_percent": 1.4,
         "team_name": "Sunderland",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 38,
@@ -2584,7 +2584,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 7.8,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 21,
@@ -2595,7 +2595,7 @@
         "now_cost": 72.0,
         "selected_by_percent": 24.6,
         "team_name": "Arsenal",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 506,
@@ -2606,7 +2606,7 @@
         "now_cost": 52.0,
         "selected_by_percent": 2.1,
         "team_name": "Nott'm Forest",
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 568,
@@ -2617,7 +2617,7 @@
         "now_cost": 51.0,
         "selected_by_percent": 11.7,
         "team_name": "Spurs",
-        "actual_points": null
+        "actual_points": 8.0
       },
       {
         "player_id": 291,
@@ -2628,7 +2628,7 @@
         "now_cost": 57.0,
         "selected_by_percent": 12.8,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 3.0
       },
       {
         "player_id": 318,
@@ -2639,7 +2639,7 @@
         "now_cost": 44.0,
         "selected_by_percent": 0.7,
         "team_name": "Fulham",
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 316,
@@ -2650,7 +2650,7 @@
         "now_cost": 49.0,
         "selected_by_percent": 0.8,
         "team_name": "Fulham",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 64,
@@ -2661,7 +2661,7 @@
         "now_cost": 87.0,
         "selected_by_percent": 15.0,
         "team_name": "Aston Villa",
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 293,
@@ -2672,7 +2672,7 @@
         "now_cost": 49.0,
         "selected_by_percent": 0.7,
         "team_name": "Everton",
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 374,
@@ -2683,6 +2683,798 @@
         "now_cost": 55.0,
         "selected_by_percent": 4.3,
         "team_name": "Liverpool",
+        "actual_points": 4.0
+      }
+    ]
+  },
+  {
+    "gameweek": 22,
+    "timestamp": "2026-04-29T22:09:36.754757",
+    "predictions": [
+      {
+        "player_id": 47,
+        "web_name": "Rogers",
+        "position": "MID",
+        "predicted_points": 9.66,
+        "confidence_score": 57.5,
+        "now_cost": 77.0,
+        "selected_by_percent": 32.2,
+        "team_name": "Aston Villa",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 411,
+        "web_name": "O'Reilly",
+        "position": "DEF",
+        "predicted_points": 7.61,
+        "confidence_score": 55.9,
+        "now_cost": 53.0,
+        "selected_by_percent": 8.9,
+        "team_name": "Man City",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": -1.0
+      },
+      {
+        "player_id": 329,
+        "web_name": "Wilson",
+        "position": "MID",
+        "predicted_points": 7.39,
+        "confidence_score": 52.7,
+        "now_cost": 59.0,
+        "selected_by_percent": 21.5,
+        "team_name": "Fulham",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 488,
+        "web_name": "Bruno G.",
+        "position": "MID",
+        "predicted_points": 7.33,
+        "confidence_score": 50.7,
+        "now_cost": 72.0,
+        "selected_by_percent": 22.9,
+        "team_name": "Newcastle",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 3.0
+      },
+      {
+        "player_id": 414,
+        "web_name": "Foden",
+        "position": "MID",
+        "predicted_points": 6.99,
+        "confidence_score": 52.1,
+        "now_cost": 87.0,
+        "selected_by_percent": 31.4,
+        "team_name": "Man City",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 1.0
+      },
+      {
+        "player_id": 373,
+        "web_name": "Virgil",
+        "position": "DEF",
+        "predicted_points": 6.88,
+        "confidence_score": 63.0,
+        "now_cost": 59.0,
+        "selected_by_percent": 22.6,
+        "team_name": "Liverpool",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 691,
+        "web_name": "Calvert-Lewin",
+        "position": "FWD",
+        "predicted_points": 6.85,
+        "confidence_score": 60.6,
+        "now_cost": 60.0,
+        "selected_by_percent": 13.3,
+        "team_name": "Leeds",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 220,
+        "web_name": "S\u00e1nchez",
+        "position": "GKP",
+        "predicted_points": 6.37,
+        "confidence_score": 87.5,
+        "now_cost": 49.0,
+        "selected_by_percent": 13.4,
+        "team_name": "Chelsea",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 11.0
+      },
+      {
+        "player_id": 97,
+        "web_name": "Evanilson",
+        "position": "FWD",
+        "predicted_points": 6.28,
+        "confidence_score": 59.0,
+        "now_cost": 70.0,
+        "selected_by_percent": 1.6,
+        "team_name": "Bournemouth",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 8,
+        "web_name": "J.Timber",
+        "position": "DEF",
+        "predicted_points": 6.2,
+        "confidence_score": 47.6,
+        "now_cost": 63.0,
+        "selected_by_percent": 27.8,
+        "team_name": "Arsenal",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 5.0
+      },
+      {
+        "player_id": 441,
+        "web_name": "Dorgu",
+        "position": "DEF",
+        "predicted_points": 5.94,
+        "confidence_score": 46.8,
+        "now_cost": 42.0,
+        "selected_by_percent": 6.9,
+        "team_name": "Man Utd",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 15.0
+      },
+      {
+        "player_id": 64,
+        "web_name": "Watkins",
+        "position": "FWD",
+        "predicted_points": 5.87,
+        "confidence_score": 72.0,
+        "now_cost": 88.0,
+        "selected_by_percent": 13.8,
+        "team_name": "Aston Villa",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 36,
+        "web_name": "Cash",
+        "position": "DEF",
+        "predicted_points": 5.86,
+        "confidence_score": 42.0,
+        "now_cost": 48.0,
+        "selected_by_percent": 11.0,
+        "team_name": "Aston Villa",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 569,
+        "web_name": "Romero",
+        "position": "DEF",
+        "predicted_points": 5.78,
+        "confidence_score": 40.0,
+        "now_cost": 50.0,
+        "selected_by_percent": 3.8,
+        "team_name": "Spurs",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 8.0
+      },
+      {
+        "player_id": 228,
+        "web_name": "Gusto",
+        "position": "DEF",
+        "predicted_points": 5.74,
+        "confidence_score": 53.4,
+        "now_cost": 50.0,
+        "selected_by_percent": 2.2,
+        "team_name": "Chelsea",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 0.0
+      },
+      {
+        "player_id": 72,
+        "web_name": "Senesi",
+        "position": "DEF",
+        "predicted_points": 5.61,
+        "confidence_score": 63.3,
+        "now_cost": 48.0,
+        "selected_by_percent": 14.1,
+        "team_name": "Bournemouth",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 3.0
+      },
+      {
+        "player_id": 568,
+        "web_name": "Pedro Porro",
+        "position": "DEF",
+        "predicted_points": 5.58,
+        "confidence_score": 51.4,
+        "now_cost": 52.0,
+        "selected_by_percent": 12.6,
+        "team_name": "Spurs",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 4.0
+      },
+      {
+        "player_id": 253,
+        "web_name": "Henderson",
+        "position": "GKP",
+        "predicted_points": 5.42,
+        "confidence_score": 84.4,
+        "now_cost": 51.0,
+        "selected_by_percent": 7.9,
+        "team_name": "Crystal Palace",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 225,
+        "web_name": "James",
+        "position": "DEF",
+        "predicted_points": 5.42,
+        "confidence_score": 87.8,
+        "now_cost": 57.0,
+        "selected_by_percent": 10.8,
+        "team_name": "Chelsea",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 7.0
+      },
+      {
+        "player_id": 344,
+        "web_name": "Bijol",
+        "position": "DEF",
+        "predicted_points": 5.37,
+        "confidence_score": 46.8,
+        "now_cost": 39.0,
+        "selected_by_percent": 0.6,
+        "team_name": "Leeds",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 0.0
+      },
+      {
+        "player_id": 74,
+        "web_name": "Truffert",
+        "position": "DEF",
+        "predicted_points": 5.29,
+        "confidence_score": 82.7,
+        "now_cost": 45.0,
+        "selected_by_percent": 1.8,
+        "team_name": "Bournemouth",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 4.0
+      },
+      {
+        "player_id": 370,
+        "web_name": "Frimpong",
+        "position": "DEF",
+        "predicted_points": 5.28,
+        "confidence_score": 67.3,
+        "now_cost": 57.0,
+        "selected_by_percent": 6.4,
+        "team_name": "Liverpool",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 1,
+        "web_name": "Raya",
+        "position": "GKP",
+        "predicted_points": 5.27,
+        "confidence_score": 89.7,
+        "now_cost": 59.0,
+        "selected_by_percent": 33.6,
+        "team_name": "Arsenal",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 6.0
+      },
+      {
+        "player_id": 81,
+        "web_name": "Kluivert",
+        "position": "MID",
+        "predicted_points": 5.24,
+        "confidence_score": 55.3,
+        "now_cost": 70.0,
+        "selected_by_percent": 0.7,
+        "team_name": "Bournemouth",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 0.0
+      },
+      {
+        "player_id": 226,
+        "web_name": "Chalobah",
+        "position": "DEF",
+        "predicted_points": 5.23,
+        "confidence_score": 86.0,
+        "now_cost": 55.0,
+        "selected_by_percent": 17.9,
+        "team_name": "Chelsea",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 8.0
+      },
+      {
+        "player_id": 38,
+        "web_name": "Konsa",
+        "position": "DEF",
+        "predicted_points": 5.2,
+        "confidence_score": 62.3,
+        "now_cost": 44.0,
+        "selected_by_percent": 7.5,
+        "team_name": "Aston Villa",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      },
+      {
+        "player_id": 17,
+        "web_name": "\u00d8degaard",
+        "position": "MID",
+        "predicted_points": 5.1,
+        "confidence_score": 45.6,
+        "now_cost": 78.0,
+        "selected_by_percent": 2.5,
+        "team_name": "Arsenal",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 1.0
+      },
+      {
+        "player_id": 101,
+        "web_name": "Kelleher",
+        "position": "GKP",
+        "predicted_points": 5.1,
+        "confidence_score": 78.2,
+        "now_cost": 45.0,
+        "selected_by_percent": 9.8,
+        "team_name": "Brentford",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 1.0
+      },
+      {
+        "player_id": 573,
+        "web_name": "Spence",
+        "position": "DEF",
+        "predicted_points": 5.05,
+        "confidence_score": 42.5,
+        "now_cost": 43.0,
+        "selected_by_percent": 1.2,
+        "team_name": "Spurs",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 1.0
+      },
+      {
+        "player_id": 317,
+        "web_name": "Andersen",
+        "position": "DEF",
+        "predicted_points": 5.05,
+        "confidence_score": 43.5,
+        "now_cost": 46.0,
+        "selected_by_percent": 5.5,
+        "team_name": "Fulham",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      }
+    ]
+  },
+  {
+    "gameweek": 35,
+    "timestamp": "2026-04-29T22:18:30.943631",
+    "predictions": [
+      {
+        "player_id": 411,
+        "web_name": "O'Reilly",
+        "position": "DEF",
+        "predicted_points": 11.48,
+        "confidence_score": 68.1,
+        "now_cost": 51.0,
+        "selected_by_percent": 15.9,
+        "team_name": "Man City",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 257,
+        "web_name": "Lacroix",
+        "position": "DEF",
+        "predicted_points": 8.3,
+        "confidence_score": 53.8,
+        "now_cost": 51.0,
+        "selected_by_percent": 5.5,
+        "team_name": "Crystal Palace",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 224,
+        "web_name": "Cucurella",
+        "position": "DEF",
+        "predicted_points": 8.09,
+        "confidence_score": 69.2,
+        "now_cost": 61.0,
+        "selected_by_percent": 14.9,
+        "team_name": "Chelsea",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 106,
+        "web_name": "Collins",
+        "position": "DEF",
+        "predicted_points": 7.72,
+        "confidence_score": 46.4,
+        "now_cost": 49.0,
+        "selected_by_percent": 2.7,
+        "team_name": "Brentford",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 694,
+        "web_name": "Mukiele",
+        "position": "DEF",
+        "predicted_points": 7.44,
+        "confidence_score": 55.8,
+        "now_cost": 46.0,
+        "selected_by_percent": 8.7,
+        "team_name": "Sunderland",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 37,
+        "web_name": "Digne",
+        "position": "DEF",
+        "predicted_points": 7.4,
+        "confidence_score": 54.3,
+        "now_cost": 45.0,
+        "selected_by_percent": 1.6,
+        "team_name": "Aston Villa",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 348,
+        "web_name": "Rodon",
+        "position": "DEF",
+        "predicted_points": 7.34,
+        "confidence_score": 57.5,
+        "now_cost": 39.0,
+        "selected_by_percent": 2.9,
+        "team_name": "Leeds",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 107,
+        "web_name": "Lewis-Potter",
+        "position": "DEF",
+        "predicted_points": 7.22,
+        "confidence_score": 43.9,
+        "now_cost": 48.0,
+        "selected_by_percent": 1.6,
+        "team_name": "Brentford",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 261,
+        "web_name": "Richards",
+        "position": "DEF",
+        "predicted_points": 7.11,
+        "confidence_score": 41.1,
+        "now_cost": 44.0,
+        "selected_by_percent": 2.5,
+        "team_name": "Crystal Palace",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 449,
+        "web_name": "B.Fernandes",
+        "position": "MID",
+        "predicted_points": 7.11,
+        "confidence_score": 52.1,
+        "now_cost": 104.0,
+        "selected_by_percent": 46.9,
+        "team_name": "Man Utd",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 5,
+        "web_name": "Gabriel",
+        "position": "DEF",
+        "predicted_points": 7.09,
+        "confidence_score": 48.8,
+        "now_cost": 72.0,
+        "selected_by_percent": 43.6,
+        "team_name": "Arsenal",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 82,
+        "web_name": "Semenyo",
+        "position": "MID",
+        "predicted_points": 7.08,
+        "confidence_score": 42.7,
+        "now_cost": 82.0,
+        "selected_by_percent": 51.0,
+        "team_name": "Man City",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 260,
+        "web_name": "Gu\u00e9hi",
+        "position": "DEF",
+        "predicted_points": 7.01,
+        "confidence_score": 59.3,
+        "now_cost": 51.0,
+        "selected_by_percent": 32.8,
+        "team_name": "Man City",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 36,
+        "web_name": "Cash",
+        "position": "DEF",
+        "predicted_points": 7.0,
+        "confidence_score": 40.2,
+        "now_cost": 47.0,
+        "selected_by_percent": 8.3,
+        "team_name": "Aston Villa",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 72,
+        "web_name": "Senesi",
+        "position": "DEF",
+        "predicted_points": 6.87,
+        "confidence_score": 47.0,
+        "now_cost": 52.0,
+        "selected_by_percent": 21.0,
+        "team_name": "Bournemouth",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 407,
+        "web_name": "Matheus N.",
+        "position": "DEF",
+        "predicted_points": 6.85,
+        "confidence_score": 55.6,
+        "now_cost": 53.0,
+        "selected_by_percent": 2.9,
+        "team_name": "Man City",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 515,
+        "web_name": "Gibbs-White",
+        "position": "MID",
+        "predicted_points": 6.63,
+        "confidence_score": 40.9,
+        "now_cost": 76.0,
+        "selected_by_percent": 11.2,
+        "team_name": "Nott'm Forest",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 235,
+        "web_name": "Palmer",
+        "position": "MID",
+        "predicted_points": 6.62,
+        "confidence_score": 41.0,
+        "now_cost": 105.0,
+        "selected_by_percent": 16.7,
+        "team_name": "Chelsea",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 241,
+        "web_name": "Caicedo",
+        "position": "MID",
+        "predicted_points": 6.62,
+        "confidence_score": 47.4,
+        "now_cost": 57.0,
+        "selected_by_percent": 7.3,
+        "team_name": "Chelsea",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 430,
+        "web_name": "Haaland",
+        "position": "FWD",
+        "predicted_points": 6.57,
+        "confidence_score": 51.6,
+        "now_cost": 145.0,
+        "selected_by_percent": 59.6,
+        "team_name": "Man City",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 531,
+        "web_name": "Ballard",
+        "position": "DEF",
+        "predicted_points": 6.56,
+        "confidence_score": 64.9,
+        "now_cost": 47.0,
+        "selected_by_percent": 3.2,
+        "team_name": "Sunderland",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 343,
+        "web_name": "Struijk",
+        "position": "DEF",
+        "predicted_points": 6.52,
+        "confidence_score": 54.3,
+        "now_cost": 43.0,
+        "selected_by_percent": 3.0,
+        "team_name": "Leeds",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 113,
+        "web_name": "Van den Berg",
+        "position": "DEF",
+        "predicted_points": 6.48,
+        "confidence_score": 59.2,
+        "now_cost": 45.0,
+        "selected_by_percent": 1.3,
+        "team_name": "Brentford",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 575,
+        "web_name": "Van de Ven",
+        "position": "DEF",
+        "predicted_points": 6.44,
+        "confidence_score": 44.2,
+        "now_cost": 44.0,
+        "selected_by_percent": 18.0,
+        "team_name": "Spurs",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 74,
+        "web_name": "Truffert",
+        "position": "DEF",
+        "predicted_points": 6.33,
+        "confidence_score": 49.8,
+        "now_cost": 47.0,
+        "selected_by_percent": 4.4,
+        "team_name": "Bournemouth",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 568,
+        "web_name": "Pedro Porro",
+        "position": "DEF",
+        "predicted_points": 6.32,
+        "confidence_score": 70.5,
+        "now_cost": 52.0,
+        "selected_by_percent": 10.8,
+        "team_name": "Spurs",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 783,
+        "web_name": "Gro\u00df",
+        "position": "MID",
+        "predicted_points": 6.22,
+        "confidence_score": 44.5,
+        "now_cost": 55.0,
+        "selected_by_percent": 2.1,
+        "team_name": "Brighton",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 295,
+        "web_name": "Keane",
+        "position": "DEF",
+        "predicted_points": 6.16,
+        "confidence_score": 49.3,
+        "now_cost": 45.0,
+        "selected_by_percent": 2.8,
+        "team_name": "Everton",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 38,
+        "web_name": "Konsa",
+        "position": "DEF",
+        "predicted_points": 5.91,
+        "confidence_score": 56.6,
+        "now_cost": 44.0,
+        "selected_by_percent": 7.8,
+        "team_name": "Aston Villa",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 258,
+        "web_name": "Mitchell",
+        "position": "DEF",
+        "predicted_points": 5.87,
+        "confidence_score": 58.4,
+        "now_cost": 50.0,
+        "selected_by_percent": 2.3,
+        "team_name": "Crystal Palace",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
         "actual_points": null
       }
     ]

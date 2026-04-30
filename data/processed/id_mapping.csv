@@ -27,7 +27,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 44,10025,Lamare Bogarde,Lamare Bogarde,100
 47,12412,Morgan Rogers,Morgan Rogers,100
 48,5956,Youri Tielemans,Youri Tielemans,100
-49,5221,Leon Bailey,Leon Bailey,100
 53,9749,Donyell Malen,Donyell Malen,100
 54,7723,John McGinn,John McGinn,100
 55,592,Ross Barkley,Ross Barkley,100
@@ -39,7 +38,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 702,13870,Bradley Burrowes,Bradley Burrowes,100
 719,6080,Victor Lindelöf,Victor Lindelöf,100
 754,14193,George Hemmings,George Hemmings,100
-808,702,Tammy Abraham,Tammy Abraham,100
 187,638,Kyle Walker,Kyle Walker,100
 190,11704,Hjalmar Ekdal,Hjalmar Ekdal,100
 191,9487,Maxime Estève,Maxime Estève,100
@@ -79,11 +77,9 @@ fpl_id,understat_id,fpl_name,understat_name,score
 685,7268,Bafodé Diakité,Bafode Diakite,100
 697,8211,Amine Adli,Amine Adli,100
 721,14027,Veljko Milosavljevic,Veljko Milosavljevic,100
-801,14374,Alex Tóth,Alex Tóth,100
 27,6492,Reiss Nelson,Reiss Nelson,100
 83,9662,Dango Ouattara,Dango Ouattara,100
 101,7904,Caoimhín Kelleher,Caoimhin Kelleher,100
-105,12595,Hákon Rafn Valdimarsson,Hákon Valdimarsson,88
 106,9733,Nathan Collins,Nathan Collins,100
 107,10809,Keane Lewis-Potter,Keane Lewis-Potter,100
 108,9677,Kristoffer Ajer,Kristoffer Ajer,100
@@ -100,7 +96,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 126,7166,Mathias Jensen,Mathias Jensen,100
 128,9681,Frank Onyeka,Frank Onyeka,100
 129,11772,Yehor Yarmoliuk,Yehor Yarmolyuk,100
-130,14217,Romelle Donovan,Romelle Donovan,100
 133,10205,Myles Peart-Harris,Myles Peart-Harris,100
 139,11711,Bart Verbruggen,Bart Verbruggen,100
 143,3645,Olivier Boscagli,Olivier Boscagli,100
@@ -112,7 +107,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 152,8780,Joël Veltman,Joël Veltman,100
 157,10806,Mitoma Kaoru,Kaoru Mitoma,100
 158,6937,Georginio Rutter,Georginio Rutter,100
-159,6049,Solly March,Solly March,100
 160,12759,Yankuba Minteh,Yankuba Minteh,100
 162,11310,Brajan Gruda,Brajan Gruda,100
 163,11269,Jack Hinshelwood,Jack Hinshelwood,100
@@ -128,14 +122,12 @@ fpl_id,understat_id,fpl_name,understat_name,score
 181,14118,Charalampos Kostoulas,Charalampos Kostoulas,100
 744,14127,Nehemiah Oriola,Nehemiah Oriola,100
 783,239,Pascal Groß,Pascal Groß,100
-795,13584,Harry Howell,Harry Howell,100
 221,9272,Filip Jörgensen,Filip Jorgensen,100
 225,8067,Reece James,Reece James,100
 226,6615,Trevoh Chalobah,Trevoh Chalobah,100
 228,9017,Malo Gusto,Malo Gusto,100
 229,7240,Benoît Badiashile Mukinayi,Benoit Badiashile Mukinayi,100
 230,7589,Wesley Fofana,Wesley Fofana,100
-231,11253,Mamadou Sarr,Mamadou Sarr,100
 232,5590,Tosin Adarabioyo,Tosin Adarabioyo,100
 233,12535,Josh Acheampong,Josh Acheampong,100
 235,8497,Cole Palmer,Cole Palmer,100
@@ -145,7 +137,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 250,8868,Liam Delap,Liam Delap,100
 672,13776,Jorrel Hato,Jorrel Hato,100
 253,7702,Dean Henderson,Dean Henderson,100
-254,5652,Walter Benítez,Walter Benítez,100
 257,8853,Maxence Lacroix,Maxence Lacroix,100
 258,8214,Tyrick Mitchell,Tyrick Mitchell,100
 259,7075,Borna Sosa,Borna Sosa,100
@@ -170,7 +161,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 242,9739,Kiernan Dewsbury-Hall,Kiernan Dewsbury-Hall,100
 243,12573,Tyrique George,Tyrique George,100
 287,741,Jordan Pickford,Jordan Pickford,100
-290,8476,Jarrad Branthwaite,Jarrad Branthwaite,100
 291,1665,James Tarkowski,James Tarkowski,100
 292,10291,Vitalii Mykolenko,Vitalii Mykolenko,100
 293,12014,Jake O'Brien,Jake O&#039;Brien,100
@@ -229,7 +219,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 698,11966,Noah Okafor,Noah Okafor,100
 706,7753,James Justin,James Justin,100
 367,9693,Giorgi Mamardashvili,Giorgi Mamardashvili,100
-369,852,Freddie Woodman,Freddie Woodman,100
 370,9328,Jeremie Frimpong,Jeremie Frimpong,100
 371,11709,Milos Kerkez,Milos Kerkez,100
 372,1688,Andrew Robertson,Andrew Robertson,100
@@ -289,7 +278,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 733,14056,Senne Lammens,Senne Lammens,100
 755,14198,Shea Lacey,Shea Lacey,100
 769,14266,Bendito Mantato,Bendito Mantato,100
-771,14272,Tyler Fletcher,Tyler Fletcher,100
 52,8941,Jacob Ramsey,Jacob Ramsey,100
 135,5786,Yoane Wissa,Yoane Wissa,100
 469,5552,Nick Pope,Nick Pope,100
@@ -301,7 +289,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 478,652,Kieran Trippier,Kieran Trippier,100
 479,1545,Emil Krafth,Emil Krafth,100
 480,766,Jamaal Lascelles,Jamaal Lascelles,100
-481,12199,Alex Murphy,Alex Murphy,100
 485,8150,Anthony Gordon,Anthony Gordon,100
 486,9524,Anthony Elanga,Anthony Elanga,100
 487,6681,Harvey Barnes,Harvey Barnes,100
@@ -314,7 +301,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 684,8378,Malick Thiaw,Malick Thiaw,100
 714,8117,Nick Woltemade,Nick Woltemade,100
 12,2958,Oleksandr Zinchenko,Oleksandr Zinchenko,100
-400,8786,Stefan Ortega Moreno,Stefan Ortega Moreno,100
 426,10126,James McAtee,James McAtee,100
 502,6903,Matz Sels,Matz Sels,100
 505,6174,Nikola Milenković,Nikola Milenkovic,100
@@ -330,12 +316,9 @@ fpl_id,understat_id,fpl_name,understat_name,score
 525,4456,Chris Wood,Chris Wood,100
 527,7814,Taiwo Awoniyi,Taiwo Awoniyi,100
 669,8662,Dan Ndoye,Dan Ndoye,100
-675,5544,Angus Gunn,Angus Gunn,100
 693,10348,Omari Hutchinson,Omari Hutchinson,100
 716,12905,Nicolò Savona,Nicolò Savona,100
 734,8920,Dilane Bakwa,Dilane Bakwa,100
-805,11936,Lorenzo Lucca,Lorenzo Lucca,100
-814,8401,Luca Netz,Luca Netz,100
 531,13715,Daniel Ballard,Dan Ballard,100
 532,13713,Trai Hume,Trai Hume,100
 535,8537,Dennis Cirkin,Dennis Cirkin,100
@@ -358,11 +341,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 724,13064,Lutsharel Geertruida,Lutsharel Geertruida,100
 730,9789,Brian Brobbey,Brian Brobbey,100
 735,695,Bertrand Traoré,Bertrand Traoré,100
-800,14460,Djiamgone Jocelin Ta Bi,Djiamgone Jocelin Ta Bi,100
-812,14425,Melker Ellborg,Melker Ellborg,100
-813,14424,Nilson Angulo,Nilson Angulo,100
 565,8858,Guglielmo Vicario,Guglielmo Vicario,100
-567,13348,Antonín Kinský,Antonín Kinsky,100
 569,7218,Cristian Romero,Cristian Romero,100
 570,5261,Kevin Danso,Kevin Danso,100
 571,660,Ben Davies,Ben Davies,100
@@ -373,16 +352,11 @@ fpl_id,understat_id,fpl_name,understat_name,score
 584,9780,Mathys Tel,Mathys Tel,100
 585,6108,Rodrigo Bentancur,Rodrigo Bentancur,100
 586,12912,Lucas Bergvall,Lucas Bergvall,100
-587,5609,Yves Bissouma,Yves Bissouma,100
 588,10822,Wilson Odobert,Wilson Odobert,100
 591,10184,Archie Gray,Archie Gray,100
-595,13224,Callum Olusesi,Callum Olusesi,100
 599,9332,Dane Scarlett,Dane Scarlett,100
 717,8700,Xavi Simons,Xavi Simons,100
 726,5743,Randal Kolo Muani,Randal Kolo Muani,100
-745,14134,Jun'ai Byfield,Jun&#039;ai Byfield,88
-750,14176,James Rowswell,James Rowswell,100
-796,9040,Conor Gallagher,Conor Gallagher,100
 600,2310,Alphonse Areola,Alphonse Areola,100
 603,13723,El Hadji Malick Diouf,El Hadji Malick Diouf,100
 606,6722,Konstantinos Mavropanos,Konstantinos Mavropanos,100
@@ -406,9 +380,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 747,13247,Ezra Mayers,Ezra Mayers,100
 758,14219,Mohamadou Kanté,Mohamadou Kanté,100
 791,10948,Valentín Castellanos,Valentín Castellanos,100
-815,6885,Axel Disasi,Axel Disasi,100
 627,978,Sam Johnstone,Sam Johnstone,100
-629,11361,Daniel Bentley,Daniel Bentley,100
 631,10856,Emmanuel Agbadou,Emmanuel Agbadou,100
 632,6852,Matt Doherty,Matt Doherty,100
 638,8351,Ki-Jana Hoever,Ki-Jana Hoever,100
@@ -416,7 +388,6 @@ fpl_id,understat_id,fpl_name,understat_name,score
 644,7762,Jean-Ricner Bellegarde,Jean-Ricner Bellegarde,100
 648,7908,Marshall Munetsi,Marshall Munetsi,100
 650,12234,Tawanda Chirewa,Tawanda Chirewa,100
-651,13220,Tom Edozie,Tom Edozie,100
 656,8812,Saša Kalajdžić,Sasa Kalajdzic,100
 663,13741,Jhon Arias,Jhon Arias,100
 682,13740,David Møller Wolfe,David Møller Wolfe,100
@@ -424,5 +395,3 @@ fpl_id,understat_id,fpl_name,understat_name,score
 709,12721,Ladislav Krejcí,Ladislav Krejcí,100
 720,8875,Tolu Arokodare,Tolu Arokodare,100
 749,13484,Mateus Mané,Mateus Mané,100
-816,5598,Angel Gomes,Angel Gomes,100
-817,4419,Adam Armstrong,Adam Armstrong,100

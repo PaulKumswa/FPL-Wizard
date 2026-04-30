@@ -308,16 +308,22 @@ flowchart TD
 | Code | ~~Low~~ | ✅ **Done**: Removed dead code in `app.py` |
 | UX | ~~Medium~~ | ✅ **Done**: Confidence scoring with color-coded Min Points column |
 | Config | ~~Low~~ | ✅ **Done**: Dynamic percentile-based selection thresholds |
+| Selection | ~~High~~ | ✅ **Done (Apr 2026)**: P(≥6) ranking — optimizes directly for the 6+ hit target |
+| Calibration | ~~High~~ | ✅ **Done (Apr 2026)**: 60/40 component+legacy blending reduces over-prediction |
+| Config | ~~Medium~~ | ✅ **Done (Apr 2026)**: Raised prediction cap (9→14), confidence floor (50→60) |
+| Data | ~~Medium~~ | ✅ **Done (Apr 2026)**: Full predictions log now gets actuals backfilled |
 
 ---
 
 ## Conclusion
 
-The FPL-ML system is a solid foundation with good engineering practices. The main opportunities for improvement lie in:
+The FPL-ML system has evolved through three major phases:
 
-1. **Model sophistication** - gradient boosting + temporal CV
-2. **Richer features** - player-level Understat data
-3. **Better validation** - stored metrics, feature importance
-4. **User experience** - confidence intervals, explainability
+1. **Jan 2026**: Model sophistication — gradient boosting, temporal CV, component-based prediction
+2. **Feb-Mar 2026**: Selection refinement — confidence scoring, position limits, cost caps
+3. **Apr 2026**: Target alignment — P(≥6) selection metric, prediction blending, cap/confidence tuning
 
-These changes could meaningfully improve prediction accuracy and user trust in the system.
+The April 2026 changes address the fundamental misalignment between the optimization metric (expected points) and the project goal (6+ point hits). The system now selects players based on their probability of reaching the 6-point threshold rather than their expected point total.
+
+See `architectural_decisions.md` Section 17 for full details on the April 2026 review.
+

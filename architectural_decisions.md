@@ -86,19 +86,21 @@ Models are trained independently for each position (`element_type`) to capture u
     3. CV MAE is reported with standard deviation for stability assessment.
     4. Final production model is trained on ALL data after CV metrics are computed.
 
-### 3.2 Component-Based Prediction (Updated Jan 2026)
+### 3.2 Component-Based Prediction (Updated Apr 2026)
 *   **Approach**: Decompose `total_points` into predictable sub-components.
 *   *Rationale*: FPL points are noisy due to bonus points and random events. Predicting individual outcomes (goals, assists, clean sheets) is more stable than predicting raw points directly.
 *   **Architecture**:
     *   **Goal Models**: LGBMClassifier per position, predicts P(player scores ≥1 goal)
     *   **Assist Models**: LGBMClassifier per position, predicts P(player gets ≥1 assist)
     *   **Clean Sheet Models**: LGBMClassifier for GKP, DEF, MID only (FWD gets 0 pts)
-    *   **Legacy Model**: LGBMRegressor kept as fallback for comparison
-*   **Aggregation Formula**:
+    *   **Legacy Model**: LGBMRegressor kept for blending (see below)
+*   **Aggregation Formula (Updated Apr 2026)**:
     ```
-    Expected Points = P(goal) × GOAL_PTS[pos] + P(assist) × 3 + P(cs) × CS_PTS[pos] + 2
+    Component Pts = P(goal) × GOAL_PTS[pos] + P(assist) × 3 + P(cs) × CS_PTS[pos] + 2
+    Predicted Pts = 0.6 × Component Pts + 0.4 × Legacy Regressor Pts
     ```
-    Where `GOAL_PTS = {GKP: 10, DEF: 6, MID: 5, FWD: 4}` and `CS_PTS = {GKP: 4, DEF: 4, MID: 1, FWD: 0}`.
+    *Rationale*: The pure component formula systematically over-predicted (~7.9 avg predicted vs ~3.0 actual in v3). Blending with the more conservative legacy regressor reduces this bias.
+*   **Selection Metric (Added Apr 2026)**: `P(≥6 points)` — see Section 17.
 *   **Phase 2 (Deferred)**: See Section 8.
 
 ### 3.4 Model Metrics Storage (Added Jan 2026)
@@ -215,13 +217,15 @@ The v3 selection logic forced 1 player per position (GKP, DEF, MID, FWD) + 1 wil
 *   MID/FWD/GKP picks **never** scored 6+ — the model's MID/FWD predictions lack signal
 *   Position-locking forced 3-4 bad picks per week
 
-### 9.2 Solution: Top 5 by Predicted Points (Updated Mar 2026)
+### 9.2 Solution: Top 5 by P(≥6 points) (Updated Apr 2026)
+*   **Ranking metric**: `P(≥6 points)` — directly optimizes for the project's actual goal (see Section 17)
 *   **No position requirements** — but max 2 per position (`MAX_PER_POSITION = 2`) to prevent clustering
-*   **Prediction cap**: `MAX_PREDICTED_POINTS = 9` — `np.clip` prevents over-prediction outliers
-*   **Confidence floor**: `MIN_CONFIDENCE = 50` — raised from 40% after GW28 analysis showed 40-50% band had very low hit rates
+*   **Prediction cap**: `MAX_PREDICTED_POINTS = 14` — raised from 9 after GW30+ analysis showed 76% of picks were capped at 9.0, destroying discriminative power
+*   **Confidence floor**: `MIN_CONFIDENCE = 60` — raised from 50% after analysis showed 50-60% band had ~12% hit rate vs ~37% for 80%+
 *   **£7.5m hard cap** (`MAX_COST_HARD = 75` in config) — captures the £4.5-6.0m sweet spot, excludes premiums
 *   **Max 3 per team** — FPL squad constraint
 *   **No ownership filter** — cost cap alone preserves underdog identity
+*   **Blended predictions**: `predicted_points = 0.6 × component + 0.4 × legacy` to reduce over-prediction
 
 ### 9.3 Cost-Performance Rationale
 *   **DEFs (£4.0-6.0m)**: Clean sheets are team-level events. A £4.5m CB earns the same 4pts as a £7m one on the same team. Cheap DEFs = genuine value.
@@ -229,16 +233,20 @@ The v3 selection logic forced 1 player per position (GKP, DEF, MID, FWD) + 1 wil
 
 ### 9.4 Implementation
 *   **Config** (`src/config.py`): `MAX_COST_HARD`, `MIN_CONFIDENCE`, `MAX_PREDICTED_POINTS`, `MAX_PER_POSITION`
-*   **Inference** (`src/inference.py`): `select_best_team(df)` — greedy pick from sorted pool with position + team caps
+*   **Inference** (`src/inference.py`): `select_best_team(df)` — greedy pick sorted by `p_six_plus` with position + team caps
+*   **P(≥6)** (`src/inference.py`): `calculate_p_six_plus()` — derives hit probability from component outputs
+*   **Blending** (`src/inference.py`): `predicted_points = 0.6 * component + 0.4 * legacy` in `predict_points()`
 *   **DGW safety** (`src/inference.py`): `drop_duplicates(subset=['element'])` + `picked_ids` set prevents duplicate player selections
-*   **Prediction cap** (`src/inference.py`): `np.clip(expected_pts, 0, MAX_PREDICTED_POINTS)` in `predict_points()`
+*   **Prediction cap** (`src/inference.py`): `np.clip(blended_pts, 0, MAX_PREDICTED_POINTS)` in `predict_points()`
 *   **No wildcard concept** — all 5 picks selected on equal merit. `is_wildcard = False` for all.
 
-### 9.5 GW28 Lessons (Added Mar 2026)
-GW28 was the worst gameweek in history (0/5 hits, 7 total pts). All 5 picks were DEF due to clean sheet over-prediction. This motivated:
+### 9.5 GW28+ Lessons (Updated Apr 2026)
+GW28 was the worst gameweek in history (0/5 hits, 7 total pts). All 5 picks were DEF due to clean sheet over-prediction. Combined with GW30+ cap saturation analysis, this motivated:
 1.  `MAX_PER_POSITION = 2`: Prevents single-position dominance
-2.  `MIN_CONFIDENCE = 50`: Filters out low-conviction picks (GW28 avg confidence was 52.8%)
-3.  `MAX_PREDICTED_POINTS = 9`: Caps unrealistic 10+ pt predictions
+2.  `MIN_CONFIDENCE = 60`: Raised from 50 — filters out low-conviction picks
+3.  `MAX_PREDICTED_POINTS = 14`: Raised from 9 — the old cap caused 76% of GW30+ picks to tie at 9.0
+4.  **60/40 blend**: Component + legacy predictions blended to reduce systematic over-prediction
+5.  **P(≥6) ranking**: Selection now optimizes directly for the 6+ point hit target
 
 ## 10. Prediction Confidence Scoring (Added Jan 2026)
 
@@ -470,20 +478,92 @@ During Double Gameweeks, some teams play two fixtures. The preprocessing pipelin
 *   **Kept row**: The first row encountered (based on DataFrame order) is kept. Since `predicted_points` and `confidence_score` are mapped from history in the display path, the only "arbitrary" fields are fixture-specific metadata (opponent name, home/away).
 *   **Test coverage**: `test_select_best_team_dgw_dedup` and `test_select_best_team_dgw_no_double_pick` in `tests/test_inference.py`.
 
-### 16.3 Planned Enhancement: DGW-Aware Scoring
-> **Status**: Under consideration for future implementation.
+### 16.3 DGW-Aware Scoring (Implemented Apr 2026)
+> **Status**: Implemented.
 
-Currently, predictions are per-fixture — a DGW player's predicted points reflect a single fixture, not the sum of both. This **undervalues DGW players** compared to single-gameweek players, since they actually play twice and can accumulate points from both matches.
+Previously, predictions were per-fixture — a DGW player's predicted points reflected a single fixture, not the sum of both. This **undervalued DGW players** compared to single-gameweek players, since they actually play twice and can accumulate points from both matches.
 
-**Proposed approach**: Aggregate predicted points across fixtures for DGW players:
+**Implementation** (`src/inference.py` → `aggregate_dgw_predictions()`):
+
+After `predict_points()` generates per-fixture predictions, DGW players (those with >1 row) are aggregated:
+
+| Metric | Aggregation | Rationale |
+| :--- | :--- | :--- |
+| `predicted_points` | **Sum** across fixtures | DGW players earn points in both games |
+| `p_six_plus` | **Hybrid** (see below) | Captures both haul and accumulation paths |
+| `confidence_score` | **Mean** across fixtures | Both fixtures contribute equally |
+| `p_goal`, `p_assist`, `p_cleansheet` | **Max** across fixtures | Best-case display value |
+
+**Hybrid P(≥6) Formula**:
 ```
-DGW_predicted_points = sum(predicted_points per fixture)
+p_haul  = 1 - ∏(1 - p_six_plus_i)     # Chance of 6+ in at least one fixture
+p_accum = clamp(sum_predicted_pts / 12)  # Accumulation path (scales linearly, 1.0 at 12pts)
+p_six_plus = max(p_haul, p_accum)
 ```
 
-**Open questions**:
-*   **Prediction cap**: `MAX_PREDICTED_POINTS = 9` would need to be raised or conditionally applied for DGW sums (~18 max).
-*   **Confidence aggregation**: How to combine confidence scores across two different fixtures (max? weighted average?).
-*   **Selection bias**: Summed DGW points (~10-18) would strongly dominate single-GW players (~5-9), potentially overriding the underdog selection philosophy.
-*   **History log format**: Would need schema changes to log per-fixture breakdowns.
+*Rationale*: The haul path captures "one big game" (e.g., clean sheet). The accumulation path captures "two moderate games summing to 6+" (e.g., 3+4=7), which the haul formula alone misses. `max()` ensures DGW players get credit via whichever path is stronger.
 
-This will be evaluated based on DGW frequency and whether current dedup-only handling causes missed value.
+**Prediction Caps**:
+*   SGW players: `MAX_PREDICTED_POINTS = 14` (unchanged)
+*   DGW summed predictions: `MAX_PREDICTED_POINTS_DGW = 20` (two fixtures × ~10 max)
+
+**DGW Flags**: Each prediction now includes `is_dgw` (boolean) and `dgw_fixture_count` (1 or 2), logged in both `predictions_log.json` and `full_predictions_log.json` for tracking.
+
+**Selection Bias**: Controlled because `select_best_team()` sorts by `p_six_plus` (not raw points). The hybrid formula is naturally moderate — a player with 30% P(≥6) per fixture gets ~51% combined, which won't dominate as aggressively as summed points would.
+
+**Test Coverage**: `test_aggregate_dgw_predictions_basic`, `test_aggregate_dgw_predictions_no_dgw`, `test_aggregate_dgw_predictions_cap`, `test_aggregate_dgw_accumulation_path` in `tests/test_inference.py`.
+
+## 17. April 2026 Performance Review & Improvements
+
+### 17.1 Context
+A full-system performance review was conducted after GW34. Analysis of 95 picks with actual results across all model versions revealed:
+*   **Overall hit rate**: 28% (27/95 picks scored ≥6 points)
+*   **v1 (Regressors)**: 25% hit rate (5/20)
+*   **v2 (Regressors + Understat)**: 40% hit rate (6/15) — best era, but small sample
+*   **v3 (Component-Based)**: 27% hit rate (16/60)
+*   **Key issue**: v3 systematically over-predicted (~7.9 avg predicted vs ~3.0 actual)
+
+### 17.2 Root Cause: Over-Prediction
+The component aggregation formula `P(goal)×goal_pts + P(assist)×3 + P(cs)×cs_pts + 2` produces structurally inflated predictions because:
+1.  The `+2` appearance baseline assumes 60+ minutes played, which isn't always true
+2.  Even small probabilities (10% goal, 15% assist, 50% CS) sum to ~5.3 expected pts for a DEF
+3.  In reality, most players score 1-2 pts on any given week (the median, not the mean)
+
+### 17.3 Root Cause: Cap Saturation
+`MAX_PREDICTED_POINTS = 9` was added after GW28 as a band-aid. By GW30, 76% of picks were capped at exactly 9.0, meaning the model could no longer distinguish between candidates. Selection was effectively random among tied players.
+
+### 17.4 Changes Implemented
+
+#### 17.4.1 Prediction Blending
+*   **What**: `predicted_points = 0.6 × component_pts + 0.4 × legacy_regressor_pts`
+*   **Why**: The legacy regressor is more conservative; blending reduces the systematic over-prediction of the component formula.
+*   **File**: `src/inference.py` → `predict_points()`
+
+#### 17.4.2 Raised Prediction Cap (9 → 14)
+*   **What**: `MAX_PREDICTED_POINTS = 14`
+*   **Why**: The old cap of 9 caused 76% of GW30+ picks to tie, destroying discriminative power. Raising to 14 only clips true outliers.
+*   **File**: `src/config.py`
+
+#### 17.4.3 Raised Confidence Floor (50 → 60)
+*   **What**: `MIN_CONFIDENCE = 60`
+*   **Why**: The 50-60% confidence band had ~12% hit rate vs ~37% for 80%+. Filtering them out improves selection quality.
+*   **File**: `src/config.py`
+
+#### 17.4.4 Full Predictions Actuals Backfill
+*   **What**: `update_actuals()` now also backfills `full_predictions_log.json` (the top-30 scouting report), not just `predictions_log.json` (top-5 picks).
+*   **Why**: Previously, the scouting report could never be evaluated retrospectively — all entries had `actual_points: null`. This enables analysis of whether picks #6-30 outperform the selected top 5.
+*   **File**: `src/history.py` → `update_actuals()`
+
+#### 17.4.5 P(≥6 Points) Selection Metric
+*   **What**: Player selection now ranks by `P(≥6 points)` — the probability a player scores 6+ FPL points — instead of expected points.
+*   **Why**: The project's goal is finding players who score ≥6. Expected points optimizes for the mean, but P(≥6) optimizes directly for the target. A player with 50% clean sheet chance has a clear ~50% P(≥6), which is a better selection signal than a calculated 5.3 expected points.
+*   **Formula per position** (assumes independence between events):
+    ```
+    GKP: P(≥6) = 1 - (1 - P(cs)) × (1 - P(goal))
+    DEF: P(≥6) = 1 - (1 - P(cs)) × (1 - P(goal))
+    MID: P(≥6) = 1 - (1 - P(goal)) × (1 - P(assist) × P(cs))
+    FWD: P(≥6) = P(goal)
+    ```
+*   **Implementation**: `calculate_p_six_plus()` in `src/inference.py`
+*   **Selection**: `select_best_team()` sorts by `p_six_plus` column (falls back to `predicted_points` when component models not available)
+*   **Tests**: 4 new tests in `tests/test_inference.py` covering each position and array inputs
