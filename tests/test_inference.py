@@ -12,8 +12,8 @@ It verifies:
 import pytest
 import pandas as pd
 import numpy as np
-from src.inference import select_best_team, predict_points, calculate_confidence, calculate_p_six_plus
-from src.config import MAX_COST_HARD, MAX_PER_POSITION
+from src.inference import select_best_team, predict_points, calculate_confidence, calculate_p_six_plus, aggregate_dgw_predictions
+from src.config import MAX_COST_HARD, MAX_PER_POSITION, MAX_PREDICTED_POINTS_DGW
 
 
 def test_calculate_confidence_high():
@@ -276,3 +276,112 @@ def test_select_best_team_dgw_no_double_pick():
     
     # All selected players must be unique
     assert team['element'].nunique() == len(team), "No duplicate players allowed in final picks"
+
+
+# --- DGW Aggregation tests ---
+
+def test_aggregate_dgw_predictions_basic():
+    """DGW players should have summed points, hybrid P(>=6), and averaged confidence."""
+    data = {
+        # Player 1 has two fixtures (DGW)
+        'element':           [1,    1,    2],
+        'web_name':          ['DGW', 'DGW', 'SGW'],
+        'team':              [1,    1,    2],
+        'element_type':      [2,    2,    3],
+        'now_cost':          [50,   50,   60],
+        'predicted_points':  [4.5,  3.5,  6.0],
+        'predicted_points_legacy': [4.0, 3.0, 5.0],
+        'p_goal':            [0.05, 0.04, 0.20],
+        'p_assist':          [0.10, 0.08, 0.15],
+        'p_cleansheet':      [0.55, 0.25, 0.30],
+        'p_six_plus':        [0.57, 0.28, 0.35],
+        'confidence_score':  [70.0, 60.0, 55.0],
+    }
+    df = pd.DataFrame(data)
+    result = aggregate_dgw_predictions(df)
+    
+    # Should have 2 rows (one per player)
+    assert len(result) == 2
+    
+    dgw_player = result[result['element'] == 1].iloc[0]
+    sgw_player = result[result['element'] == 2].iloc[0]
+    
+    # Points summed: 4.5 + 3.5 = 8.0
+    assert abs(dgw_player['predicted_points'] - 8.0) < 0.01
+    
+    # Confidence averaged: (70 + 60) / 2 = 65
+    assert abs(dgw_player['confidence_score'] - 65.0) < 0.01
+    
+    # P(>=6) hybrid: max(p_haul, p_accum)
+    # p_haul = 1 - (1-0.57)*(1-0.28) = 1 - 0.43*0.72 = 1 - 0.3096 = 0.6904
+    # p_accum = 8.0 / 12 = 0.6667
+    # max(0.6904, 0.6667) = 0.6904
+    assert dgw_player['p_six_plus'] > 0.65
+    
+    # DGW flags
+    assert dgw_player['is_dgw'] == True
+    assert dgw_player['dgw_fixture_count'] == 2
+    
+    # SGW player unchanged
+    assert abs(sgw_player['predicted_points'] - 6.0) < 0.01
+    assert sgw_player['is_dgw'] == False
+    assert sgw_player['dgw_fixture_count'] == 1
+
+
+def test_aggregate_dgw_predictions_no_dgw():
+    """When no DGW players exist, all rows pass through with is_dgw=False."""
+    data = {
+        'element':           [1, 2, 3],
+        'web_name':          ['A', 'B', 'C'],
+        'predicted_points':  [5.0, 6.0, 7.0],
+        'p_six_plus':        [0.3, 0.4, 0.5],
+        'confidence_score':  [70, 75, 80],
+    }
+    df = pd.DataFrame(data)
+    result = aggregate_dgw_predictions(df)
+    
+    assert len(result) == 3
+    assert all(result['is_dgw'] == False)
+    assert all(result['dgw_fixture_count'] == 1)
+    # Points unchanged
+    assert list(result['predicted_points']) == [5.0, 6.0, 7.0]
+
+
+def test_aggregate_dgw_predictions_cap():
+    """DGW summed predictions should be capped at MAX_PREDICTED_POINTS_DGW."""
+    data = {
+        # Two high-scoring fixtures that would sum beyond cap
+        'element':           [1, 1],
+        'web_name':          ['Star', 'Star'],
+        'predicted_points':  [12.0, 12.0],  # Sum = 24, exceeds cap
+        'p_six_plus':        [0.8, 0.7],
+        'confidence_score':  [85, 80],
+    }
+    df = pd.DataFrame(data)
+    result = aggregate_dgw_predictions(df)
+    
+    assert len(result) == 1
+    assert result.iloc[0]['predicted_points'] == MAX_PREDICTED_POINTS_DGW
+    assert result.iloc[0]['is_dgw'] == True
+
+
+def test_aggregate_dgw_accumulation_path():
+    """When per-fixture P(>=6) is low but summed points are high,
+    the accumulation path should produce a higher p_six_plus."""
+    data = {
+        # A MID with two tough fixtures — low P(>=6) per game but decent expected total
+        'element':           [1, 1],
+        'web_name':          ['Grinder', 'Grinder'],
+        'predicted_points':  [3.5, 3.8],  # Sum = 7.3
+        'p_six_plus':        [0.15, 0.12],  # Low haul chance per game
+        'confidence_score':  [60, 55],
+    }
+    df = pd.DataFrame(data)
+    result = aggregate_dgw_predictions(df)
+    
+    player = result.iloc[0]
+    # p_haul = 1 - (1-0.15)*(1-0.12) = 1 - 0.85*0.88 = 0.252
+    # p_accum = 7.3/12 = 0.608
+    # max(0.252, 0.608) = 0.608 — accumulation path wins
+    assert player['p_six_plus'] > 0.55, f"Accumulation path should dominate, got {player['p_six_plus']}"
+    assert player['p_six_plus'] < 0.65

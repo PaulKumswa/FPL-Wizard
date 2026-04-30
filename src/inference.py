@@ -9,7 +9,8 @@ import json
 import numpy as np
 from src.config import (
     FEATURE_CONFIGS, POSITION_MAP_REV, POSITION_MAP,
-    MAX_COST_HARD, MIN_CONFIDENCE, MAX_PREDICTED_POINTS, MAX_PER_POSITION
+    MAX_COST_HARD, MIN_CONFIDENCE, MAX_PREDICTED_POINTS, MAX_PREDICTED_POINTS_DGW,
+    MAX_PER_POSITION
 )
 from src.scoring_constants import (
     GOAL_POINTS, ASSIST_POINTS, CLEAN_SHEET_POINTS, 
@@ -118,6 +119,112 @@ def calculate_p_six_plus(p_goal, p_assist, p_cs, pos_id):
     return np.clip(p6, 0.0, 1.0)
 
 
+def aggregate_dgw_predictions(df):
+    """
+    Aggregate per-fixture predictions for DGW players into one row per player.
+    
+    For players with multiple rows (one per fixture in a Double Gameweek):
+      - predicted_points: summed across fixtures, capped at MAX_PREDICTED_POINTS_DGW
+      - p_six_plus: hybrid of haul path and accumulation path (see below)
+      - confidence_score: averaged across fixtures
+      - p_goal, p_assist, p_cleansheet: max across fixtures (for display)
+      - is_dgw: True for DGW players, False for SGW
+      - dgw_fixture_count: number of fixtures (1 or 2)
+    
+    P(≥6) hybrid formula:
+      p_haul  = 1 - ∏(1 - p_six_plus_i)  — chance of 6+ in at least one fixture
+      p_accum = clamp(sum_predicted_pts / 12, 0, 1)  — accumulation path
+      p_six_plus = max(p_haul, p_accum)
+    
+    Single-GW players pass through with is_dgw=False, dgw_fixture_count=1.
+    """
+    df = df.copy()
+    
+    # Count fixtures per player
+    fixture_counts = df.groupby('element').size()
+    dgw_elements = fixture_counts[fixture_counts > 1].index
+    
+    if len(dgw_elements) == 0:
+        # No DGW players — just add flags and return
+        df['is_dgw'] = False
+        df['dgw_fixture_count'] = 1
+        return df
+    
+    # Split into SGW and DGW
+    sgw_mask = ~df['element'].isin(dgw_elements)
+    sgw_df = df[sgw_mask].copy()
+    sgw_df['is_dgw'] = False
+    sgw_df['dgw_fixture_count'] = 1
+    
+    dgw_df = df[df['element'].isin(dgw_elements)].copy()
+    
+    # Aggregate DGW players
+    # Columns to sum
+    sum_cols = ['predicted_points', 'predicted_points_legacy']
+    # Columns to average
+    avg_cols = ['confidence_score']
+    # Columns to max (component probabilities for display)
+    max_cols = ['p_goal', 'p_assist', 'p_cleansheet']
+    # Columns to keep first (non-fixture-specific metadata)
+    first_cols = [c for c in dgw_df.columns 
+                  if c not in sum_cols + avg_cols + max_cols + ['p_six_plus']]
+    
+    # Build aggregation dict
+    agg_dict = {}
+    for col in first_cols:
+        if col in dgw_df.columns:
+            agg_dict[col] = 'first'
+    for col in sum_cols:
+        if col in dgw_df.columns:
+            agg_dict[col] = 'sum'
+    for col in avg_cols:
+        if col in dgw_df.columns:
+            agg_dict[col] = 'mean'
+    for col in max_cols:
+        if col in dgw_df.columns:
+            agg_dict[col] = 'max'
+    
+    # For p_six_plus, we need custom aggregation — collect as list first
+    if 'p_six_plus' in dgw_df.columns:
+        agg_dict['p_six_plus'] = list
+    
+    dgw_agg = dgw_df.groupby('element', as_index=False).agg(agg_dict)
+    
+    # Apply hybrid P(≥6) formula
+    if 'p_six_plus' in dgw_agg.columns:
+        hybrid_p6 = []
+        for idx, row in dgw_agg.iterrows():
+            p6_values = row['p_six_plus']
+            # Haul path: P(≥6 in at least one fixture)
+            p_haul = 1.0 - np.prod([1.0 - p for p in p6_values])
+            # Accumulation path: based on summed expected points
+            sum_pts = row.get('predicted_points', 0)
+            p_accum = np.clip(sum_pts / 12.0, 0.0, 1.0)
+            # Take the higher of the two paths
+            hybrid_p6.append(max(p_haul, p_accum))
+        dgw_agg['p_six_plus'] = hybrid_p6
+    
+    # Cap DGW summed predictions
+    if 'predicted_points' in dgw_agg.columns:
+        dgw_agg['predicted_points'] = np.clip(
+            dgw_agg['predicted_points'], 0, MAX_PREDICTED_POINTS_DGW
+        )
+    
+    # Add DGW flags
+    dgw_agg['is_dgw'] = True
+    dgw_agg['dgw_fixture_count'] = dgw_agg['element'].map(
+        fixture_counts[dgw_elements].to_dict()
+    )
+    
+    # Combine back
+    result = pd.concat([sgw_df, dgw_agg], ignore_index=True)
+    
+    dgw_count = len(dgw_elements)
+    print(f"DGW aggregation: {dgw_count} players had multiple fixtures -> summed predictions")
+    
+    return result
+
+
 def predict_points(df, models, component_models=None):
     """
     Apply models to the dataframe to generate 'predicted_points'.
@@ -198,7 +305,10 @@ def predict_points(df, models, component_models=None):
         else:
             # Fallback to legacy
             df.loc[pos_mask, 'predicted_points'] = legacy_preds
-        
+    
+    # Aggregate DGW players: sum points, combine P(≥6), average confidence
+    df = aggregate_dgw_predictions(df)
+    
     return df
 
 
@@ -220,7 +330,7 @@ def select_best_team(df):
     
     # 2. Availability filter
     if 'status' in df.columns:
-        df = df[~df['status'].isin(['s', 'u', 'n', 'i', 'd'])]
+        df = df[~df['status'].isin(['s', 'u', 'n', 'i', 'd'])].copy()
     if 'chance_of_playing_next_round' in df.columns:
         df['chance_of_playing_next_round'] = pd.to_numeric(
             df['chance_of_playing_next_round'], errors='coerce'
@@ -233,7 +343,8 @@ def select_best_team(df):
         (df['confidence_score'] >= MIN_CONFIDENCE)
     ].copy()
     
-    # 3b. Deduplicate: DGW players appear multiple times (one row per fixture)
+    # 3b. DGW aggregation already collapsed multi-fixture rows in predict_points().
+    #     drop_duplicates is kept as a safety net only.
     pool = pool.drop_duplicates(subset=['element'])
     
     # 4. Sort by P(>=6 points) — directly optimizes for the 6+ hit target

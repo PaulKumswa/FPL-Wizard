@@ -478,23 +478,40 @@ During Double Gameweeks, some teams play two fixtures. The preprocessing pipelin
 *   **Kept row**: The first row encountered (based on DataFrame order) is kept. Since `predicted_points` and `confidence_score` are mapped from history in the display path, the only "arbitrary" fields are fixture-specific metadata (opponent name, home/away).
 *   **Test coverage**: `test_select_best_team_dgw_dedup` and `test_select_best_team_dgw_no_double_pick` in `tests/test_inference.py`.
 
-### 16.3 Planned Enhancement: DGW-Aware Scoring
-> **Status**: Under consideration for future implementation.
+### 16.3 DGW-Aware Scoring (Implemented Apr 2026)
+> **Status**: Implemented.
 
-Currently, predictions are per-fixture — a DGW player's predicted points reflect a single fixture, not the sum of both. This **undervalues DGW players** compared to single-gameweek players, since they actually play twice and can accumulate points from both matches.
+Previously, predictions were per-fixture — a DGW player's predicted points reflected a single fixture, not the sum of both. This **undervalued DGW players** compared to single-gameweek players, since they actually play twice and can accumulate points from both matches.
 
-**Proposed approach**: Aggregate predicted points across fixtures for DGW players:
+**Implementation** (`src/inference.py` → `aggregate_dgw_predictions()`):
+
+After `predict_points()` generates per-fixture predictions, DGW players (those with >1 row) are aggregated:
+
+| Metric | Aggregation | Rationale |
+| :--- | :--- | :--- |
+| `predicted_points` | **Sum** across fixtures | DGW players earn points in both games |
+| `p_six_plus` | **Hybrid** (see below) | Captures both haul and accumulation paths |
+| `confidence_score` | **Mean** across fixtures | Both fixtures contribute equally |
+| `p_goal`, `p_assist`, `p_cleansheet` | **Max** across fixtures | Best-case display value |
+
+**Hybrid P(≥6) Formula**:
 ```
-DGW_predicted_points = sum(predicted_points per fixture)
+p_haul  = 1 - ∏(1 - p_six_plus_i)     # Chance of 6+ in at least one fixture
+p_accum = clamp(sum_predicted_pts / 12)  # Accumulation path (scales linearly, 1.0 at 12pts)
+p_six_plus = max(p_haul, p_accum)
 ```
 
-**Open questions**:
-*   **Prediction cap**: `MAX_PREDICTED_POINTS = 9` would need to be raised or conditionally applied for DGW sums (~18 max).
-*   **Confidence aggregation**: How to combine confidence scores across two different fixtures (max? weighted average?).
-*   **Selection bias**: Summed DGW points (~10-18) would strongly dominate single-GW players (~5-9), potentially overriding the underdog selection philosophy.
-*   **History log format**: Would need schema changes to log per-fixture breakdowns.
+*Rationale*: The haul path captures "one big game" (e.g., clean sheet). The accumulation path captures "two moderate games summing to 6+" (e.g., 3+4=7), which the haul formula alone misses. `max()` ensures DGW players get credit via whichever path is stronger.
 
-This will be evaluated based on DGW frequency and whether current dedup-only handling causes missed value.
+**Prediction Caps**:
+*   SGW players: `MAX_PREDICTED_POINTS = 14` (unchanged)
+*   DGW summed predictions: `MAX_PREDICTED_POINTS_DGW = 20` (two fixtures × ~10 max)
+
+**DGW Flags**: Each prediction now includes `is_dgw` (boolean) and `dgw_fixture_count` (1 or 2), logged in both `predictions_log.json` and `full_predictions_log.json` for tracking.
+
+**Selection Bias**: Controlled because `select_best_team()` sorts by `p_six_plus` (not raw points). The hybrid formula is naturally moderate — a player with 30% P(≥6) per fixture gets ~51% combined, which won't dominate as aggressively as summed points would.
+
+**Test Coverage**: `test_aggregate_dgw_predictions_basic`, `test_aggregate_dgw_predictions_no_dgw`, `test_aggregate_dgw_predictions_cap`, `test_aggregate_dgw_accumulation_path` in `tests/test_inference.py`.
 
 ## 17. April 2026 Performance Review & Improvements
 

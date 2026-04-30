@@ -64,6 +64,8 @@ def log_predictions(predictions_df, gameweek_info):
             'predicted_points': float(row['predicted_points']),
             'confidence_score': float(row.get('confidence_score', 50.0)),
             'is_wildcard': bool(row.get('is_wildcard', False)),
+            'is_dgw': bool(row.get('is_dgw', False)),
+            'dgw_fixture_count': int(row.get('dgw_fixture_count', 1)),
             'actual_points': None  # To be filled later
         })
 
@@ -122,6 +124,8 @@ def log_full_predictions(all_predictions_df, gameweek_info, top_n=30):
             'now_cost': float(row.get('now_cost', 0)),
             'selected_by_percent': float(row.get('selected_by_percent', 0)),
             'team_name': str(row.get('team_name', '')),
+            'is_dgw': bool(row.get('is_dgw', False)),
+            'dgw_fixture_count': int(row.get('dgw_fixture_count', 1)),
             'actual_points': None
         })
     
@@ -185,7 +189,7 @@ def save_complete_predictions(all_predictions_df, gameweek_info):
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(archive, f, indent=2, ensure_ascii=False)
     
-    print(f"Archived {len(players)} complete predictions for GW {current_gw} → {filepath}")
+    print(f"Archived {len(players)} complete predictions for GW {current_gw} -> {filepath}")
 
 def update_actuals():
     """
