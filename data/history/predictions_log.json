@@ -1051,7 +1051,7 @@
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 224,
@@ -1062,7 +1062,7 @@
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 736,
@@ -1073,7 +1073,7 @@
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 341,
@@ -1084,7 +1084,7 @@
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 2.0
       },
       {
         "player_id": 215,
@@ -1092,6 +1092,70 @@
         "position": "FWD",
         "predicted_points": 4.733736826657521,
         "confidence_score": 86.87379255631977,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      }
+    ]
+  },
+  {
+    "gameweek": 36,
+    "timestamp": "2026-05-02T11:53:44.282722",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 411,
+        "web_name": "O'Reilly",
+        "position": "DEF",
+        "predicted_points": 18.692480539220348,
+        "confidence_score": 61.435129944949885,
+        "is_wildcard": false,
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 736,
+        "web_name": "Donnarumma",
+        "position": "GKP",
+        "predicted_points": 9.669513226055512,
+        "confidence_score": 79.98939329669412,
+        "is_wildcard": false,
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 72,
+        "web_name": "Senesi",
+        "position": "DEF",
+        "predicted_points": 9.011141156069929,
+        "confidence_score": 70.8562014054406,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 329,
+        "web_name": "Wilson",
+        "position": "MID",
+        "predicted_points": 7.370730259043614,
+        "confidence_score": 65.5653050338773,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 783,
+        "web_name": "Gro\u00df",
+        "position": "MID",
+        "predicted_points": 8.97561067684275,
+        "confidence_score": 60.12334980012014,
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,

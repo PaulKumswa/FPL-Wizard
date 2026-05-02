@@ -3098,7 +3098,7 @@
         "team_name": "Man City",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 257,
@@ -3111,7 +3111,7 @@
         "team_name": "Crystal Palace",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 224,
@@ -3124,7 +3124,7 @@
         "team_name": "Chelsea",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 106,
@@ -3137,7 +3137,7 @@
         "team_name": "Brentford",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 694,
@@ -3150,7 +3150,7 @@
         "team_name": "Sunderland",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 37,
@@ -3163,7 +3163,7 @@
         "team_name": "Aston Villa",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 348,
@@ -3176,7 +3176,7 @@
         "team_name": "Leeds",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 107,
@@ -3189,7 +3189,7 @@
         "team_name": "Brentford",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 261,
@@ -3202,7 +3202,7 @@
         "team_name": "Crystal Palace",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 449,
@@ -3215,7 +3215,7 @@
         "team_name": "Man Utd",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 5,
@@ -3228,7 +3228,7 @@
         "team_name": "Arsenal",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 82,
@@ -3241,7 +3241,7 @@
         "team_name": "Man City",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 260,
@@ -3254,7 +3254,7 @@
         "team_name": "Man City",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 36,
@@ -3267,7 +3267,7 @@
         "team_name": "Aston Villa",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 72,
@@ -3280,7 +3280,7 @@
         "team_name": "Bournemouth",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 407,
@@ -3293,7 +3293,7 @@
         "team_name": "Man City",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 515,
@@ -3306,7 +3306,7 @@
         "team_name": "Nott'm Forest",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 235,
@@ -3319,7 +3319,7 @@
         "team_name": "Chelsea",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 241,
@@ -3332,7 +3332,7 @@
         "team_name": "Chelsea",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 430,
@@ -3345,7 +3345,7 @@
         "team_name": "Man City",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 531,
@@ -3358,7 +3358,7 @@
         "team_name": "Sunderland",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 343,
@@ -3371,7 +3371,7 @@
         "team_name": "Leeds",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 113,
@@ -3384,7 +3384,7 @@
         "team_name": "Brentford",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 575,
@@ -3397,7 +3397,7 @@
         "team_name": "Spurs",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 74,
@@ -3410,7 +3410,7 @@
         "team_name": "Bournemouth",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 568,
@@ -3423,7 +3423,7 @@
         "team_name": "Spurs",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 783,
@@ -3436,7 +3436,7 @@
         "team_name": "Brighton",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 295,
@@ -3449,7 +3449,7 @@
         "team_name": "Everton",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 38,
@@ -3462,7 +3462,7 @@
         "team_name": "Aston Villa",
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 258,
@@ -3473,6 +3473,402 @@
         "now_cost": 50.0,
         "selected_by_percent": 2.3,
         "team_name": "Crystal Palace",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 0.0
+      }
+    ]
+  },
+  {
+    "gameweek": 36,
+    "timestamp": "2026-05-02T11:53:44.289381",
+    "predictions": [
+      {
+        "player_id": 411,
+        "web_name": "O'Reilly",
+        "position": "DEF",
+        "predicted_points": 18.69,
+        "confidence_score": 61.4,
+        "now_cost": 52.0,
+        "selected_by_percent": 17.8,
+        "team_name": "Man City",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 260,
+        "web_name": "Gu\u00e9hi",
+        "position": "DEF",
+        "predicted_points": 17.18,
+        "confidence_score": 45.6,
+        "now_cost": 51.0,
+        "selected_by_percent": 32.7,
+        "team_name": "Man City",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 257,
+        "web_name": "Lacroix",
+        "position": "DEF",
+        "predicted_points": 15.25,
+        "confidence_score": 46.2,
+        "now_cost": 51.0,
+        "selected_by_percent": 6.1,
+        "team_name": "Crystal Palace",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 261,
+        "web_name": "Richards",
+        "position": "DEF",
+        "predicted_points": 15.05,
+        "confidence_score": 45.5,
+        "now_cost": 44.0,
+        "selected_by_percent": 2.6,
+        "team_name": "Crystal Palace",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 82,
+        "web_name": "Semenyo",
+        "position": "MID",
+        "predicted_points": 14.48,
+        "confidence_score": 64.4,
+        "now_cost": 81.0,
+        "selected_by_percent": 50.2,
+        "team_name": "Man City",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 407,
+        "web_name": "Matheus N.",
+        "position": "DEF",
+        "predicted_points": 13.46,
+        "confidence_score": 53.7,
+        "now_cost": 53.0,
+        "selected_by_percent": 2.9,
+        "team_name": "Man City",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 430,
+        "web_name": "Haaland",
+        "position": "FWD",
+        "predicted_points": 13.18,
+        "confidence_score": 40.9,
+        "now_cost": 146.0,
+        "selected_by_percent": 61.4,
+        "team_name": "Man City",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 402,
+        "web_name": "A\u00eft-Nouri",
+        "position": "DEF",
+        "predicted_points": 9.94,
+        "confidence_score": 40.4,
+        "now_cost": 57.0,
+        "selected_by_percent": 4.2,
+        "team_name": "Man City",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 406,
+        "web_name": "Khusanov",
+        "position": "DEF",
+        "predicted_points": 9.84,
+        "confidence_score": 53.7,
+        "now_cost": 54.0,
+        "selected_by_percent": 0.6,
+        "team_name": "Man City",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 736,
+        "web_name": "Donnarumma",
+        "position": "GKP",
+        "predicted_points": 9.67,
+        "confidence_score": 80.0,
+        "now_cost": 56.0,
+        "selected_by_percent": 9.2,
+        "team_name": "Man City",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 72,
+        "web_name": "Senesi",
+        "position": "DEF",
+        "predicted_points": 9.01,
+        "confidence_score": 70.9,
+        "now_cost": 52.0,
+        "selected_by_percent": 20.6,
+        "team_name": "Bournemouth",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 783,
+        "web_name": "Gro\u00df",
+        "position": "MID",
+        "predicted_points": 8.98,
+        "confidence_score": 60.1,
+        "now_cost": 55.0,
+        "selected_by_percent": 2.6,
+        "team_name": "Brighton",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 253,
+        "web_name": "Henderson",
+        "position": "GKP",
+        "predicted_points": 8.84,
+        "confidence_score": 44.1,
+        "now_cost": 51.0,
+        "selected_by_percent": 8.7,
+        "team_name": "Crystal Palace",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 575,
+        "web_name": "Van de Ven",
+        "position": "DEF",
+        "predicted_points": 8.11,
+        "confidence_score": 52.7,
+        "now_cost": 44.0,
+        "selected_by_percent": 17.8,
+        "team_name": "Spurs",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 47,
+        "web_name": "Rogers",
+        "position": "MID",
+        "predicted_points": 8.0,
+        "confidence_score": 53.7,
+        "now_cost": 75.0,
+        "selected_by_percent": 25.0,
+        "team_name": "Aston Villa",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 449,
+        "web_name": "B.Fernandes",
+        "position": "MID",
+        "predicted_points": 7.71,
+        "confidence_score": 61.6,
+        "now_cost": 104.0,
+        "selected_by_percent": 47.2,
+        "team_name": "Man Utd",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 317,
+        "web_name": "Andersen",
+        "position": "DEF",
+        "predicted_points": 7.6,
+        "confidence_score": 50.8,
+        "now_cost": 45.0,
+        "selected_by_percent": 4.2,
+        "team_name": "Fulham",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 283,
+        "web_name": "Mateta",
+        "position": "FWD",
+        "predicted_points": 7.55,
+        "confidence_score": 57.1,
+        "now_cost": 76.0,
+        "selected_by_percent": 7.7,
+        "team_name": "Crystal Palace",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 160,
+        "web_name": "Minteh",
+        "position": "MID",
+        "predicted_points": 7.4,
+        "confidence_score": 52.4,
+        "now_cost": 55.0,
+        "selected_by_percent": 2.4,
+        "team_name": "Brighton",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 329,
+        "web_name": "Wilson",
+        "position": "MID",
+        "predicted_points": 7.37,
+        "confidence_score": 65.6,
+        "now_cost": 59.0,
+        "selected_by_percent": 19.9,
+        "team_name": "Fulham",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 37,
+        "web_name": "Digne",
+        "position": "DEF",
+        "predicted_points": 7.28,
+        "confidence_score": 43.4,
+        "now_cost": 45.0,
+        "selected_by_percent": 1.6,
+        "team_name": "Aston Villa",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 272,
+        "web_name": "Lerma",
+        "position": "MID",
+        "predicted_points": 7.19,
+        "confidence_score": 42.0,
+        "now_cost": 49.0,
+        "selected_by_percent": 0.1,
+        "team_name": "Crystal Palace",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 723,
+        "web_name": "Canvot",
+        "position": "DEF",
+        "predicted_points": 7.13,
+        "confidence_score": 43.2,
+        "now_cost": 45.0,
+        "selected_by_percent": 0.4,
+        "team_name": "Crystal Palace",
+        "is_dgw": true,
+        "dgw_fixture_count": 2,
+        "actual_points": null
+      },
+      {
+        "player_id": 606,
+        "web_name": "Mavropanos",
+        "position": "DEF",
+        "predicted_points": 6.99,
+        "confidence_score": 68.4,
+        "now_cost": 45.0,
+        "selected_by_percent": 2.1,
+        "team_name": "West Ham",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 370,
+        "web_name": "Frimpong",
+        "position": "DEF",
+        "predicted_points": 6.98,
+        "confidence_score": 49.4,
+        "now_cost": 57.0,
+        "selected_by_percent": 5.1,
+        "team_name": "Liverpool",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 684,
+        "web_name": "Thiaw",
+        "position": "DEF",
+        "predicted_points": 6.96,
+        "confidence_score": 52.1,
+        "now_cost": 50.0,
+        "selected_by_percent": 5.3,
+        "team_name": "Newcastle",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 517,
+        "web_name": "Anderson",
+        "position": "MID",
+        "predicted_points": 6.89,
+        "confidence_score": 51.5,
+        "now_cost": 56.0,
+        "selected_by_percent": 7.2,
+        "team_name": "Nott'm Forest",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 318,
+        "web_name": "Bassey",
+        "position": "DEF",
+        "predicted_points": 6.75,
+        "confidence_score": 59.1,
+        "now_cost": 44.0,
+        "selected_by_percent": 0.6,
+        "team_name": "Fulham",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 21,
+        "web_name": "Rice",
+        "position": "MID",
+        "predicted_points": 6.61,
+        "confidence_score": 51.0,
+        "now_cost": 72.0,
+        "selected_by_percent": 24.2,
+        "team_name": "Arsenal",
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 84,
+        "web_name": "Tavernier",
+        "position": "MID",
+        "predicted_points": 6.56,
+        "confidence_score": 43.5,
+        "now_cost": 54.0,
+        "selected_by_percent": 5.2,
+        "team_name": "Bournemouth",
         "is_dgw": false,
         "dgw_fixture_count": 1,
         "actual_points": null
