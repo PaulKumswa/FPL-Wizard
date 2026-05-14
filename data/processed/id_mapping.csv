@@ -40,6 +40,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 719,6080,Victor Lindelöf,Victor Lindelöf,100
 754,14193,George Hemmings,George Hemmings,100
 808,702,Tammy Abraham,Tammy Abraham,100
+183,13731,Max Weiß,Max Weiss,100
 187,638,Kyle Walker,Kyle Walker,100
 190,11704,Hjalmar Ekdal,Hjalmar Ekdal,100
 191,9487,Maxime Estève,Maxime Estève,100
@@ -103,6 +104,8 @@ fpl_id,understat_id,fpl_name,understat_name,score
 129,11772,Yehor Yarmoliuk,Yehor Yarmolyuk,100
 130,14217,Romelle Donovan,Romelle Donovan,100
 133,10205,Myles Peart-Harris,Myles Peart-Harris,100
+748,10405,Josh Dasilva,Josh Dasilva,100
+797,14356,Kaye Furo,Kaye Furo,100
 139,11711,Bart Verbruggen,Bart Verbruggen,100
 143,3645,Olivier Boscagli,Olivier Boscagli,100
 144,10169,Diego Coppola,Diego Coppola,100
@@ -145,6 +148,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 244,10004,Roméo Lavia,Romeo Lavia,100
 250,8868,Liam Delap,Liam Delap,100
 672,13776,Jorrel Hato,Jorrel Hato,100
+829,14584,Jesse Derry,Jesse Derry,100
 253,7702,Dean Henderson,Dean Henderson,100
 254,5652,Walter Benítez,Walter Benítez,100
 257,8853,Maxence Lacroix,Maxence Lacroix,100
@@ -370,6 +374,7 @@ fpl_id,understat_id,fpl_name,understat_name,score
 572,9105,Radu Drăgușin,Radu Dragusin,100
 573,10764,Djed Spence,Djed Spence,100
 575,10050,Micky van de Ven,Micky van de Ven,100
+581,6818,James Maddison,James Maddison,100
 582,12027,Mohammed Kudus,Mohammed Kudus,100
 584,9780,Mathys Tel,Mathys Tel,100
 585,6108,Rodrigo Bentancur,Rodrigo Bentancur,100

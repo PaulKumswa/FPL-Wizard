@@ -1115,7 +1115,7 @@
         "is_wildcard": false,
         "is_dgw": true,
         "dgw_fixture_count": 2,
-        "actual_points": null
+        "actual_points": 5.0
       },
       {
         "player_id": 736,
@@ -1126,7 +1126,7 @@
         "is_wildcard": false,
         "is_dgw": true,
         "dgw_fixture_count": 2,
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 72,
@@ -1137,7 +1137,7 @@
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 8.0
       },
       {
         "player_id": 783,
@@ -1148,7 +1148,7 @@
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 691,
@@ -1156,6 +1156,70 @@
         "position": "FWD",
         "predicted_points": 5.642487546637518,
         "confidence_score": 78.20194903394969,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 7.0
+      }
+    ]
+  },
+  {
+    "gameweek": 37,
+    "timestamp": "2026-05-14T19:26:50.917430",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 228,
+        "web_name": "Gusto",
+        "position": "DEF",
+        "predicted_points": 10.39322320289338,
+        "confidence_score": 67.73646852324033,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 258,
+        "web_name": "Mitchell",
+        "position": "DEF",
+        "predicted_points": 9.18261463104185,
+        "confidence_score": 62.481828984031495,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 1,
+        "web_name": "Raya",
+        "position": "GKP",
+        "predicted_points": 5.619935628287688,
+        "confidence_score": 94.32879421171589,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 83,
+        "web_name": "O.Dango",
+        "position": "MID",
+        "predicted_points": 7.733660875100303,
+        "confidence_score": 66.68857886073549,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 299,
+        "web_name": "Ndiaye",
+        "position": "MID",
+        "predicted_points": 7.325680715204019,
+        "confidence_score": 63.069733397642345,
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
