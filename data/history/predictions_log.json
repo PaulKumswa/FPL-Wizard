@@ -1179,7 +1179,7 @@
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 0.0
       },
       {
         "player_id": 258,
@@ -1190,7 +1190,7 @@
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 1.0
       },
       {
         "player_id": 1,
@@ -1201,7 +1201,7 @@
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 6.0
       },
       {
         "player_id": 83,
@@ -1212,7 +1212,7 @@
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
-        "actual_points": null
+        "actual_points": 15.0
       },
       {
         "player_id": 299,
@@ -1220,6 +1220,70 @@
         "position": "MID",
         "predicted_points": 7.325680715204019,
         "confidence_score": 63.069733397642345,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": 2.0
+      }
+    ]
+  },
+  {
+    "gameweek": 38,
+    "timestamp": "2026-05-23T18:53:17.917503",
+    "model_version": "v3",
+    "model_name": "Component-Based LightGBM",
+    "model_type": "component",
+    "picks": [
+      {
+        "player_id": 384,
+        "web_name": "Gakpo",
+        "position": "MID",
+        "predicted_points": 7.612715415130095,
+        "confidence_score": 62.083834145317475,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 411,
+        "web_name": "O'Reilly",
+        "position": "DEF",
+        "predicted_points": 6.786947720067306,
+        "confidence_score": 69.46744594310576,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 575,
+        "web_name": "Van de Ven",
+        "position": "DEF",
+        "predicted_points": 7.522960274290693,
+        "confidence_score": 61.16542373671876,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 736,
+        "web_name": "Donnarumma",
+        "position": "GKP",
+        "predicted_points": 5.285596368866356,
+        "confidence_score": 87.40916182110526,
+        "is_wildcard": false,
+        "is_dgw": false,
+        "dgw_fixture_count": 1,
+        "actual_points": null
+      },
+      {
+        "player_id": 679,
+        "web_name": "Hermansen",
+        "position": "GKP",
+        "predicted_points": 5.6017523527755415,
+        "confidence_score": 86.65159294993592,
         "is_wildcard": false,
         "is_dgw": false,
         "dgw_fixture_count": 1,
